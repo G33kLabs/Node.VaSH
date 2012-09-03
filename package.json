@@ -1,11 +1,21 @@
 {
-    "name": "node-cms"
+    "name": "express.vash"
   , "version": "0.1.0"
-  , "description": "Content Management System for node.js"
+  , "description": "VaSh is a very fast blog engine for node.js"
   , "author": "Guilllaume DE LA RUE <delarueguillaume@gmail.com>"
   , "contributors": [
         { "name": "Guilllaume DE LA RUE", "email": "delarueguillaume@gmail.com" }
     ]
+  ,"repository": {
+    "type": "git",
+    "url": "git://github.com/G33kLabs/Node.VaSH.git"
+  },
+  "keywords": [
+    "express",
+    "cms",
+    "blog",
+    "cluster"
+  ]
   , "dependencies": {
       "sechash": "x.x.x"
       , "bcrypt": "x.x.x"
@@ -26,6 +36,6 @@
       , "marked": "x.x.x"
       , "highlight": "x.x.x"
     }
-  , "main": "index.js"
+  , "main": "app.js"
   , "engines": { "node": ">= 0.8.0" }
 }

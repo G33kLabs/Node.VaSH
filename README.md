@@ -1,4 +1,4 @@
-# Node.VaSH #
+# Node.VaSH [ALPHA] #
 
 ## Description ##
 
@@ -34,7 +34,7 @@ $ echo "[>] Install Redis..."
 $ echo "Visit url ==> http://redis.io/download"
 
 $ echo "[>] Install Node.VaSH..."
-$ npm install vash
+$ npm install express.vash
 ```
 
 ## Get Started ##
@@ -47,7 +47,7 @@ var express = require('express'),
     server = http.createServer(app) ;
 
 // -- Add vash to express
-express.vash = require('./libs/server/express.vash') ;
+express.vash = require('express.vash') ;
 
 // -- Add as middleware
 app.use(express.vash());

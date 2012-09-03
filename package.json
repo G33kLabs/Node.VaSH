@@ -1,0 +1,31 @@
+{
+    "name": "node-cms"
+  , "version": "0.1.0"
+  , "description": "Content Management System for node.js"
+  , "author": "Guilllaume DE LA RUE <delarueguillaume@gmail.com>"
+  , "contributors": [
+        { "name": "Guilllaume DE LA RUE", "email": "delarueguillaume@gmail.com" }
+    ]
+  , "dependencies": {
+      "sechash": "x.x.x"
+      , "bcrypt": "x.x.x"
+      , "underscore": "x.x.x"
+      , "backbone": "x.x.x"
+      , "optimist": "x.x.x"
+      , "colors": "x.x.x"
+      , "async": "x.x.x"
+      , "datejs": "x.x.x"
+      , "jquery": "x.x.x"
+      , "hiredis": "x.x.x"
+      , "redis": "x.x.x"
+      , "express": "x.x.x"
+      , "socket.io": "x.x.x"
+      , "mustache": "x.x.x"
+      , "watch": "x.x.x"
+      , "node-static": "x.x.x"
+      , "marked": "x.x.x"
+      , "highlight": "x.x.x"
+    }
+  , "main": "index.js"
+  , "engines": { "node": ">= 0.8.0" }
+}

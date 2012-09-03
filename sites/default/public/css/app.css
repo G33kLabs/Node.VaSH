@@ -1,0 +1,394 @@
+#navbar .navbar-inner {
+	border-radius: 0;
+}
+
+.jumbotron {
+	position: relative;
+	padding: 15px 20px 10px !important;
+	color: #fff;
+	text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+	background: #020031; /* Old browsers */
+	background: -moz-linear-gradient(45deg,  #020031 0%, #6d3353 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#6d3353)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* IE10+ */
+	background: linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020031', endColorstr='#6d3353',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	-webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+	 -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+	      box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+}
+
+.jumbotron.inner {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: url(../img/space-invaders.png) repeat 50px 30px;
+	background-size: 50px 30px;
+	opacity: .1;
+}
+
+.post.list {
+	margin-bottom: 20px;
+}
+
+.post .content {
+	margin-left: 7px;
+	padding-left: 10px;
+	border-left: 5px solid #ccc;
+}
+
+.post .content.full {
+	margin-top: 8px;
+	padding-top: 0px;
+	padding-bottom: 7px;
+}
+
+@media (max-width: 480px) {
+	.post .content {
+		border: none;
+		margin-left: 0;
+		padding-left: 0;
+	}
+}
+
+/******************************************************* HIGHLIGHTER **************/
+/*
+Monokai style - ported by Luigi Maselli - http://grigio.org
+*/
+
+pre code {
+  display: block; padding: 0.5em;
+  background: #272822;
+}
+
+pre .tag,
+pre .tag .title,
+pre .keyword,
+pre .literal,
+pre .change,
+pre .winutils,
+pre .flow,
+pre .lisp .title,
+pre .clojure .built_in,
+pre .nginx .title,
+pre .tex .special {
+  color: #F92672;
+}
+
+pre code {
+  color: #DDD;
+}
+
+pre code .constant {
+	color: #66D9EF;
+}
+
+pre .class .title {
+	color: white;
+}
+
+pre .attribute,
+pre .symbol,
+pre .symbol .string,
+pre .value,
+pre .regexp {
+	color: #BF79DB;
+}
+
+pre .tag .value,
+pre .string,
+pre .ruby .subst,
+pre .title,
+pre .haskell .type,
+pre .preprocessor,
+pre .ruby .class .parent,
+pre .built_in,
+pre .sql .aggregate,
+pre .django .template_tag,
+pre .django .variable,
+pre .smalltalk .class,
+pre .javadoc,
+pre .django .filter .argument,
+pre .smalltalk .localvars,
+pre .smalltalk .array,
+pre .attr_selector,
+pre .pseudo,
+pre .addition,
+pre .stream,
+pre .envvar,
+pre .apache .tag,
+pre .apache .cbracket,
+pre .tex .command,
+pre .input_number {
+  color: #A6E22E;
+}
+
+pre .comment,
+pre .java .annotation,
+pre .python .decorator,
+pre .template_comment,
+pre .pi,
+pre .doctype,
+pre .deletion,
+pre .shebang,
+pre .apache .sqbracket,
+pre .tex .formula {
+  color: #75715E;
+}
+
+pre .keyword,
+pre .literal,
+pre .css .id,
+pre .phpdoc,
+pre .title,
+pre .haskell .type,
+pre .vbscript .built_in,
+pre .sql .aggregate,
+pre .rsl .built_in,
+pre .smalltalk .class,
+pre .diff .header,
+pre .chunk,
+pre .winutils,
+pre .bash .variable,
+pre .apache .tag,
+pre .tex .special,
+pre .request,
+pre .status {
+  font-weight: bold;
+}
+
+pre .coffeescript .javascript,
+pre .xml .css,
+pre .xml .javascript,
+pre .xml .vbscript,
+pre .tex .formula {
+  opacity: 0.5;
+}
+
+.pink {
+background-color:#d91e4e;
+color:#FFF;
+border-color:#d91e4e;
+}
+
+.softpink {
+background-color:#FF0071;
+color:#fff;
+border-color:#FF0071;
+}
+
+.pastelpink {
+background-color:#962D3E;
+color:#fff;
+border-color:#962D3E;
+}
+
+.green {
+background-color:#58AA00;
+color:#333;
+border-color:#58AA00;
+}
+
+.greenlight {
+background-color:#a9f04c;
+color:#333;
+border-color:#a9f04c;
+}
+
+.softgreen {
+background-color:#00AA78;
+color:#FFF;
+border-color:#00AA78;
+}
+
+.softblue {
+background-color:#cde0ff;
+color:#333;
+border-color:#cde0ff;
+}
+
+.lightblue {
+background-color:#00afb1;
+color:#FFF;
+border-color:#00afb1;
+}
+
+.darkblue {
+background-color:#005f90;
+color:#FFF;
+border-color:#005f90;
+}
+
+.pastelblue {
+background-color:#5B7876;
+color:#FFF;
+border-color:#5B7876;
+}
+
+.pasteldarkblue {
+background-color:#192B33;
+color:#FFF;
+border-color:#192B33;
+}
+
+.orangeyellow {
+background-color:#fca424;
+color:#333;
+border-color:#f68b1e;
+}
+
+.orange {
+background-color:#f86100;
+color:#FFF;
+border-color:#f86100;
+}
+
+.pastelorange {
+background-color:#CC2A09;
+color:#FFF;
+border-color:#CC2A09;
+}
+
+.mauve {
+background-color:#bf697f;
+color:#FFF;
+border-color:#bf697f;
+}
+
+.darkmauve {
+background-color:#9e3c80;
+color:#fff;
+border-color:#9e3c80;
+}
+
+.violet {
+background-color:#A839B2;
+color:#fff;
+border-color:#A839B2;
+}
+
+.white {
+background-color:#FFF;
+color:#333;
+border-color:#FFF;
+}
+
+.white_light {
+background-color:#F2EBC7;
+color:#333;
+border-color:#fefefe;
+}
+
+.yellowlight {
+background-color:#fff571;
+color:#333;
+border-color:#fff571;
+}
+
+.yellow {
+background-color:#ffd800;
+color:#333;
+border-color:#ffe300;
+}
+
+.darkgrey {
+background-color:#262626;
+color:#FFF;
+border-color:#262626;
+}
+
+.lightgrey {
+background-color:#818181;
+color:#E9E9E9;
+border-color:#818181;
+}
+
+.pastelgrey {
+background-color:#979C9C;
+color:#333;
+border-color:#979C9C;
+}
+
+.red {
+background-color:red;
+color:#FFF;
+border-color:red;
+}
+
+.bg_black {
+background-color:#000;
+color:#FFF;
+border-color:#000;
+}
+
+a.color_violet:hover {
+color:#9e3c80;
+}
+
+.white_hover:hover {
+background-color:#FFF;
+color:#333;
+}
+
+.orangeyellow_hover:hover {
+background-color:#f68b1e;
+color:#fff;
+}
+
+.blue,.fluoblue,.fluoblue_hover:hover {
+background-color:#40c8f4;
+color:#333;
+border-color:#40c8f4;
+}
+
+.color_fluoblue,a.color_fluoblue,a.color_fluoblue:link,a.color_fluoblue:visited,.color_hover_blue:hover,.color_hover_fluoblue:hover {
+color:#40c8f4;
+}
+
+a.color_fluoblue:hover,a.color_yellow:hover,a.color_red:hover,a.color_greenlight:hover {
+color:#f86100;
+}
+
+.color_fluoblue
+a,.color_yellow
+a,.color_greenlight
+a,.fluoblue
+a {
+color:#333;
+}
+
+.color_yellow,a.color_yellow,a.color_yellow:link,a.color_yellow:visited,.color_hover_yellow:hover {
+color:#ffd800;
+}
+
+.color_red,a.color_red,a.color_red:link,a.color_red:visited {
+color:red;
+}
+
+.color_red
+a,.color_violet
+a,.color_white,.color_hover_white:hover {
+color:#fff;
+}
+
+.color_violet,a.color_violet,a.color_violet:link,a.color_violet:visited {
+color:#A839B2;
+}
+
+.color_greenlight,a.color_greenlight,a.color_greenlight:link,a.color_greenlight:visited,.color_greenlight,.color_hover_greenlight:hover {
+color:#a9f04c;
+}
+
+.color_pink,.color_hover_pink:hover {
+color:#d91e4e;
+}
+
+.color_black,.color_hover_black:hover {
+color:#000;
+}

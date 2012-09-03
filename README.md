@@ -37,7 +37,7 @@ $ echo "[>] Install Node.VaSH..."
 $ npm install vash
 ```
 
-### Get Started ###
+## Get Started ##
 
 ``` js
 // -- Load Libs

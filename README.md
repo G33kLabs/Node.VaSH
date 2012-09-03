@@ -37,6 +37,20 @@ $ echo "[>] Install Node.VaSH..."
 $ npm install vash
 ```
 
-Configuration
--------------
+### Get Started ###
+
+``` js
+// -- Load Libs
+var express = require('express'),
+	app = express(),
+	http = require('http'),
+    server = http.createServer(app) ;
+
+// -- Add vash to express
+express.vash = require('./libs/server/express.vash') ;
+
+// -- Add as middleware
+app.use(express.vash());
+```
+
 

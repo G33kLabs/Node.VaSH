@@ -4,7 +4,7 @@
 
 *You have a dedicated server and want to try one of the most faster blog in the world ? Try it :)*
 
-VaSh is a content manager aka a blog engine powered by **[node.js](/node.js/ "View all Node.js articles")** and **[Redis](/redis/ "View all Redis articles")**.
+VaSh is a content manager aka a blog engine powered by **[node.js](http://nodejs.org/ "View Node.js Website")** and **[Redis](http://redis.io/ "View Redis Website")**.
 All is driven by memory cache (static content + database) so it's really really... really fast !
 
 Including a **cluster architecture**, VaSh is also **highly scalable** and can host **multi blogs**.

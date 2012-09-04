@@ -11,10 +11,14 @@
     "url": "git://github.com/G33kLabs/Node.VaSH.git"
   },
   "keywords": [
-    "express",
-    "cms",
-    "blog",
-    "cluster"
+    "Express",
+    "CMS",
+    "Blog",
+    "Cluster",
+    "Fast",
+    "Mustache",
+    "Template",
+    "Twitter Bootstrap"
   ]
   , "dependencies": {
       "sechash": "x.x.x"

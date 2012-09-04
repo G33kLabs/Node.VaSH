@@ -53,4 +53,11 @@ express.vash = require('express.vash') ;
 app.use(express.vash());
 ```
 
-
+## Credits ##
+- [node.js](http://nodejs.org/)
+- [Redis](http://redis.io/)
+- [ExpressJS](http://expressjs.com/)
+- [Socket.IO](http://socket.io/)
+- [BackBone](http://backbonejs.org/)
+- [UnderscoreJS](http://underscorejs.org/ )
+- [MustacheJS](https://github.com/janl/mustache.js/)

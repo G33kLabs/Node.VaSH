@@ -8,17 +8,23 @@
 
 	exports.shared = Backbone.Model.extend({
 		initialize: function(opts, instance) {
+			this.siteObj = instance; 
 			this.tpl = instance.templates['post.html'] 
 			this.tpl_teaser = instance.templates['teaser.html'] 
 			return this;
 		},
 		getTitle: function() {
-			return tools.ucwords(this.get('title'))
+			return this.get('title')
 		},
 		getTeaser: function(max) {
 			max = max || 200 ;
 			var txt = tools.teaser(this.get('content'), max).replace(/(<([^>]+)>)/ig," ");
-			return tools.trim(txt)+(txt.length>max?' <small>[...]</small>':'');
+			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?' <small>[...]</small>':''));
+		},
+		getRSSTeaser: function(max) {
+			max = max || 200 ;
+			var txt = tools.teaser(this.get('content'), max).replace(/(<([^>]+)>)/ig," ").replace(new RegExp("\n", 'g'), '');
+			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?' [...]':''));
 		},
 		getCategory: function() {
 			var mainTag = 'General' ;
@@ -31,13 +37,16 @@
 			return this.get('desc')
 		},
 		getLink: function() {
-			return '/'+this.getCategory()+'/'+tools.permalink(this.get('title'))
+			return this.siteObj.get('website')+this.getCategory().toLowerCase()+'/'+tools.permalink(this.get('title'))
+		},
+		getAuthor: function() {
+			return this.siteObj.get('authors')[this.get('author')] 
 		},
 		teaser: function() {
-			return VaSH.Mustache.to_html(this.tpl_teaser, {post: this.toJSON()});
+			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl_teaser, {post: this.toJSON()}));
 		},
 		html: function() {
-			return VaSH.Mustache.to_html(this.tpl, {post: this.toJSON()});
+			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl, {post: this.toJSON()}));
 		},
 		toJSON: function() {
 			return _.extend({}, this.attributes, {
@@ -47,6 +56,19 @@
 				tags: this.get('tags'),
 				cat: this.getCategory()
 			})
+		},
+		toRSS: function() {
+			return {
+				title: this.getTitle(),
+				teaser: this.getRSSTeaser(),
+				content: this.html(),
+				permalink: this.getLink(),
+				tags: this.get('tags'),
+				cat: this.getCategory(),
+				author: this.getAuthor(),
+				comments: 0,
+				pubDate: tools.GetRFC822Date(new Date(this.get('created')))
+			}
 		}
 	}); 
 

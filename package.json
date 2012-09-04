@@ -39,6 +39,7 @@
       , "node-static": "x.x.x"
       , "marked": "x.x.x"
       , "highlight": "x.x.x"
+      , "html-minifier": "x.x.x"
     }
   , "main": "app.js"
   , "engines": { "node": ">= 0.8.0" }

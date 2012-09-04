@@ -5,7 +5,8 @@ var fs = require('fs'),
 	watch = require('watch'),
     numCPUs = require('os').cpus().length,
     static = require('node-static'),
-    zlib = require('zlib') ;
+    zlib = require('zlib'),
+    minifyHTML = require('html-minifier').minify ;
 
 // -- VaSH Class
 var VaSH = function(options) {
@@ -27,8 +28,15 @@ var VaSH = function(options) {
 
 // -- Define objects
 VaSH.Site = require('./express.vash.site') ;
-
 VaSH.Mustache = require('mustache');
+VaSH.minifyHTML = function(html) {
+	return minifyHTML(html, {
+		removeComments: true,
+		collapseWhitespace: true,
+		removeAttributeQuotes: true,
+		cleanAttributes: true 
+	}) ;
+} ;
 
 // -- Define models
 VaSH.Models = {
@@ -177,6 +185,15 @@ VaSH.prototype.get = function(req, res, next) {
 	var layoutId = site+'::cache::layout' ;
 	var siteObj = self.sites[site] ;
 
+
+	// -- Serve RSS feed
+	if ( /^\/feed/.test(req_path) ) {
+		siteObj.feed(function(err, feed) {
+			res.end(feed) ;
+		})
+		return  ;
+	}
+
 	// -> Operations in parallel to prepare building
 	async.parallel({
 
@@ -247,7 +264,7 @@ VaSH.prototype.get = function(req, res, next) {
 			} ; 
 
 		// -> Check if etag changed
-		if(req.headers['if-none-match'] === headers.ETag) {
+		if(req.headers['if-none-match'] === headers.ETag && false) {
 			res.statusCode = 304;
 			res.end();
 			tools.debug('[>] Return 304 : '+JSON.stringify(view)) ;

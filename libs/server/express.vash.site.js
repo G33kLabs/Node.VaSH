@@ -97,11 +97,15 @@ module.exports = Backbone.Model.extend({
 		return this;
 	},
 
+	getOrdered: function() {
+		return _.sortBy(this.posts, function(post){ return post.created }).reverse();
+	},
+
 	list: function(filters, callback) {
 		var self = this, all = [], posts = [], out = '', page = {content: ''} ;
 
 		// -> Sort posts by created date
-		all = _.sortBy(self.posts, function(post){ return post.created }).reverse();
+		all = self.getOrdered() ;
 
 		// -> If want only a unique post
 		console.log(self.attributes) ;
@@ -137,6 +141,46 @@ module.exports = Backbone.Model.extend({
 			widgets: [],
 			page: page
 		})
+	},
+
+	feed: function(callback) {
+		var self = this, all = [], posts = [], out = '', opts = {posts:[]} ;
+
+		// -> Get an ordered list
+		all = self.getOrdered() ;
+
+		// -> Taks first ones
+		posts = all.slice(0, self.get('maxPerPage')) ;
+
+		// -> Get posts
+		if ( posts.length ) {
+			_.each(posts, function(post) {
+				var _post = new VaSH.Models.post(post, self) ;
+				opts.posts.push(_post.toRSS()) ;
+			})
+		}
+
+		// -> Build feed infos
+		opts.feed = {
+			title: self.get('title'),
+			description: self.get('desc'),
+			url: self.get('website')+'feed/',
+			website: self.get('website'),
+			language: self.get('language'),
+			updatePeriod: 'hourly',
+			updateFrequency: 1,
+			lastBuildDate: opts.posts[0].pubDate,
+			generator: 'http://www.js2node.com/'
+		}	
+
+		// -> Build RSS
+		out = VaSH.Mustache.to_html(self.templates['rss.html'], opts) ;
+
+		// -> Pack 
+		console.log(posts)	
+
+		// -> COmpile template
+		callback(null, out)
 	},
 
 	toJSON: function() {

@@ -27,12 +27,19 @@ Once connected, users can publish comments, talk...
 - Internationalization
 - Auto translate
 
+## Requirements ##
+
+``` bash
+Install Redis...
+Visit url ==> http://redis.io/download
+
+Install Node.js...
+Visit url ==> http://node.js
+```
+
 ## Installation ##
 
 ``` bash
-$ echo "[>] Install Redis..."
-$ echo "Visit url ==> http://redis.io/download"
-
 $ echo "[>] Install Node.VaSH..."
 $ npm install express.vash
 ```
@@ -54,7 +61,7 @@ app.use(express.vash());
 ```
 
 ## Credits ##
-- [node.js](http://nodejs.org/)
+- [Node.js](http://nodejs.org/)
 - [Redis](http://redis.io/)
 - [ExpressJS](http://expressjs.com/)
 - [Socket.IO](http://socket.io/)

@@ -8,6 +8,7 @@
 
     <!-- Le styles -->
     <link href="/common/bootstrap.css" rel="stylesheet">
+    <link href="/common/highlight.monokai.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 
     <!-- Le author -->
@@ -36,7 +37,7 @@
 
     <header class="jumbotron subhead" id="overview">
       <div class="jumbotron inner"></div>
-      <div class="container">
+      <div class="container-fluid">
         <h1>{{&page.name}}</h1>
         <p class="lead visible-desktop visible-tablet">{{&page.desc}}</p>
       </div>
@@ -62,16 +63,16 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         
         <div id="alert-area"></div>
 
-        <div class="row">
-            <div class="span9">
+        <div class="row-fluid">
+            <div class="span8">
                 {{&page.content}}
             </div>
 
-            <div class="span3">
+            <div class="span4">
                 <ul class="sidebar">
                     <li class=""><a href="#dropdowns"><i class="icon-chevron-right"></i> Widgets</a></li>
                 </ul>

@@ -8,10 +8,7 @@ marked.setOptions({
 	sanitize: true,
 	// callback for code highlighter
 	highlight: function(code, lang) {
-		if (lang === 'js') {
-		  return jsHighlight(code);
-		}
-		return code;
+		return jsHighlight(code);
 	}
 });
 

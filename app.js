@@ -101,7 +101,7 @@ else {
     var app = express()
       , server = http.createServer(app) ;
 
-    // Register CMS as an express middleware plugin
+    // Register VaSH as an express middleware plugin
     express.vash = require('./libs/server/express.vash') ;
 
     // Add session && router support 

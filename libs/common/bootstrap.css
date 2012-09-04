@@ -6412,7 +6412,7 @@ a.badge:hover {
     margin-left: -20px;
   }
   .container-fluid {
-    padding: 0px;
+    padding: 0 20px;
   }
   .dl-horizontal dt {
     float: none;

@@ -1,0 +1,28 @@
+<div class="row-fluid">
+	<div class="span6 offset3">
+		<div id="login_providers" class="row-fluid">
+			<ul id="login_list">
+				{{#providers}}
+				<li class="provider provider-{{name}} {{#active}}active{{/active}}">
+					<i style="background-image: url(/common/img/providers/32/{{name}}.png)"></i>
+					<a href="#/auth/{{name}}" title="Use '{{name}}' to login !">{{name}}</a>
+				</li>
+				{{/providers}}
+				<li class="clearfix"></li>
+			</ul>
+			<div id="login_form">
+				<ul id="login_panel">
+					{{#providers}}
+						<li class="provider-connect provider-{{name}} ">
+							<h3>Log in with your <b>{{name}}</b> !</h3>
+							<p>Click on the button below to continue.</p>
+							<a href="/auth/{{name}}" title="Use '{{name}}' to login !">Connect with <b>{{name}}</b></a>
+							<small>You may need to disable your pop-up blocker before being able to log in.</small>
+						</li>
+					{{/providers}}
+				</ul>
+			</div>
+		</div>	
+		
+	</div>
+</div>

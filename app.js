@@ -2,19 +2,20 @@
 var path  = require("path");
 var current_path = __dirname+'';
 process.chdir(path.normalize(__dirname+'/')) ;
-GLOBAL.root_path = __dirname = process.cwd() ;
+GLOBAL.root_path = process.cwd() ;
 
 // -- Load Libs
 var fs = require('fs'),
     util = require('util'),
     express = require('express'),
+    passport = require('passport'),
     cluster = require('cluster'),
     http = require('http'),
     numCPUs = require('os').cpus().length ;
 
 // -- Load Globals
 //GLOBAL.jQuery = require('jQuery') ;
-GLOBAL.tools = require(__dirname+'/libs/server/tools.kit') ;
+GLOBAL.tools = require(root_path+'/libs/server/tools.kit') ;
 require('datejs');
 
 // -- Config
@@ -27,9 +28,17 @@ var config = {
     server: {
         host: 'localhost',
         port: 10000
+    },
+    session: {
+        cookname: 'express.sid',
+        password: 'N0d3*)s3Ss10n',
+        cookoptions: {
+            path: '/', 
+            httpOnly: true, 
+            maxAge: 31*24*3600*1000
+        }
     }
 }
-
 
 ///////////////////////////////////////////////////////////// MASTER CLUSTER /////////////
 if (cluster.isMaster) {
@@ -105,14 +114,160 @@ else {
     express.vash = require('./libs/server/express.vash') ;
 
     // Add session && router support 
+   // app.use(express.favicon()); 
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(express.cookieParser());
     app.use(express.bodyParser());
     app.use(express.errorHandler());
     app.use(express.methodOverride());
-    app.use(express.favicon());  
-    app.use(express.vash());
 
+    // -- Express sessions
+    var RedisStore = require('connect-redis')(express),
+        sessionStore = new RedisStore,
+        Session = require('connect').middleware.session.Session ;
+
+    // -- Configure session
+    app.use(express.session({
+        secret: config.session.password, 
+        key: config.session.cookname, 
+        cookie: config.session.cookoptions, 
+        store: sessionStore
+    }));
+
+    // -- Initialize passport middleware
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    // -- Passport session setup
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function(obj, done) {
+        done(null, obj);
+    });
+
+    // -- Initialize VaSH middleware
+    app.use(express.vash({ debug: true, cache: 3600*1000, passport: passport }).get);
+
+    // -- iOS : udid login
+   // app.get('/auth/uuid', passport.authenticate('uuid', {scope: 'email' }));
+   // app.get('/auth/uuid/callback', passport.authenticate('uuid', { successRedirect: '/', failureRedirect: '/#login' }));
+/*
+    // -- Facebook
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email' }));
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/#login' }));
+
+    // -- Twitter
+    app.get('/auth/twitter', passport.authenticate('twitter'));
+    app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/#login' }));
+
+    // -- Google
+    app.get('/auth/google', passport.authenticate('google'));
+    app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/#login' }));
+
+    // -- Yahoo
+    app.get('/auth/yahoo', passport.authenticate('yahoo'));
+    app.get('/auth/yahoo/callback', passport.authenticate('yahoo', { successRedirect: '/', failureRedirect: '/#login' }));
+
+    // -- Windows Live
+    app.get('/auth/windowslive', passport.authenticate('windowslive', { scope: ['wl.signin', 'wl.basic', 'wl.emails'] }));
+    app.get('/auth/windowslive/callback', passport.authenticate('windowslive', { successRedirect: '/', failureRedirect: '/#login' }));
+
+    // -- LinkedIn
+    app.get('/auth/linkedin', passport.authenticate('linkedin'));
+    app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { successRedirect: '/', failureRedirect: '/#login' }));  
+
+
+    // -- Supported Connect technologies 
+    var FacebookStrategy = require(__dirname+'/libs/server/passports/passport-facebook').Strategy,
+        TwitterStrategy = require(__dirname+'/libs/server/passports/passport-twitter').Strategy,
+        GoogleStrategy = require(__dirname+'/libs/server/passports/passport-google').Strategy,
+        WindowsLiveStrategy = require(__dirname+'/libs/server/passports/passport-windowslive').Strategy,
+        LinkedInStrategy = require(__dirname+'/libs/server/passports/passport-linkedin').Strategy,
+        YahooStrategy = require(__dirname+'/libs/server/passports/passport-yahoo').Strategy ;
+*/        
+/*
+
+    ///////////////////////////////////////////
+    //             Login API                 //
+    ///////////////////////////////////////////
+
+
+    // -- Configure connect providers : facebook
+    passport.use(new FacebookStrategy({
+            clientID: config.facebook.appId,
+            clientSecret: config.facebook.appSecret,
+            callbackURL: config.app.baseUrl+"/auth/facebook/callback"
+        },
+        function(accessToken, refreshToken, profile, done) {
+            process.nextTick(function () {
+                return done(null, profile);
+            });
+        }
+    ));
+
+    // -- Configure connect for twitter
+    passport.use(new TwitterStrategy({
+            consumerKey: config.twitter.appId,
+            consumerSecret: config.twitter.appSecret,
+            callbackURL: config.app.baseUrl+"/auth/twitter/callback"
+        },
+        function(token, tokenSecret, profile, done) {
+            process.nextTick(function () {
+                return done(null, profile);
+            });
+        }
+    ));
+
+    // -- Configure connect for google
+    passport.use(new GoogleStrategy({
+            returnURL: config.app.baseUrl+'/auth/google/callback',
+            realm: config.app.baseUrl+'/'
+        },
+        function(identifier, profile, done) {
+            process.nextTick(function () {
+                return done(null, profile);
+            });
+        }
+    ));
+
+    // -- Configure connect for Yahoo
+    passport.use(new YahooStrategy({
+            returnURL: config.app.baseUrl+'/auth/yahoo/callback',
+            realm: config.app.baseUrl+'/'
+        },
+        function(identifier, profile, done) {
+            return done(null, profile);
+        }
+    ));
+
+    // -- Configure connect for Yahoo
+    passport.use(new WindowsLiveStrategy({
+            clientID: config.windowslive.appId,
+            clientSecret: config.windowslive.appSecret,
+            callbackURL: config.app.baseUrl+"/auth/windowslive/callback"
+        },
+        function(accessToken, refreshToken, profile, done) {
+            process.nextTick(function () {
+                return done(null, profile);
+            });
+        }
+    ));
+
+    // -- Configure connect for LinkedIn
+    passport.use(new LinkedInStrategy({
+            consumerKey: config.linkedin.appId,
+            consumerSecret: config.linkedin.appSecret,
+            callbackURL: config.app.baseUrl+"/auth/linkedin/callback"
+        },
+        function(accessToken, refreshToken, profile, done) {
+            process.nextTick(function () {
+                return done(null, profile);
+            });
+        }
+    ));    
+*/
     // -- Start Server
     server.listen(config.server.port);
     tools.debug(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | WebServer STARTED : http://'+config.server.host+':'+config.server.port+'/') ;    

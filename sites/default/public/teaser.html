@@ -1,7 +1,12 @@
 <div class="post list post-{{post.id}}">
 	<h2>{{&post.title}}</h2>
 	<div class="content">
+		<div class="metas">Par <a href="/profile/{{&post.author.pseudo}}">{{&post.author.pseudo}}</a>, {{&post.displayDate}}</div>
+		<p><em class="desc"><b>{{&post.desc}}</b></em></p>
+		{{#post.big_thumb}}
+		<div class="big_thumb" style="background-image: url({{&post.big_thumb}});"></div>
+		{{/post.big_thumb}}
 		<div class="teaser">{{&post.teaser}}</div>
-		<div class="readmore"><a href="{{&post.permalink}}" title="View full article : {{&post.title}}"><i class="icon-play-circle"></i>&nbsp;Read more...</a></div>
+		<div class="readmore"><a href="{{&post.permalink}}" title="View full article : {{&post.title}}" class="permalink">&raquo; Read more...</a></div>
 	</div>
 </div>

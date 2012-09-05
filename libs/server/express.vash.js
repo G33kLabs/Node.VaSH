@@ -1,38 +1,47 @@
 // -- Load libs
 var fs = require('fs'),
 	cluster = require('cluster'),
-	_url = require('url'),
 	watch = require('watch'),
-    numCPUs = require('os').cpus().length,
     static = require('node-static'),
     zlib = require('zlib'),
     minifyHTML = require('html-minifier').minify ;
 
 // -- VaSH Class
 var VaSH = function(options) {
-	this.fileServer = {} ;
+	
+	// -> Set options
 	this.options = _.extend({
 		sites_path: 'sites/',
 		skins_path: 'skins/',
+		passports_path: 'passports/',
 		skin: 'default',
 		alias: {
-			'default': ['localhost', '127.0.0.1']
+			'default': ['localhost', '127.0.0.1', 'local.js2node.com']
 		},
-		static_cache: 5*60*1000,
-		static_extension: ['js', 'css', 'mp3', 'png', 'jpg', 'ico']
+		debug: false,
+		cache: 5*60*1000
 	}, options) ;
+
+	// -> Load Framework
 	this.load() ;
+
+	// -> Restart cluster on code changes
 	this.monitor_debug() ;
+
+	// -> Return instance
 	return this; 
+
 } ;
 
 // -- Define objects
 VaSH.Site = require('./express.vash.site') ;
+VaSH.Request = require('./express.vash.request') ;
+
+// -- Helpers
 VaSH.Mustache = require('mustache');
 VaSH.minifyHTML = function(html) {
 	return minifyHTML(html, {
 		removeComments: true,
-		collapseWhitespace: true,
 		removeAttributeQuotes: true,
 		cleanAttributes: true 
 	}) ;
@@ -49,9 +58,9 @@ VaSH.prototype.load = function() {
 
 	// -> Set as not ready
 	self.ready = false; 
-	self.config = {} ;
+	self.fileServer = {} ;
 	self.sites = {} ;
-	//self.posts = {} ;
+	self.strategies = {} ;
 
 	// -> Clear cache
 	self.clearCache() ;
@@ -61,7 +70,7 @@ VaSH.prototype.load = function() {
 
 		// -> Create common static server
 		function(callback) {
-			self.fileServer['common'] = new(static.Server)('libs', {cache: self.options.static_cache});
+			self.fileServer['common'] = new(static.Server)('libs', {cache: self.options.cache});
 			callback(null)
 		},
 
@@ -79,25 +88,89 @@ VaSH.prototype.load = function() {
 
 				var opts = _.extend({
 					public_path: self.options.sites_path+site,
-					file: self.options.sites_path+site+'/config.js'
+					configFile: self.options.sites_path+site+'/config.js'
 				}, self.options) ;
 
-				fs.exists(opts.file, function(exists) {
+				fs.exists(opts.configFile, function(exists) {
 					if ( ! exists ) return callback() ;
-					tools.warning('[>] Config found : '+opts.file); 
+					tools.warning('[>] Config found : '+opts.configFile); 
 
 					// -> Create static server
-					self.fileServer[site] = new(static.Server)(self.options.sites_path+site+'/public', {cache: self.options.static_cache});
+					self.fileServer[site] = new(static.Server)(self.options.sites_path+site+'/public', {cache: self.options.cache});
+					self.fileServer[site+'_posts'] = new(static.Server)(self.options.sites_path+site+'/posts', {cache: self.options.cache});
 
 					// -> Register site
 					self.sites[site] = new VaSH.Site(opts, function(cb) {
 						callback() ;
 					}) ;
-
 				})
+
 			}, function(err, res) {
 				callback(err) 
 			}) ;		
+		},
+
+		// -> Load passports strategies from directory
+		function(callback) {
+
+			fs.readdir(__dirname+'/'+self.options.passports_path, function(err, datas) {
+
+				// -> No passports ? OK skip...
+				if ( err ) return callback() ;
+
+				// -> Load each strategies
+				async.forEachSeries(datas, function(name, callback) {
+					if ( /^passport-/.test(name) ) {
+						self.strategies[name] = require(__dirname+'/'+self.options.passports_path+name).Strategy
+					}
+					callback() ;
+				}, function(err, datas) {
+					callback() ;
+				}) 
+
+			}) ;
+
+		},
+		
+		// -> Load passports strategies for each website
+		function(callback) {
+
+			// -> If no strategies... pass
+			if ( ! _.keys(self.strategies).length ) {
+				tools.error('[!] No passport strategies defined ! You could not login without !')
+				return callback() ;
+			}
+
+			// -> Create passport routes
+			async.forEachSeries(_.keys(self.sites), function(site, callback) {
+
+				var siteConfig = self.sites[site] ;
+				var providers = siteConfig.get('providers') ;
+
+				_.each(providers, function(datas, provider) {
+					console.log(provider, datas)
+
+					tools.warning('[>] Register passport module => '+provider+'::'+site)
+					var strategy = self.strategies['passport-'+provider] ;
+					self.options.passport.use(new strategy(_.extend({
+							name: provider+'::'+site,
+							callbackURL: siteConfig.get('website')+"/auth/"+provider+"/callback"
+						}, datas.infos),
+						function(accessToken, refreshToken, profile, done) {
+							process.nextTick(function () {
+				                return done(null, profile);
+				            });
+						}
+					))
+
+				}) ;
+
+				callback(); 
+
+			}, function(err, res) {
+				callback(); 
+			}) ;
+
 		},
 
 		// -> Set policies
@@ -117,183 +190,16 @@ VaSH.prototype.clearCache = function() {
 	this.cache = {} ;
 }
 
-// -- Is hacked
-VaSH.prototype.isHacked = function(res) {
-	res.send(500, "Not like that...\n[G33K]") ;
+// -- Bind request
+VaSH.prototype.request = function(req, res, next) {
+	req.id = Math.floor(Math.random()*10000000000) ;
+	return new VaSH.Request({
+		main: this,
+		req: req,
+		res: res,
+		next: next
+	})
 }
-
-// -- Send error
-VaSH.prototype.error = function(res, msg) {
-	res.send(404, msg||"Something gets wrong...") ;
-}
-
-// -- Serve static file
-VaSH.prototype.serveStatic = function(site, req, res) {
-	if ( this.fileServer[site] ) this.fileServer[site].serve(req, res);
-	else this.error(res, msg) ;
-}
-
-// -- Manage a request
-VaSH.prototype.get = function(req, res, next) {
-
-	// -> Define which website to load
-	var self = this,
-		options = self.options,
-		hostname, site, public_path, req_path, fileExt ;
-
-	// -> Get site from hostname
-	//console.log(_url.parse(req.url))
-	hostname = ((req.headers.host||'').split(':')[0]);
-	//hostname = _url.parse(req.url).hostname ;
-	
-	// -> Protect site name for public path
-	site = hostname.replace(/[^a-zA-Z_0-9.]+/g, '-'); 
-
-	// -> Render error if hostname hacking
-	if ( site != hostname ) return self.isHacked(res) ;
-
-	// -> If hostname is localhost => reroute to default
-	if ( _.isArray(options.alias.default) && options.alias.default.indexOf(site) >= 0 ) 
-		site = 'default' ;
-
-	// -> Set public path and request path
-	public_path = root_path+'/'+options.sites_path + site + '/public' ;
-	req_path = req.path ;
-
-	// -> For index.html
-	if ( req_path == '/' ) req_path = '/index.html' ;
-
-	// -> Logs
-	//console.log(req.url, req_path, public_path)
-
-	// -> Serve static files other than html
-	fileExt = tools.extension(req_path) ;
-	if ( options.static_extension.indexOf(fileExt) >= 0 ) {
-		if ( /^\/common/.test(req_path) ) site = 'common'; 
-		return self.serveStatic(site, req, res) ;
-	}
-
-	// -- Serve dynamic content in other cases
-
-	// -> Define template path
-	var layoutPath = public_path+'/index.html' ;
-
-	// -> Set vars
-	var now = Date.now() ;
-	var cacheTimer = Math.floor((now - now%options.static_cache)/1000);
-	var cacheId = site+'::cache::'+(req_path.replace(/\//g, '|')) ;
-	var layoutId = site+'::cache::layout' ;
-	var siteObj = self.sites[site] ;
-
-
-	// -- Serve RSS feed
-	if ( /^\/feed/.test(req_path) ) {
-		siteObj.feed(function(err, feed) {
-			res.end(feed) ;
-		})
-		return  ;
-	}
-
-	// -> Operations in parallel to prepare building
-	async.parallel({
-
-		// -> Get layout
-		layout: function(callback) {
-			if ( self.cache[layoutId] && self.cache[layoutId].timer == cacheTimer ) {
-				callback(null, self.cache[layoutId]) ;
-			} else {
-				fs.exists(layoutPath, function(exists) {
-					if (!exists) return callback('File not exists')
-					fs.readFile(layoutPath, 'utf8', function(err, datas) {
-						self.cache[layoutId] = {
-							timer: cacheTimer,
-							content: datas
-						}; 
-						callback(err, self.cache[layoutId]) ;
-					})
-				})
-			}
-		},
-
-		// -> Get templates datas
-		datas: function(callback) {
-
-			// -> Set filters
-			var filters = {
-				page: 1,
-				cat: null,
-				by: 'created',
-				desc: true
-			}
-
-			// -> Get template to load
-			var permalink = req.path.match(/^\/([a-zA-Z0-9.\-]+)\/(.*)/) ;
-			if ( permalink && permalink[2] ) {
-				filters.permalink = permalink[2] ;
-			}
-
-			// -> Get content
-			siteObj.list(filters, function(err, page) {
-				callback(err, page)
-			}) 
-
-		},
-
-		// Ass layoutId to response
-		layoutId: function(callback) {
-			callback(null, layoutId) ;
-		}
-
-	}, 
-
-	// -> Merge datas with layout
-	function(err, success) {
-
-		// -> Merge datas
-		var view = _.deepExtend({}, self.sites[site].toJSON(), success.datas) ;
-
-		// -> Build Etag
-		var pageId = site+'::'+JSON.stringify(success.datas)+'::'+cacheTimer ;
-		var etag = tools.md5(pageId)
-
-		// -> Set headers
-		var statusCode = 200,
-			headers = {
-				'Content-Type': 'text/html',
-				'ETag': "'"+etag+"'"
-			} ; 
-
-		// -> Check if etag changed
-		if(req.headers['if-none-match'] === headers.ETag && false) {
-			res.statusCode = 304;
-			res.end();
-			tools.debug('[>] Return 304 : '+JSON.stringify(view)) ;
-			return;
-		}
-		else {
-			tools.warning('[>] Generate HTML : '+JSON.stringify(view)) ;
-		}
-
-		// -> Build output
-		var html = VaSH.Mustache.to_html(success.layout.content, view) ;
-
-		// -> Add extra informations to headers
-		_.extend(headers, {
-			'Content-Length': html.length,
-			'Cache-Control': 'public, max-age=' + (self.options.static_cache / 1000)
-		})
-
-		// -> Write headers
-		res.writeHead(statusCode, headers) ;
-
-		// -> Return response
-        res.end(html); 
-
-		// --> 
-		//self.serveTemplate(success, req, res) ;
-	}); 
-
-} ;
 
 // -- Serve a template file
 VaSH.prototype.serveTemplate = function(layout, req, res) {
@@ -315,7 +221,7 @@ VaSH.prototype.serveTemplate = function(layout, req, res) {
 				'Content-Type': 'text/html',
 				'Content-Length': datas.length,
 				'ETag': "'"+tools.md5(datas)+"'",
-				'Cache-Control': 'public, max-age=' + (self.options.static_cache / 1000)
+				'Cache-Control': 'public, max-age=' + (self.options.cache / 1000)
 			} ;
 
 			// Add compression headers
@@ -392,11 +298,14 @@ VaSH.prototype.monitor_debug = function() {
 
 // Init VaSH instance
 GLOBAL.VaSH = VaSH; 
-var vash = new VaSH() ;
+var vash ;
 
 // Export class
 module.exports = function(options) {
-    return function(req, res, next) {
-    	vash.get(req, res, next); 
-    }
+	if ( ! vash ) vash = new VaSH(options) ;
+	return {
+		get: function(req, res, next) {
+			var request = vash.request(req, res, next) ;
+	    }
+	}
 }

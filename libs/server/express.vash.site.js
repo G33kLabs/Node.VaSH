@@ -14,79 +14,29 @@ marked.setOptions({
 
 module.exports = Backbone.Model.extend({
 	templates: {},
+	defaults: {
+		maxPerPage: 10
+	},
 	initialize: function(options, cb) {
 		var self = this;
 
-		self.set('maxPerPage', 10) ;
+		self.posts = {} ;
 
 		async.waterfall([
 
 			// -> Read config file
 			function(callback) {
-				try {
-					_.deepExtend(self.attributes, require(root_path+'/'+options.file)) ;
-					callback() ;
-				} catch(e) {
-					callback(e) ;
-				}
-			},
-
-			// -> Init page informations
-			function(callback) {
-    			self.set('page', {
-					title: self.get('title'),
-					desc: self.get('desc')
-				})	
-				callback(); 			
-			},
-
-			// -> Customize menus
-			function(callback) {
-	            _.each(self.attributes.menus, function(v,k) {
-	                //if ( v.active ) v.active = 'active' ;
-	                if ( ! v.url ) v.url = '/'+(v.name||'').toLowerCase()+'/'; 
-	                self.attributes.menus[k] = v ;
-	            })
-	            callback() ;
+				self.reloadConfig(callback)
 			},
 
 			// -> Load templates
 			function(callback) {
-				fs.readdir(self.get('public_path')+'/public', function(err, datas) {
-			    	async.forEachSeries(datas, function(data, callback) {
-			    		if ( ! /\.html$/.test(data) || /index\.html$/.test(data) ) return callback() ;
-			    		fs.readFile(self.get('public_path')+'/public/'+data, 'utf8', function(err, tpl) {
-			    			self.templates[data] = tpl ;
-			    			callback() ;
-			    		})		    		
-			    	}, function() {
-			    		callback() ;
-			    	});
-			    })
+				self.reloadTemplates(callback)
 			},
 
 			// -> Load posts
 			function(callback) {
-				self.posts = {} ;
-				var post_path = self.get('public_path')+'/public/posts' ;
-			    tools.walk(post_path, function(err, datas) {
-			    	async.forEachSeries(datas, function(post, callback) {
-			    		if ( ! /\.js$/.test(post.path) ) return callback() ;
-			    		try {
-			    			var _post = require(root_path+'/'+post.path) ;
-			    			if ( /\.md$/.test(_post.content) ) {
-			    				console.log(root_path+'/'+post_path+'/'+_post.content)
-			    				_post.content = marked(fs.readFileSync(root_path+'/'+post_path+'/'+_post.content, 'utf8')) ;
-			    			} 
-			    			self.posts[_post.id] = _post ;
-			    		} catch(e) {
-			    			tools.error(e) ;
-			    		}
-			    		callback() ;
-			    	}, function() {
-			    		callback(null, self.posts) ;
-			    	});
-			    })
+				self.reloadPosts(callback)
 			}
 
 		], function(err, success) {
@@ -97,18 +47,96 @@ module.exports = Backbone.Model.extend({
 		return this;
 	},
 
-	getOrdered: function() {
-		return _.sortBy(this.posts, function(post){ return post.created }).reverse();
+	reloadConfig: function(callback) {
+		var self = this;
+		try {
+			tools.extend(self.attributes, require(root_path+'/'+self.get('configFile'))) ;
+			_.each(self.attributes.menus, function(v,k) {
+	            if ( v.active ) v.active = 'active' ;
+	            if ( v.name ) v.id = tools.permalink(v.name||'') ;
+	            if ( ! v.url ) v.url = '/'+v.id+'/'; 
+	            self.attributes.menus[k] = v ;
+	        })	
+	        self.set('page', {
+				title: self.get('title'),
+				desc: self.get('desc')
+			})	
+	        callback() ;		
+		} catch(e) {
+			callback(e) ;
+		}
+	},
+
+	reloadTemplates: function(callback) {
+		var self = this ;
+		fs.readdir(self.get('public_path')+'/public', function(err, datas) {
+	    	async.forEachSeries(datas, function(data, callback) {
+	    		if ( ! /\.html$/.test(data) ) return callback() ;
+	    		fs.readFile(self.get('public_path')+'/public/'+data, 'utf8', function(err, tpl) {
+	    			self.templates[data] = tpl ;
+	    			callback() ;
+	    		})		    		
+	    	}, function() {
+	    		callback() ;
+	    	});
+	    })
+	},
+
+	reloadPosts: function(callback) {
+		var self = this;
+		var post_path = self.get('public_path')+'/posts' ;
+	    tools.walk(post_path, function(err, datas) {
+	    	async.forEachSeries(datas, function(post, callback) {
+	    		if ( ! /\.js$/.test(post.path) ) return callback() ;
+	    		try {
+	    			var _post = require(root_path+'/'+post.path) ;
+	    			self.posts[_post.id] = _post ;
+	    			if ( /\.md$/.test(_post.content) ) {
+	    				//console.log(root_path+'/'+post_path+'/'+_post.content)
+	    				fs.readFile(root_path+'/'+post_path+'/'+_post.content, 'utf8', function(err, content) {
+	    					if ( ! err ) self.posts[_post.id].content =  marked(content); 
+	    					callback() ;
+	    				})
+	    			} 
+	    			else {
+	    				callback() ;
+	    			}
+	    		} catch(e) {
+	    			tools.error(e) ;
+	    			callback(e) ;
+	    		}
+	    		
+	    	}, function() {
+	    		callback(null, self.posts) ;
+	    	});
+	    })		
+	},
+
+	getOrdered: function(filters) {
+		filters = _.extend({}, {by: 'created', desc: true}, filters);
+		var sortedPosts = _.clone(this.posts) ;
+		if ( filters.cat ) {
+			sortedPosts = _.filter(sortedPosts, function(post){ 
+				if ( ! _.isArray(post.tags) ) return false;
+				for ( var i = 0 ; i < post.tags.length ; i++ ) {
+					if ( filters.cat == tools.permalink(post.tags[i]) ) {
+						return true;
+					}
+				}
+			}) ;
+		}
+		sortedPosts = _.sortBy(sortedPosts, function(post){ return post[filters.by] }) ;
+		return filters.desc ? sortedPosts.reverse() : sortedPosts;
 	},
 
 	list: function(filters, callback) {
 		var self = this, all = [], posts = [], out = '', page = {content: ''} ;
 
 		// -> Sort posts by created date
-		all = self.getOrdered() ;
+		all = self.getOrdered(filters) ;
 
 		// -> If want only a unique post
-		console.log(self.attributes) ;
+		//console.log(self.attributes) ;
 		if ( filters.permalink ) {
 			var post = _.find(all, function(post){ return tools.permalink(post.title) == filters.permalink; });
 			posts.push(post) ;
@@ -121,9 +149,9 @@ module.exports = Backbone.Model.extend({
 
 		// -> Select posts to display
 		else {
-			posts = all.slice(0, self.get('maxPerPage')) ;
-			page.title = self.get('title')+(filters.page>1?' - Page '+filters.page:'') ;
-			page.name = self.get('title') ;
+			posts = all.slice(Math.max(0, (filters.page-1)*self.get('maxPerPage')), self.get('maxPerPage')) ;
+			page.title = self.get('title')+(filters.cat?' - '+filters.cat:'')+(filters.page>1?' - Page '+filters.page:'') ;
+			page.name = self.get('title')+(filters.cat?' > '+tools.ucfirst(filters.cat):'') ;
 			page.desc = self.get('desc') ;
 			page.author = self.get('authors')[self.get('author')]; 
 		}
@@ -134,6 +162,9 @@ module.exports = Backbone.Model.extend({
 				post = new VaSH.Models.post(post, self) ;
 				page.content += filters.permalink?post.html():post.teaser() ;
 			})
+		} else {
+			page.errorCode = 404 ;
+			page.content = "<div class='error'>Sorry but there is a mistake with this page ! </div>"; 
 		}
 
 		// -> Return results
@@ -155,8 +186,7 @@ module.exports = Backbone.Model.extend({
 		// -> Get posts
 		if ( posts.length ) {
 			_.each(posts, function(post) {
-				var _post = new VaSH.Models.post(post, self) ;
-				opts.posts.push(_post.toRSS()) ;
+				opts.posts.push((new VaSH.Models.post(post, self)).toRSS()) ;
 			})
 		}
 
@@ -164,7 +194,7 @@ module.exports = Backbone.Model.extend({
 		opts.feed = {
 			title: self.get('title'),
 			description: self.get('desc'),
-			url: self.get('website')+'feed/',
+			url: self.get('website')+'/feed/',
 			website: self.get('website'),
 			language: self.get('language'),
 			updatePeriod: 'hourly',
@@ -176,15 +206,12 @@ module.exports = Backbone.Model.extend({
 		// -> Build RSS
 		out = VaSH.Mustache.to_html(self.templates['rss.html'], opts) ;
 
-		// -> Pack 
-		console.log(posts)	
-
 		// -> COmpile template
 		callback(null, out)
 	},
 
 	toJSON: function() {
-		var exclude_keys = ['file', 'alias', 'static_extension', 'public', 'static_cache'] ;
+		var exclude_keys = ['configFile', 'alias', 'static_extension', 'public', 'cache'] ;
 		var out = {} ;
 		_.each(this.attributes, function(item, key) {
 			if ( exclude_keys.indexOf(key) < 0 ) out[key] = item ;

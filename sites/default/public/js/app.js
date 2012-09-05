@@ -9,7 +9,9 @@
 					nav: $('#navbar')
 				}
 				this.bindNav() ;
-				this.liveReload() ;
+				this.bindHashClick() ;
+				this.bindPostClick() ;
+				//this.liveReload() ;
 				this.initSocketIO() ;
 				this.headerAnime() ;
 				//this.info('success', 'Welcome to '+this.dom.nav.find('a.brand').text()+' !') ;
@@ -43,13 +45,52 @@
 					var path = (self.parse_url(window.location.href).pathname).match(/^\/([a-zA-Z0-9.\-]+)\//) ;
 					var activeEl = navLinks.first() ;
 					if ( path ) {
-						var searchEl = navLinks.filter(function() {
-							return new RegExp("^"+$.trim(path[1]), 'i').test( $(this).text() );
-						});
+						var searchEl = navLinks.filter('.menu-'+path[1]); 
 						if ( searchEl.length ) activeEl = searchEl ;
 					}
 					activeEl.addClass('active')
 				}
+			},
+			bindHashClick: function() {
+				$('a').live('click', function(e) {
+
+					var link = this.getAttribute('href'), match ;
+					if ( /\#/.test(link) ) {
+						console.log('Hash Tag Click !!')
+						e.stopPropagation(); 
+						e.preventDefault() ;
+
+						// -> If link is login provider choice
+						if ( match = (link.split('#')[1]).match(/\/auth\/(.*)/) ) {
+							var el = $(this).parent() ;
+							var sliderIndex = el.index() ;
+							var sliderContainer = $('#login_panel') ;
+							var sliderHeight = sliderContainer.height() ;
+
+							sliderContainer.css({
+								transform: 'translate3d(0, '+(-sliderIndex*sliderHeight)+'px, 0)',
+								transition: 'all 400ms ease-in-out'
+							})
+
+							el.addClass('active').siblings().removeClass('active');
+						}
+					}
+
+				}) ;
+			},
+			bindPostClick: function() {
+				$('.post.list .content').live('click', function(e) {
+					var permalink = $(this).find('a.permalink').attr('href') ;
+					if ( permalink ) window.top.location.href = permalink; 
+					return false;
+				}) ;
+				$('.post.list .content').each(function() {
+					var el = $(this) ;
+					var permalink = el.find('a.permalink') ;
+					if ( permalink ) {
+						el.attr('title', permalink.attr('title'))
+					}
+				})
 			},
 			liveReload: function() {
 				setTimeout(function() {

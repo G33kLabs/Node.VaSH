@@ -1,5 +1,21 @@
 <div class="post post-{{post.id}}">
 	<h2>{{&post.title}}</h2>
 	<p class="post-desc"><em>{{&post.desc}}</em></p>
-	<div class="content full">{{&post.content}}</div>
+
+	<div class="tags">
+		{{#post.tags}}
+		<a href="{{url}}" rel="tag">{{name}}</a>
+		{{/post.tags}}
+		<div class="clearfix"></div>
+	</div>
+
+	<div class="content full">
+		{{#post.big_thumb}}
+		<div class="big_thumb" style="background-image: url({{&post.big_thumb}});"></div>
+		{{/post.big_thumb}}
+		{{&post.content}}
+		<div class="metas">Par <a href="/profile/{{&post.author.pseudo}}">{{&post.author.pseudo}}</a>, {{&post.displayDate}}</div>
+
+	</div>
+
 </div>

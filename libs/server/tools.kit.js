@@ -4,6 +4,10 @@ GLOBAL.Backbone = require('backbone') ;
 GLOBAL.json = JSON.stringify ;
 GLOBAL.async = require('async') ;
 
+// -- Short for json stringhify function
+GLOBAL.json = JSON.stringify ;
+exports.json = JSON.stringify ;
+
 ////////////////////////////////////////////////////////////////////////// LOAD LIBS
 exports.crypto = require('crypto') ;
 exports.sys = require('util') ;
@@ -25,7 +29,7 @@ exports.log = function(obj, color) {
     log_ddate = (hours.length < 2 ? '0' : '')+hours+':'+(minutes.length < 2 ? '0' : '')+minutes+':'+(seconds.length < 2 ? '0' : '')+seconds
     //exports.sys.puts(exports.colors[color](log_ddate+' '+exports.trim(obj), true)) ; 
 
-    if ( ! /^\ \[/.test(obj) ) obj = ' [ ] '+obj; 
+    if ( ! /^(\ \[|\[)/.test(obj) ) obj = ' [ ] '+obj; 
 
     if ( typeof log != 'function' || typeof bootstrap == 'undefined' ||  bootstrap.env == 'local' ) {
         exports.sys.puts(exports.colors[color](log_ddate+' '+exports.trim(obj), true)) ; 
@@ -39,7 +43,51 @@ exports.error = function(obj) { exports.log(obj, 'red') ; }
 exports.warning = function(obj) { exports.log(obj, 'brown') ; }
 
 
-///////////////////////////////////////////////////////////////////////// STRING FORMAT
+/*******************************************************************
+ * Objects operations
+ *******************************************************************/
+exports.extend = function(obj) {
+  var parentRE = /#{\s*?_\s*?}/,
+      slice = Array.prototype.slice,
+      hasOwnProperty = Object.prototype.hasOwnProperty;
+
+  _.each(slice.call(arguments, 1), function(source) {
+    for (var prop in source) {
+      if (hasOwnProperty.call(source, prop)) {
+        if (_.isUndefined(obj[prop])) {
+          obj[prop] = source[prop];
+        }
+        else if (_.isString(source[prop]) && parentRE.test(source[prop])) {
+          if (_.isString(obj[prop])) {
+            obj[prop] = source[prop].replace(parentRE, obj[prop]);
+          }
+        }
+        else if (_.isArray(obj[prop]) || _.isArray(source[prop])){
+          if (!_.isArray(obj[prop]) || !_.isArray(source[prop])){
+            throw 'Error: Trying to combine an array with a non-array (' + prop + ')';
+          } else {
+            obj[prop] = _.reject(exports.extend(obj[prop], source[prop]), function (item) { return _.isNull(item);});
+          }
+        }
+        else if (_.isObject(obj[prop]) || _.isObject(source[prop])){
+          if (!_.isObject(obj[prop]) || !_.isObject(source[prop])){
+            throw 'Error: Trying to combine an object with a non-object (' + prop + ')';
+          } else {
+            obj[prop] = exports.extend(obj[prop], source[prop]);
+          }
+        } else {
+          obj[prop] = source[prop];
+        }
+      }
+    }
+  });
+  return obj;
+};
+
+
+/*******************************************************************
+ * Format operations
+ *******************************************************************/
 // -- Return filesize
 exports.formatSize = function(bytes) {
 	var labels = new Array('TB', 'GB', 'MB', 'kB', 'b');
@@ -108,6 +156,7 @@ exports.number_format = function(number, decimals, dec_point, thousands_sep) {
 /*******************************************************************
  * Camelize/Uncamelize a string (border-bottom <-> borderBottom)
  *******************************************************************/
+
 exports.camelize = function(str) {
     return (str + "").replace(/-\D/g, function(match) {
         return match.charAt(1).toUpperCase();
@@ -120,6 +169,10 @@ exports.hyphenate = function(str) {
     });
 }
 
+
+/*******************************************************************
+ * Path walking
+ *******************************************************************/
 
 // -- Walk directory
 exports.walk = function(dir, done) {
@@ -146,49 +199,43 @@ exports.walk = function(dir, done) {
   });
 };
 
-_.deepExtend = function(obj) {
-  var parentRE = /#{\s*?_\s*?}/,
-      slice = Array.prototype.slice,
-      hasOwnProperty = Object.prototype.hasOwnProperty;
-
-  _.each(slice.call(arguments, 1), function(source) {
-    for (var prop in source) {
-      if (hasOwnProperty.call(source, prop)) {
-        if (_.isUndefined(obj[prop])) {
-          obj[prop] = source[prop];
-        }
-        else if (_.isString(source[prop]) && parentRE.test(source[prop])) {
-          if (_.isString(obj[prop])) {
-            obj[prop] = source[prop].replace(parentRE, obj[prop]);
-          }
-        }
-        else if (_.isArray(obj[prop]) || _.isArray(source[prop])){
-          if (!_.isArray(obj[prop]) || !_.isArray(source[prop])){
-            throw 'Error: Trying to combine an array with a non-array (' + prop + ')';
-          } else {
-            obj[prop] = _.reject(_.deepExtend(obj[prop], source[prop]), function (item) { return _.isNull(item);});
-          }
-        }
-        else if (_.isObject(obj[prop]) || _.isObject(source[prop])){
-          if (!_.isObject(obj[prop]) || !_.isObject(source[prop])){
-            throw 'Error: Trying to combine an object with a non-object (' + prop + ')';
-          } else {
-            obj[prop] = _.deepExtend(obj[prop], source[prop]);
-          }
-        } else {
-          obj[prop] = source[prop];
-        }
-      }
+// -- Recursive mkdir -p
+exports.createFullPath = function(fullPath, callback) {
+    var parts = exports.path.dirname(exports.path.normalize(fullPath)).split("/"),
+        working = '/',
+        pathList = [];
+    
+    for(var i = 0, max = parts.length; i < max; i++) {
+        working = exports.path.join(working, parts[i]);
+        pathList.push(working);
     }
-  });
-  return obj;
-};
+    
+    var recursePathList = function recursePathList(paths) {
+        if(0 === paths.length) { callback(null); return ; }
+        var working = paths.shift();
+        try {
+            exports.path.exists(working, function(exists) {
+                if(!exists) {
+                    try {
+                        require('fs').mkdir(working, 0755, function() {
+                            recursePathList(paths);
+                        });
+                    } catch(e) {
+                        callback(new Error("Failed to create path: " + working + " with " + e.toString()));
+                    }
+                } else { recursePathList(paths); }
+            });
+        } catch(e) { callback(new Error("Invalid path specified: " + working)); }
+    }
+    
+    if(0 === pathList.length) callback(new Error("Path list was empty"));
+    else recursePathList(pathList);
+}
 
 /////////////////////////////////////////////////////////////////// STRING FUNCTIONS
 
 // -- Return an integer random value
 exports.rand = function() {
-	
 	var r = Math.random() ;
 	var args = [] ;
 	for ( i in arguments ) args.push(arguments[i]) ;
@@ -196,7 +243,6 @@ exports.rand = function() {
 	if ( args.length == 0 ) return Math.floor(r*10000000000000000) ;
 	else if ( args.length == 1 ) return Math.floor(r*args[0]) ;
 	else if ( args.length == 2 ) return parseFloat(args[0]) + Math.floor(r*(args[1]-args[0])) ;
-
 }
 
 // -- Return now timestamp
@@ -209,11 +255,19 @@ exports.trim = function(str) {
 	return (str||'').replace(/^\s+|\s+$/g,"").toString();
 }
 
+// -- UpperCase words
 exports.ucwords = function(str) {
     return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
         return $1.toUpperCase();
     });
 } ;
+
+// -- Upper case first char
+exports.ucfirst = function (str) {
+    str += '';
+    var f = str.charAt(0).toUpperCase();
+    return f + str.substr(1);
+}
 
 // -- Return filename extension
 exports.extension = function(fileName) {
@@ -228,10 +282,6 @@ exports.stripslashes = function(str) {
 	str=str.replace(/\\\\/g,'\\');
 	return str;
 }
-
-// -- Short for json stringhify function
-GLOBAL.json = JSON.stringify ;
-exports.json = JSON.stringify ;
 
 // -- Return md5
 exports.md5 = function(str) {
@@ -270,97 +320,6 @@ exports.cleanNumber = function(str) {
 }
 
 /////////////////////////////////////////////////////////////////// CACHE
-
-// -- Return cache file name
-exports.getCacheFile = function(doc){
-	var cacheDir = __dirname+'/../tmp/html/'
-	if ( ! doc.url_id && doc.url ) doc.url_id = exports.md5(doc.url) ;
-	
-	var cacheFilename = exports.path.normalize(cacheDir+(doc.url_id).substr(0,2)+'/'+(doc.url_id).substr(2,2)+'/'+doc.url_id+'.html') ;
-	tools.log('Cache filename : '+cacheFilename, 'cyan') ;
-	
-	return cacheFilename ;
-}
- 
-// -- Store html page cache : Create directory and xrite cache file
-exports.storeCache = function(doc, callback) {
-	if ( ! doc.src ) return false ;
-	var cacheFile = exports.getCacheFile(doc);
-	var sourceContent = doc.src ;
-	
-	exports.createFullPath(cacheFile, function(err){
-		if ( err) {
-			if ( typeof callback == 'function' ) callback(err) ;
-			exports.error(err) ;
-		} else {
-			try {
-				//doc.src = doc.src || '' ;
-				require('fs').writeFile(cacheFile, sourceContent, function(err) {
-				    if(err) {
-				    	exports.error(err);
-				    	if ( typeof callback == 'function' ) callback(err) ;
-				    } else {
-				    	if ( typeof callback == 'function' ) callback(cacheFile+ " was saved!") ;
-				        //exports.log(cacheFile+ " was saved!");
-				    }
-				}); 
-			} catch(e) {
-				exports.error(e);
-			}
-		}
-	}) ;
-	
-}
-
-// -- Get cache
-exports.getCache = function(doc, cb) {
-	var cacheFile = exports.getCacheFile(doc);
-	try {
-		if ( typeof cb == 'function' ) {
-			require('fs').readFile(cacheFile, 'utf-8', function(err, data) {
-				cb(data) ;
-			}) ;
-		} else {
-			return require('fs').readFileSync(cacheFile, 'utf-8') ;
-		}
-	} catch(e) {
-		//exports.debug('No cache : '+cacheFile) ;
-		return false ;
-	}
-}
-	
-// -- Recursive mkdir -p
-exports.createFullPath = function(fullPath, callback) {
-	var parts = exports.path.dirname(exports.path.normalize(fullPath)).split("/"),
-		working = '/',
-		pathList = [];
-	
-	for(var i = 0, max = parts.length; i < max; i++) {
-		working = exports.path.join(working, parts[i]);
-		pathList.push(working);
-	}
-	
-	var recursePathList = function recursePathList(paths) {
-		if(0 === paths.length) { callback(null); return ; }
-		var working = paths.shift();
-		try {
-			exports.path.exists(working, function(exists) {
-				if(!exists) {
-					try {
-						require('fs').mkdir(working, 0755, function() {
-							recursePathList(paths);
-						});
-					} catch(e) {
-						callback(new Error("Failed to create path: " + working + " with " + e.toString()));
-					}
-				} else { recursePathList(paths); }
-			});
-		} catch(e) { callback(new Error("Invalid path specified: " + working)); }
-	}
-	
-	if(0 === pathList.length) callback(new Error("Path list was empty"));
-	else recursePathList(pathList);
-}
 
 // -- Return a permalink
 exports.permalink = function(str) {
@@ -414,7 +373,6 @@ exports.getMemUsage = function(mem) {
 	return (mem.rss/1024/1024).toFixed(2) ;
 }
 
-
 // -- Return public ip address ------------------------------
 exports.getServerIp = function() {
 	var os=require('os'),
@@ -428,7 +386,6 @@ exports.getServerIp = function() {
 			}
 		});
 	}
-
 	return ips ;
 }
 

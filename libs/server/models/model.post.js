@@ -37,7 +37,7 @@
 			return this.get('desc')
 		},
 		getLink: function() {
-			return this.siteObj.get('website')+this.getCategory().toLowerCase()+'/'+tools.permalink(this.get('title'))
+			return '/'+tools.permalink(this.getCategory()||'')+'/'+tools.permalink(this.get('title')||'')
 		},
 		getAuthor: function() {
 			return this.siteObj.get('authors')[this.get('author')] 
@@ -53,7 +53,16 @@
 				desc: this.getDesc(),
 				teaser: this.getTeaser(),
 				permalink: this.getLink(),
-				tags: this.get('tags'),
+				tags: _.map(this.get('tags'), function(tag) {
+					return {
+						name: tag,
+						url: '/'+tools.permalink(tag)+'/'
+					}
+				}),
+				big_thumb: this.get('thumb') ? '/'+this.get('id')+'/thumb' : null,
+				author: this.getAuthor(),
+				comments: 0,
+				displayDate: new Date(this.get('created')).toString("dd MMM yyyy HH:mm"),
 				cat: this.getCategory()
 			})
 		},
@@ -62,7 +71,7 @@
 				title: this.getTitle(),
 				teaser: this.getRSSTeaser(),
 				content: this.html(),
-				permalink: this.getLink(),
+				permalink: this.siteObj.get('website')+this.getLink(),
 				tags: this.get('tags'),
 				cat: this.getCategory(),
 				author: this.getAuthor(),

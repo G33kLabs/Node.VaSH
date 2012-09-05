@@ -1,6 +1,6 @@
 module.exports =  {
 	public: '/public/',
-    website: 'http://www.js2node.com/',
+    website: 'http://local.js2node.com:10000',
     title: "JS> Node",
     page_title_sufix: " | G33K",
     desc: "A developer blog about js, node.js and other modern tools",
@@ -9,7 +9,6 @@ module.exports =  {
     menus: [
         {
             name: 'Home',
-            active: true,
             icon: 'home',
             url: '/'
         },
@@ -20,17 +19,50 @@ module.exports =  {
             name: 'jQuery'
         },
         {
+            name: 'Redis.io'
+        },
+        {
             name: 'Contact'
         }
     ],
-    routes: {
-        post: '/post/:post_name'
+    widgets: [
+        {
+            name: 'Recent Comments'
+        },
+        {
+            name: 'Most Viewed Posts'
+        },
+        {
+            name: 'My favourite Blogs'
+        },
+        {
+            name: 'Archive'
+        }
+    ],
+    providers: {
+        facebook: {
+            infos: {
+                clientID: '237318836391590',
+                clientSecret: '68756c699154a542735bff3ac8b2edc9'
+            },
+            opts: {
+                perms: {scope: 'email'}
+            },
+            domain: 'local.js2node.com'
+        },
+        twitter: {
+            infos: {
+                consumerKey: 'rSW4OeSUcn33NeaID6Lw',
+                consumerSecret: 'PuaP4Gh4esCLtlACJVLfdpMh3zA6UUVrSeR9saRmk18'
+            } 
+        }
     },
     author: 'delarueguillaume@gmail.com',
     authors: {
         'delarueguillaume@gmail.com': {
             pseudo: 'G33K',
             name: 'Guillaume DE LA RUE',
+            city: 'Paris / France',
             gplus: 'https://plus.google.com/115555146160120072472/posts'
         }
     },

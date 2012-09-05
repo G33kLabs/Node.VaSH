@@ -20,17 +20,27 @@
     <!-- Le RSS -->
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/rss/">
 
+    <!-- Le WebFonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+  <!-- All in One SEO -->
+  <meta name="description" content="{{&page.seo.desc}}" />
+  <meta name="keywords" content="{{&page.seo.keywords}}" />
+  <!-- <link rel="canonical" href="{{&website}}/" /> -->
+  <!-- /all in one seo pack -->
+
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="icon" type="image/gif" href="/animated_favicon.gif" >
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
   </head>
 
   <body>
@@ -55,8 +65,29 @@
           <div class="nav-collapse">
             <ul class="nav">
               {{#menus}}
-              <li class="{{active}}"><a href="{{&url}}">{{#icon}}<i class="icon-{{icon}}"></i> {{/icon}}{{&name}}</a></li>
+              <li class="{{active}} menu-{{id}}"><a href="{{&url}}">{{#icon}}<i class="icon-{{icon}}"></i> {{/icon}}{{&name}}</a></li>
               {{/menus}}
+            </ul>
+            <ul class="nav pull-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-{{#user}}off{{/user}}{{^user}}user{{/user}} icon-white"></i>&nbsp;&nbsp;
+                {{#user}} <span class="username" style="text-transform: capitalize;">{{&username}}</span>{{/user}}
+                {{^user}} Account{{/user}}
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  {{#user}}
+                  <li><a tabindex="-1" href="#">Profile</a></li>
+                  <li><a tabindex="-1" href="#">Settings</a></li>
+                  <li class="divider"></li>
+                  <li><a tabindex="-1" href="/logout">Logout</a></li>
+                  {{/user}}
+                  {{^user}}
+                  <li><a tabindex="-1" href="/auth/login">Login</a></li>
+                  {{/user}}
+                </ul>
+              </li>
             </ul>
           </div><!--/.nav-collapse --> 
         </div>
@@ -68,15 +99,39 @@
         <div id="alert-area"></div>
 
         <div class="row-fluid">
+
+            {{#page.full}}
+            <div class="span12">
+                {{&page.content}}
+            </div>
+            {{/page.full}}
+
+            {{^page.full}}
             <div class="span8">
                 {{&page.content}}
             </div>
 
             <div class="span4">
-                <ul class="sidebar">
-                    <li class=""><a href="#dropdowns"><i class="icon-chevron-right"></i> Widgets</a></li>
+                <ul class="sidebar" id="widget-sidebar">
+                    <li class="widget widget-about">
+                      <div class="avatar" style="background: url(https://profiles.google.com/s2/photos/profile/115555146160120072472) no-repeat center center"></div>
+                      <div class="content">
+                          <!--<h3>About Me</h3>-->
+                          <a href="/contact/"><span class="color_white"><b>{{&page.author.name}}</b></span></a>
+                          <span class="el-row"><small>{{&page.author.city}}</small></span>
+                          <hr />
+                          <a href="#dropdowns"><span class="color_fluoblue"><b>Twitter :</b></span> @html5place</a>
+                          <a href="#dropdowns"><span class="color_yellow"><b>GitHub :</b></span> @G33kLabs</a>
+
+                      </div>
+                    </li>
+                    {{#widgets}}
+                      <li class="widget"><a href="#dropdowns"><i class="icon-chevron-right"></i> {{&name}}</a></li>
+                    {{/widgets}}
+
                 </ul>
             </div>
+            {{/page.full}}
 
             <div class="clearfix"></div>
         </div>

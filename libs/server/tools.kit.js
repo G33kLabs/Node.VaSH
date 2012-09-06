@@ -17,11 +17,20 @@ exports.colors = require('./termcolors.js').colors ;
 
 var fs = require('fs') ;
 
+////////////////////////////////////////////////////////////////////////// TRY TO LOAD CLUSTER MODULE
+var cluster;
+try {
+    cluster = require('cluster') ;
+} catch(e) {} ;
+
 ///////////////////////////////////////////////////////////////////////// CONSOLE LOGGING
 // Log & error functions
 exports.log = function(obj, color) { 
     color = color || 'green'; 
-    obj = (typeof obj == 'string' ) ? obj : json(obj, null, 4) ;
+
+    //console.log(cluster.worker.id) ;
+
+    obj = exports.trim((typeof obj == 'string' ) ? obj : json(obj, null, 4)) ;
     var log_ddate = (new Date()) ;
     var hours = log_ddate.getHours()+"" ;
     var minutes = log_ddate.getMinutes()+"" ;
@@ -29,8 +38,21 @@ exports.log = function(obj, color) {
     log_ddate = (hours.length < 2 ? '0' : '')+hours+':'+(minutes.length < 2 ? '0' : '')+minutes+':'+(seconds.length < 2 ? '0' : '')+seconds
     //exports.sys.puts(exports.colors[color](log_ddate+' '+exports.trim(obj), true)) ; 
 
-    if ( ! /^(\ \[|\[)/.test(obj) ) obj = ' [ ] '+obj; 
+    // -- Add log prefix if not yet present
+    if ( ! /^(\ \[|\[)/.test(obj) ) obj = '[ ] '+obj; 
 
+    // -- Add cluster informations
+    //(cluster&&cluster.worker?cluster.worker.id+' | ':'')+
+    if ( cluster ) {
+        var cluster_id = cluster.worker ? cluster.worker.id : 'M' ;
+        if ( ! (/^\[(.*)\] \d/).test(obj) ) {
+            obj = obj.replace(/^\[(.*)\]/, '[$1] '+cluster_id+ ' |') ;
+            //console.log(obj.replace(/^\[(.*)\]/, '[$1] '+cluster_id+ ' | '))
+            //console.log(cluster_id) ;
+        }
+    }
+
+    // -- Ouput it
     if ( typeof log != 'function' || typeof bootstrap == 'undefined' ||  bootstrap.env == 'local' ) {
         exports.sys.puts(exports.colors[color](log_ddate+' '+exports.trim(obj), true)) ; 
     }

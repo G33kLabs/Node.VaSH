@@ -148,7 +148,7 @@ VaSH.prototype.load = function() {
 				var providers = siteConfig.get('providers') ;
 
 				_.each(providers, function(datas, provider) {
-					console.log(provider, datas)
+					//console.log(provider, datas)
 
 					tools.warning('[>] Register passport module => '+provider+'::'+site)
 					var strategy = self.strategies['passport-'+provider] ;

@@ -214,7 +214,6 @@ module.exports = Backbone.Model.extend({
 	},
 
 	getBaseUrl: function() {
-		console.log(this.get('env'), this.get('website'), this.get('local'))
 		return ( this.get('env') == 'dev' && this.get('local') ) ? this.get('local') : this.get('website') ;
 	},
 

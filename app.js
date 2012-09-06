@@ -10,6 +10,7 @@ var fs = require('fs'),
     express = require('express'),
     passport = require('passport'),
     cluster = require('cluster'),
+    colors = require('colors'),
     http = require('http'),
     numCPUs = require('os').cpus().length ;
 
@@ -38,10 +39,30 @@ var config = {
             maxAge: 31*24*3600*1000
         }
     },
-    env: tools.getServerIp().length > 1 ? 'prod' : 'dev'
+    env: 'dev'
 }
 
-console.log(tools.getServerIp())
+// -- Detect Prod Env // You can customize this test
+// console.log(tools.getServerIp())
+if ( tools.getServerIp().indexOf('192.168.1.30') < 0 ) {
+    config.env = 'prod'
+}
+
+// -- Splash Screen
+//////////////////////////////////////////////////////// WELCOME MESSAGE ///////////// 
+var welcome = [
+'',
+'____    ____  ___           _______. __    __  ',
+'\\   \\  /   / /   \\         /       ||  |  |  | ',
+' \\   \\/   / /  ^  \\       |   (----`|  |__|  | ',
+'  \\      / /  /_\\  \\       \\   \\    |   __   | ',
+'   \\    / /  _____  \\  .----)   |   |  |  |  | ',
+'    \\__/ /__/     \\__\\ |_______/    |__|  |__| ',
+''
+].join('\n');
+util.puts(welcome.rainbow.bold);
+
+tools.warning(' [ ] Running environement : '+((config.env=='prod') ? 'PODUCTION' : 'DEVELOPMENT')) ;
 
 ///////////////////////////////////////////////////////////// MASTER CLUSTER /////////////
 if (cluster.isMaster) {
@@ -50,7 +71,7 @@ if (cluster.isMaster) {
     function WorkerFork() {
         var worker = cluster.fork();
         worker.on('message', function(msg) {
-            tools.log(" [>] "+id+" | New message :: "+json(msg));
+            tools.log("[>] "+id+" | New message :: "+json(msg));
         });
     }
 
@@ -64,9 +85,9 @@ if (cluster.isMaster) {
     // On exit, restart worker
     cluster.on('exit', function(worker, code, signal) {
         var exitCode = worker.process.exitCode;
-        tools.warning(' [*] '+worker.process.pid+' | worker died ('+exitCode+').');
+        tools.warning('[*] '+worker.id+' | worker died : '+worker.process.pid+' ('+exitCode+').');
         if ( ! cluster.isExiting ) {
-            tools.warning(' [>] '+worker.process.pid+' | worker restarting...');
+            tools.warning('[>] '+worker.id+' | worker restarting...');
             setTimeout(function() {
                 WorkerFork() ;
             }, 500)
@@ -75,7 +96,7 @@ if (cluster.isMaster) {
 
     // Message when worker is lonline
     cluster.on('online', function(worker) {
-        tools.log(" [>] "+worker.id+" | worker responded after it was forked");
+        tools.log("[>] "+worker.id+" | worker responded after it was forked");
         worker.send('Hello you !');
     });
 
@@ -89,7 +110,7 @@ if (cluster.isMaster) {
                 callback(null, true)
             }
         }, function() {
-            tools.log(' [*] Exit as a gentleman !') ;
+            tools.log('[*] Exit as a gentleman !') ;
             process.exit(0); 
         })
     });
@@ -101,11 +122,11 @@ if (cluster.isMaster) {
 else {
 
     // -- Init message
-    tools.log(' [>] '+cluster.worker.id+' | Worker is running...');
+    tools.log('[>] Worker is running...');
 
     // -- Inter processes message receiption
     process.on('message', function(msg) {
-        tools.debug(' [>] '+cluster.worker.id+' | Master message :: '+json(msg));
+        tools.debug('[>] Master message :: '+json(msg));
     });
 
     ///////////////////////////////////////////////////////////// APPLICATION /////////////
@@ -273,7 +294,7 @@ else {
 */
     // -- Start Server
     server.listen(config.server.port);
-    tools.debug(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | WebServer STARTED : http://'+config.server.host+':'+config.server.port+'/') ;    
+    tools.debug(' [*] WebServer STARTED : http://'+config.server.host+':'+config.server.port+'/') ;    
 
     ///////////////////////////////////////////////////////////// WEBSOCKET /////////////
     var sio = require('socket.io')

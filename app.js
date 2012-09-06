@@ -12,7 +12,7 @@ var fs = require('fs'),
     cluster = require('cluster'),
     colors = require('colors'),
     http = require('http'),
-    numCPUs = require('os').cpus().length ;
+    numCPUs = Math.max(2, require('os').cpus().length) ;
 
 // -- Load Globals
 //GLOBAL.jQuery = require('jQuery') ;

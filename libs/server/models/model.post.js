@@ -71,7 +71,7 @@
 				title: this.getTitle(),
 				teaser: this.getRSSTeaser(),
 				content: this.html(),
-				permalink: this.siteObj.get('website')+this.getLink(),
+				permalink: this.siteObj.getBaseUrl()+this.getLink(),
 				tags: this.get('tags'),
 				cat: this.getCategory(),
 				author: this.getAuthor(),

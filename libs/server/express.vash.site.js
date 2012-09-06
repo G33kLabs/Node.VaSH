@@ -50,14 +50,21 @@ module.exports = Backbone.Model.extend({
 	reloadConfig: function(callback) {
 		var self = this;
 		try {
+
+			// -> Get config file
 			self.attributes = tools.extend({}, self.attributes, require(root_path+'/'+self.get('configFile'))) ;
+
+			// -> Wrap menus
 			_.each(self.attributes.menus, function(v,k) {
 	            if ( v.active ) v.active = 'active' ;
 	            if ( v.name ) v.id = tools.permalink(v.name||'') ;
 	            if ( ! v.url ) v.url = '/'+v.id+'/'; 
 	            self.attributes.menus[k] = v ;
 	        })	
-	        callback() ;		
+
+	        // -> Return
+	        callback() ;
+
 		} catch(e) {
 			callback(e) ;
 		}
@@ -190,8 +197,8 @@ module.exports = Backbone.Model.extend({
 		opts.feed = {
 			title: self.get('title'),
 			description: self.get('desc'),
-			url: self.get('website')+'/feed/',
-			website: self.get('website'),
+			url: self.getBaseUrl()+'/feed/',
+			website: self.getBaseUrl(),
 			language: self.get('language'),
 			updatePeriod: 'hourly',
 			updateFrequency: 1,
@@ -204,6 +211,11 @@ module.exports = Backbone.Model.extend({
 
 		// -> COmpile template
 		callback(null, out)
+	},
+
+	getBaseUrl: function() {
+		console.log(this.get('env'), this.get('website'), this.get('local'))
+		return ( this.get('env') == 'dev' && this.get('local') ) ? this.get('local') : this.get('website') ;
 	},
 
 	toJSON: function() {

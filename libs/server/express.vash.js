@@ -10,7 +10,7 @@ var fs = require('fs'),
 var VaSH = function(options) {
 	
 	// -> Set options
-	this.options = _.extend({
+	this.options = tools.extend({
 		sites_path: 'sites/',
 		skins_path: 'skins/',
 		passports_path: 'passports/',
@@ -154,7 +154,7 @@ VaSH.prototype.load = function() {
 					var strategy = self.strategies['passport-'+provider] ;
 					self.options.passport.use(new strategy(_.extend({
 							name: provider+'::'+site,
-							callbackURL: siteConfig.get('website')+"/auth/"+provider+"/callback"
+							callbackURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback"
 						}, datas.infos),
 						function(accessToken, refreshToken, profile, done) {
 							process.nextTick(function () {

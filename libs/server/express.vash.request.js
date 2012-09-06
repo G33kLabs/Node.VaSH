@@ -31,6 +31,7 @@ module.exports = Backbone.Model.extend({
 		this.getHostname() ;
 		this.getSiteName() ;
 		this.getSiteAlias() ;
+		this.getBaseUrl() ;
 
 		// -> Load site instance from main sites
 		this.set('website', this.get('main').sites[this.getSiteAlias()]) ;
@@ -379,6 +380,11 @@ module.exports = Backbone.Model.extend({
 			return false;
 		}
 		return true;
+	},
+
+	// -> Return full bse url
+	getBaseUrl: function() {
+		return ( this.get('req').connection.encrypted ? 'https' : 'http' ) + '://'+this.get('req').headers.hostname ;
 	},
 
 	// -> Return url path

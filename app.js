@@ -37,7 +37,8 @@ var config = {
             httpOnly: true, 
             maxAge: 31*24*3600*1000
         }
-    }
+    },
+    env: tools.getServerIp().length > 1 ? 'prod' : 'dev'
 }
 
 ///////////////////////////////////////////////////////////// MASTER CLUSTER /////////////
@@ -148,7 +149,7 @@ else {
     });
 
     // -- Initialize VaSH middleware
-    app.use(express.vash({ cache: 3600*1000, passport: passport }).get);
+    app.use(express.vash({ env: config.env, cache: 3600*1000, passport: passport }).get);
 
     // -- iOS : udid login
    // app.get('/auth/uuid', passport.authenticate('uuid', {scope: 'email' }));

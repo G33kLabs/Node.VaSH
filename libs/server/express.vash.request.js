@@ -270,7 +270,7 @@ module.exports = Backbone.Model.extend({
 		// -> Merge datas
 		//console.log(self.get('req').user)
 		datas.userid = (self.get('req').user||{}).id; 
-		var view = tools.extend({
+		var view = tools.extend({}, {
 			user: self.get('req').user
 		}, self.get('website').toJSON(), datas) ;
 
@@ -418,7 +418,7 @@ module.exports = Backbone.Model.extend({
 
 	// -> Export datas
 	toJSON: function() {
-		var exclude_keys = ['main', 'req', 'res', 'next', 'website', 'routes'] ;
+		var exclude_keys = ['main', 'req', 'res', 'next', 'website', 'routes', 'passport'] ;
 		var out = {} ;
 		_.each(this.attributes, function(item, key) {
 			if ( exclude_keys.indexOf(key) < 0 ) out[key] = item ;

@@ -115,16 +115,16 @@ module.exports = Backbone.Model.extend({
 	getOrdered: function(filters) {
 		filters = _.extend({}, {by: 'created', desc: true}, filters);
 		var sortedPosts = _.clone(this.posts) ;
-		if ( filters.cat ) {
-			sortedPosts = _.filter(sortedPosts, function(post){ 
-				if ( ! _.isArray(post.tags) ) return false;
-				for ( var i = 0 ; i < post.tags.length ; i++ ) {
-					if ( filters.cat == tools.permalink(post.tags[i]) ) {
-						return true;
-					}
+		sortedPosts = _.filter(sortedPosts, function(post){ 
+			if ( post.disabled ) return false;
+			if ( ! filters.cat ) return true;
+			if ( ! _.isArray(post.tags) ) return false;
+			for ( var i = 0 ; i < post.tags.length ; i++ ) {
+				if ( filters.cat == tools.permalink(post.tags[i]) ) {
+					return true;
 				}
-			}) ;
-		}
+			}
+		}) ;
 		sortedPosts = _.sortBy(sortedPosts, function(post){ return post[filters.by] }) ;
 		return filters.desc ? sortedPosts.reverse() : sortedPosts;
 	},

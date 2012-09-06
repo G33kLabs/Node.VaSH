@@ -274,6 +274,12 @@ module.exports = Backbone.Model.extend({
 			user: _.clone(self.get('req').user)
 		}, _.clone(self.get('website').toJSON()), _.clone(datas)) ;
 
+		console.log("--------------------------------------------------------")
+		console.log(_.clone(self.get('website').toJSON()))
+		console.log(_.clone(datas))
+		console.log(_.clone(view))
+		console.log("--------------------------------------------------------")
+
 		// -> Build Etag
 		var now = Date.now() ;
 		var options = self.get('main').options; 

@@ -272,7 +272,7 @@ module.exports = Backbone.Model.extend({
 		datas.userid = (self.get('req').user||{}).id; 
 		var view = tools.extend({}, {
 			user: _.clone(self.get('req').user)
-		}, self.get('website').toJSON(), _.clone(datas)) ;
+		}, _.clone(self.get('website').toJSON()), _.clone(datas)) ;
 
 		// -> Build Etag
 		var now = Date.now() ;

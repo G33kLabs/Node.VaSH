@@ -7,39 +7,12 @@ module.exports =  {
     desc: "A developer blog about js, node.js and other modern tools",
     language: 'en-EN',
     brand: "JS> Node",
-    menus: [
-        {
-            name: 'Home',
-            icon: 'home',
-            url: '/'
-        },
-        {
-            name: 'Node.js'
-        },
-        {
-            name: 'jQuery'
-        },
-        {
-            name: 'Redis.io'
-        },
-        {
-            name: 'Contact'
-        }
-    ],
-    widgets: [
-        {
-            name: 'Recent Comments'
-        },
-        {
-            name: 'Most Viewed Posts'
-        },
-        {
-            name: 'My favourite Blogs'
-        },
-        {
-            name: 'Archive'
-        }
-    ],
+    assets: {
+        css: ['app.css'],
+        js: ['app.js']
+    },
+    menus: ['Home', 'Node.js', 'jQuery', 'Redis.io', 'Contact'],
+    widgets: ['aboutme', 'mostviewed', 'blogroll', 'archives'],
     providers: {
         facebook: {
             infos: {

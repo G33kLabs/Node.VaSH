@@ -1,7 +1,8 @@
 <div class="post list post-{{post.id}}">
 	<h2>{{&post.title}}</h2>
 	<div class="content">
-		<div class="metas">Par <a href="/profile/{{&post.author.pseudo}}">{{&post.author.pseudo}}</a>, {{&post.displayDate}}</div>
+		<!--<div class="metas">Par <a href="/profile/{{&post.author.pseudo}}">{{&post.author.pseudo}}</a>, {{&post.displayDate}}</div>-->
+		<div class="metas">Par <b>{{&post.author.pseudo}}</b>, {{&post.displayDate}}</div>
 		<p><em class="desc"><b>{{&post.desc}}</b></em></p>
 		{{#post.big_thumb}}
 		<div class="big_thumb drop-shadow" style="background-image: url({{&post.big_thumb}});"></div>

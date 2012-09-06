@@ -1,0 +1,66 @@
+/*========================================================== WIDGETS ABOUT ME ====*/
+.widget-aboutme .avatar {
+	position: relative;
+	display: block;
+	z-index: 10;
+	width: 80px;
+	height: 80px;
+	margin: 0 auto;
+	overflow: hidden;
+	border-radius: 50%;
+	border: 3px solid rgba(0, 0, 0, .2);
+	-webkit-box-shadow: 0 3px 0 rgba(0, 0, 0, .2), inset 0 4px 5px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(0, 0, 0, .6);
+	-moz-box-shadow: 0 3px 0 rgba(0, 0, 0,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
+	box-shadow: 0 3px 0 rgba(0, 0, 0, .2), inset 0 4px 5px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(0, 0, 0, .6);
+}
+
+.widget-aboutme .content {
+	position: relative;
+	display: block;
+	z-index: 1;
+	margin-top: -40px;
+	padding: 50px 10px 20px;
+	border-radius: 6px;
+	background: #322a25;
+	color: #777;
+	text-shadow: 1px 1px 1px #444;
+	text-align: center;
+}
+
+.widget-aboutme h3 {
+	line-height: 18px;
+	font-size: 18px;
+	font-weight: bold;
+	position: absolute;
+	display: block;
+	color: #000;
+	text-decoration: none;
+	left: 8px;
+	top: -2px;
+	opacity: 0.6;
+	text-shadow: 1px 1px -1px #999;
+}
+
+.widget-aboutme a,
+.widget-aboutme .el-row {
+	line-height: 20px;
+	font-size: 14px;
+	font-weight: normal;
+	position: relative;
+	display: block;
+	color: #ddd;
+	text-decoration: none;
+}
+
+.widget-aboutme a:hover,
+.widget-aboutme a:active,
+.widget-aboutme .el-row:hover {
+	color: #fff;
+}
+
+
+.widget-aboutme hr {
+	opacity: 0.1;
+	width: 60%;
+	margin: 7px auto;
+}

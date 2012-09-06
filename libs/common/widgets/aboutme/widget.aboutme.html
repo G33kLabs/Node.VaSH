@@ -1,0 +1,10 @@
+<div class="avatar" style="background: url({{&site.author.avatar}}) no-repeat center center"></div>
+<div class="content">
+  <!--<h3>About Me</h3>-->
+  <a href="/contact/"><span class="color_white"><b>{{&site.author.name}}</b></span></a>
+  <span class="el-row"><small>{{&site.author.city}}</small></span>
+  <hr />
+  {{#site.author.social}}
+  <a href="{{&profile}}" title="View my profile on {{&provider}}"><span class="{{classname}}"><b>{{&provider}} :</b></span> {{&pseudo}}</a>
+  {{/site.author.social}}
+</div>

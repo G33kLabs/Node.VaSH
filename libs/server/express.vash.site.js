@@ -16,6 +16,7 @@ marked.setOptions({
 
 module.exports = Backbone.Model.extend({
 	templates: {},
+	widgets: [],
 	defaults: {
 		maxPerPage: 10
 	},
@@ -34,6 +35,11 @@ module.exports = Backbone.Model.extend({
 			// -> Load templates
 			function(callback) {
 				self.reloadTemplates(callback)
+			},
+
+			// -> Load widgets
+			function(callback) {
+				self.reloadWidgets(callback)
 			},
 
 			// -> Load posts
@@ -58,9 +64,14 @@ module.exports = Backbone.Model.extend({
 
 			// -> Wrap menus
 			_.each(self.attributes.menus, function(v,k) {
+				if ( _.isString(v) ) v = {name:v} ;
 	            if ( v.active ) v.active = 'active' ;
 	            if ( v.name ) v.id = tools.permalink(v.name||'') ;
-	            if ( ! v.url ) v.url = '/'+v.id+'/'; 
+	            if ( ! v.icon ) v.icon = tools.permalink(v.name||'') ;
+	            if ( ! v.url ) {
+	            	if ( v.id == 'home' ) v.url = '/';
+	            	else v.url = '/'+v.id+'/'; 
+	            }
 	            self.attributes.menus[k] = v ;
 	        })	
 
@@ -88,6 +99,29 @@ module.exports = Backbone.Model.extend({
 	    		callback() ;
 	    	});
 	    })
+	},
+
+	reloadWidgets: function(callback) {
+		var self = this,
+			widgetPath = root_path+'/libs/common/widgets',
+			widgetFilename ;
+
+		self.widgets = [] ;
+		fs.readdir(widgetPath, function(err, datas) {
+	    	async.forEachSeries(datas, function(data, callback) {
+	    		widgetFilename = widgetPath+'/'+data+'/widget.'+data+'.js' ;
+	    		fs.exists(widgetFilename, function(exists) {
+	    			if ( exists ) {
+	    				tools.log('Register widget :: '+data) ;
+	    				self.widgets.push(new (require(widgetFilename).widget)()) ;
+	    			}
+	    			callback() ;
+	    		}); 
+	    	}, function() {
+	    		callback() ;
+	    	});
+	    })
+	    
 	},
 
 	reloadPosts: function(callback) {

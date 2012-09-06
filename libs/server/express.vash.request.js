@@ -10,7 +10,7 @@ module.exports = Backbone.Model.extend({
 			'auth::login': /^\/auth\/login$/,
 			'auth::logout': /^\/logout/,
 			'auth': /^\/auth\/([a-zA-Z0-9.\-]+)(\/[a-zA-Z0-9.\-]+|)/,
-			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3)$/i,
+			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3|txt)$/i,
 			'feed::read': /^\/feed/,
 			'contact::read': /^\/contact/,
 			'post::thumb': /^\/([0-9a-f]+)\/thumb/,

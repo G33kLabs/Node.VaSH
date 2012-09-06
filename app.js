@@ -148,7 +148,7 @@ else {
     });
 
     // -- Initialize VaSH middleware
-    app.use(express.vash({ debug: true, cache: 3600*1000, passport: passport }).get);
+    app.use(express.vash({ cache: 3600*1000, passport: passport }).get);
 
     // -- iOS : udid login
    // app.get('/auth/uuid', passport.authenticate('uuid', {scope: 'email' }));

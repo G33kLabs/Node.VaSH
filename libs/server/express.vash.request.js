@@ -286,7 +286,7 @@ module.exports = Backbone.Model.extend({
 		// -> Set headers
 		var headers = {
 				'Content-Type': 'text/html',
-				'ETag': "'"+etag+"'"
+				'ETag': etag
 			} ; 
 
 		// -> Check if etag changed

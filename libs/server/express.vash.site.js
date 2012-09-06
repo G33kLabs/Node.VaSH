@@ -211,7 +211,7 @@ module.exports = Backbone.Model.extend({
 	},
 
 	toJSON: function() {
-		var exclude_keys = ['configFile', 'alias', 'static_extension', 'public', 'cache'] ;
+		var exclude_keys = ['configFile', 'alias', 'static_extension', 'public', 'cache', 'passport'] ;
 		var out = {} ;
 		_.each(this.attributes, function(item, key) {
 			if ( exclude_keys.indexOf(key) < 0 ) out[key] = item ;

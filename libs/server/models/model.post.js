@@ -18,7 +18,7 @@
 		},
 		getTeaser: function(max) {
 			max = max || 200 ;
-			var txt = tools.teaser(this.get('content'), max).replace(/(<([^>]+)>)/ig," ");
+			var txt = tools.teaser(tools.strip_tags(this.get('content'), '<b><i><p><ul><li><span><pre><code>'), max); //.replace(/(<([^>]+)>)/ig," ");
 			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?' <small>[...]</small>':''));
 		},
 		getRSSTeaser: function(max) {

@@ -1,9 +1,11 @@
 (function(exports, isNode) {
 
-	exports.widget = Backbone.Model.extend({
+	// -- Declare widget
+	var widgetId = 'aboutme' ;
+	var widget = Backbone.Model.extend({
 
 		// -- Basic configuration
-		id: 'aboutme',
+		id: widgetId,
 		title: 'About me',
 
 		// ------------------------------------------- SERVER METHODS -------------
@@ -13,5 +15,15 @@
 		}
 
 	}) ;
+
+	////////////////////////////////////////////////////////// DO NOT EDIT
+	// -- Export to class 
+	if ( isNode ) {
+		exports.widget = widget
+	}
+	else {
+		exports.widgets = exports.widgets || {} ;
+		exports.widgets[widgetId] = widget; 
+	}
 
 })(typeof global === "undefined" ? window : exports, typeof global !== "undefined" ) ;

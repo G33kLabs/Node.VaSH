@@ -26,6 +26,10 @@
 	color: #777;
 	text-shadow: 1px 1px 1px #444;
 	text-align: center;
+	border: 2px dashed rgba(255, 255, 255, 0.8);
+	-moz-box-shadow: 0 0 0 4px #322a25, 2px 1px 4px 4px rgba(10,10,0,.5);
+	-webkit-box-shadow: 0 0 0 4px #322a25, 2px 1px 4px 4px rgba(10,10,0,.5);
+	box-shadow: 0 0 0 4px #322a25, 2px 1px 6px 4px rgba(10,10,0,.5);
 }
 
 .widget-aboutme h3 {

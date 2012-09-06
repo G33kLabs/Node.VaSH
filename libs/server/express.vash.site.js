@@ -1,5 +1,6 @@
 var fs = require('fs'),
 	marked = require('marked'),
+	toMarkdown = require('to-markdown').toMarkdown,
 	jsHighlight = require("highlight").Highlight; ;
 
 marked.setOptions({

@@ -40,6 +40,7 @@
       , "watch": "x.x.x"
       , "node-static": "x.x.x"
       , "marked": "x.x.x"
+      , "to-markdown": "x.x.x"
       , "html-minifier": "x.x.x"
       , "highlight": "x.x.x"
       , "colors": "x.x.x"

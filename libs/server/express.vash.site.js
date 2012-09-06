@@ -57,11 +57,13 @@ module.exports = Backbone.Model.extend({
 	            if ( ! v.url ) v.url = '/'+v.id+'/'; 
 	            self.attributes.menus[k] = v ;
 	        })	
+	        /*
 	        self.set('page', {
 				title: self.get('title'),
 				desc: self.get('desc'),
 				full: false
 			})	
+			*/
 	        callback() ;		
 		} catch(e) {
 			callback(e) ;
@@ -171,7 +173,7 @@ module.exports = Backbone.Model.extend({
 		// -> Return results
 		callback(null, {
 			widgets: [],
-			page: page
+			page: _.clone(page)
 		})
 	},
 

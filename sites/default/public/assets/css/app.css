@@ -312,6 +312,9 @@ a[rel="tag"]:hover:before {
 	padding-top: 0px;
 	padding-bottom: 7px;
 }
+.post .content.full.content-big-thumb {
+	padding-top: 15px;
+}
 .post .big_thumb {
 	position: relative;
 	width: 100%;
@@ -322,7 +325,7 @@ a[rel="tag"]:hover:before {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: 100% auto;
-	border: 4px solid #ccc;
+	/*border: 4px solid #ccc;*/
 	margin-bottom: 10px;
 }
 .post .metas {
@@ -713,4 +716,19 @@ color:#d91e4e;
 
 .color_black,.color_hover_black:hover {
 color:#000;
+}
+
+/*======================================================== DROP SHADOWS **/
+.drop-shadow {
+    background:#fff;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.drop-shadow:before,
+.drop-shadow:after {
+    content:"";
+    position:absolute;
+    z-index:-2;
 }

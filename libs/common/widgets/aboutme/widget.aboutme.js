@@ -6,13 +6,10 @@
 		id: 'aboutme',
 		title: 'About me',
 
-		// -- Link to html template
-		tpl: true,
-
 		// ------------------------------------------- SERVER METHODS -------------
 		// -> On page render
-		onRenderLayout: function(view, request) {
-			tools.warning('widget::'+this.id+'::onRenderLayout') ;
+		onServerRender: function() {
+			return VaSH.Mustache.to_html(this.get('templates')['widget.'+this.id+'.html'], {site: this.attributes});
 		}
 
 	}) ;

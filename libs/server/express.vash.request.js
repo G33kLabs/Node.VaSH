@@ -281,8 +281,11 @@ module.exports = Backbone.Model.extend({
 		// -> Merge datas
 		var view = tools.extend({}, {
 			user: self.get('req').user,
-			site: self.get('website').toJSON()
+			site: self.get('website').toJSON(),
+			widgets: self.get('website').widgets
 		}, datas) ;
+
+		//console.log(self.get('website').widgets)
 
 		// -> Build a user id
 		var userid = [] ;

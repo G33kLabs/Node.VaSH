@@ -109,19 +109,51 @@ module.exports = Backbone.Model.extend({
 		self.widgets = [] ;
 		fs.readdir(widgetPath, function(err, datas) {
 	    	async.forEachSeries(datas, function(data, callback) {
+
+	    		// -> If widget is in list => skip
+	    		if ( self.get('widgets').indexOf(data) < 0 ) return callback() ;
+
+	    		// -> Get files to load
 	    		widgetFilename = widgetPath+'/'+data+'/widget.'+data+'.js' ;
-	    		fs.exists(widgetFilename, function(exists) {
-	    			if ( exists ) {
-	    				tools.log('Register widget :: '+data) ;
-	    				self.widgets.push(new (require(widgetFilename).widget)()) ;
+	    		widgetTemplate = widgetPath+'/'+data+'/widget.'+data+'.html' ;
+
+	    		// -> Load files
+	    		async.parallel({
+	    			register: function(callback) {
+			    		fs.exists(widgetFilename, function(exists) {
+			    			var widget ;
+			    			if ( exists ) {
+			    				tools.log('Register widget :: '+'widget.'+data+'.js') ;
+			    				widget = new (require(widgetFilename).widget)(_.extend({}, self.attributes, {templates: self.templates})) ;
+			    				
+			    			}
+			    			callback(null, widget) ;
+			    		}); 	    				
+	    			},
+	    			template: function(callback) {
+			    		fs.exists(widgetTemplate, function(exists) {
+			    			if ( exists ) {
+			    				tools.log('Register widget template :: '+'widget.'+data+'.html') ;
+			    				fs.readFile(widgetTemplate, 'utf8', function(err, content) {
+			    					callback(null, content)
+			    				})
+			    			}
+			    			else {
+			    				callback(null) ;
+			    			}
+			    		}); 	    				
 	    			}
+	    		}, function(err, success) {
+	    			if ( success.register ) self.widgets.push(success.register) ;
+	    			if ( success.template ) self.templates['widget.'+data+'.html'] = success.template ;
 	    			callback() ;
-	    		}); 
+	    		})
+
 	    	}, function() {
 	    		callback() ;
 	    	});
 	    })
-	    
+
 	},
 
 	reloadPosts: function(callback) {
@@ -211,7 +243,6 @@ module.exports = Backbone.Model.extend({
 
 		// -> Return results
 		callback(null, {
-			widgets: [],
 			page: _.clone(page)
 		})
 	},

@@ -117,22 +117,9 @@
 
             <div class="span4">
                 <ul class="sidebar" id="widget-sidebar">
-                    <li class="widget widget-aboutme">
-                      <div class="avatar" style="background: url({{&site.author.avatar}}) no-repeat center center"></div>
-                      <div class="content">
-                          <!--<h3>About Me</h3>-->
-                          <a href="/contact/"><span class="color_white"><b>{{&site.author.name}}</b></span></a>
-                          <span class="el-row"><small>{{&site.author.city}}</small></span>
-                          <hr />
-                          {{#site.author.social}}
-                          <a href="{{&profile}}" title="View my profile on {{&provider}}"><span class="{{classname}}"><b>{{&provider}} :</b></span> {{&pseudo}}</a>
-                          {{/site.author.social}}
-                      </div>
-                    </li>
-                    {{#site.widgets}}
-                      <li class="widget"><a href="#dropdowns"><i class="icon-chevron-right"></i> {{&name}}</a></li>
-                    {{/site.widgets}}
-
+                    {{#widgets}}
+                      <li class="widget widget-{{id}}">{{&onServerRender}}</li>
+                    {{/widgets}}
                 </ul>
             </div>
             {{/page.full}}

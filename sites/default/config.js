@@ -2,6 +2,7 @@ module.exports =  {
 	public: '/public/',
     website: 'http://www.js2node.com',
     local: 'http://local.js2node.com:10000',
+    aliases: ['local.js2node.com', 'www.js2node.com', 'localhost'],
     title: "JS> Node",
     page_title_sufix: " | G33K",
     desc: "A developer blog about js, node.js and other modern tools",

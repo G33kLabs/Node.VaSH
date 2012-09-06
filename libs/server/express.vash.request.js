@@ -36,6 +36,11 @@ module.exports = Backbone.Model.extend({
 		// -> Load site instance from main sites
 		this.set('website', this.get('main').sites[this.getSiteAlias()]) ;
 
+		// -> If no config found
+		if ( ! self.get('website') ) {
+			return self.error('No website configured for : "'+this.getSiteName()+'"...')
+		}
+
 		// -> Check request security and close with error if something gets wrong
 		this.checkSecurity() ;
 
@@ -115,7 +120,7 @@ module.exports = Backbone.Model.extend({
 				if ( self.get('website').get('providers')[opts.provider] ) {
 
 					// -> Bind first redirect
-					var routerParams = opts.callback ? { successRedirect: '/?_='+Date.now(), failureRedirect: '/#login' } : self.get('website').get('providers')[opts.provider].opts  ;
+					var routerParams = opts.callback ? { successRedirect: '/', failureRedirect: '/#login' } : self.get('website').get('providers')[opts.provider].opts  ;
 					var router = options.passport.authenticate(opts.provider+'::'+self.getSiteAlias(), routerParams ) ;
 
 					// -> Exec route
@@ -160,7 +165,7 @@ module.exports = Backbone.Model.extend({
 			'auth::logout': function() {
 				self.get('req').logout();
 				setTimeout(function() {
-					self.get('res').redirect('/?_='+Date.now())
+					self.get('res').redirect('/');
 				}, 500); 
 			},
 			'favicon': function() {
@@ -347,6 +352,11 @@ module.exports = Backbone.Model.extend({
 		page = page || {} ;
 		if ( typeof page == 'string' ) page = {content: page} ;
 
+		// -> No Config found for website ?
+		if ( ! self.get('website') ) {
+			return self.get('res').end(page.content)
+		}
+
 		// -> Defaults for page
 		page = _.extend({}, {
 			statusCode: 404, 
@@ -357,7 +367,6 @@ module.exports = Backbone.Model.extend({
 		}, page);
 
 		// -> Log error
-		console.log(page) ;
 		tools.error('[!] Error in page :: '+json(page));
 
 		// -> Display through layout
@@ -408,17 +417,20 @@ module.exports = Backbone.Model.extend({
 
 	// -> Get site alias
 	getSiteAlias: function() {
-		var alias = this.get('main').options.alias ;
+		var self = this ;
+		if ( this.get('sitealias') ) return this.get('sitealias');
+
+		// -> Try to find alias in site config
+		var founded = _.find(this.get('main').sites, function(site, sitename) {
+			if ( site.get('aliases') && site.get('aliases').indexOf(self.get('sitename')) > -1 ) {
+				site.alias = sitename ;
+				return true ;
+			}
+		}) ;
 
 		// -> No alias ? return sitename
-		if ( ! alias ) {
-			this.set('sitealias', this.get('sitename')) ;
-		}
-
-		// -> If hostname is localhost => reroute to default
-		else if ( _.isArray(alias.default) && alias.default.indexOf(this.get('sitename')) >= 0 ) {
-			this.set('sitealias', 'default') ;	
-		}
+		this.set('sitealias', founded ? founded.alias : this.get('sitename')) ;
+		//tools.warning(this.get('sitealias')) ;
 
 		// -> Returns alias
 		return this.get('sitealias'); 

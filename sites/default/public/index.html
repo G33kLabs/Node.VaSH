@@ -2,9 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{{&page.title}}{{&page_title_sufix}}</title>
+    <title>{{&page.title}}{{&site.title_sufix}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{&page.desc}}">
 
     <!-- Le styles -->
     <link href="/common/css/bootstrap.css" rel="stylesheet">
@@ -14,7 +13,7 @@
     <!-- Le author -->
     {{#page.author}}
     <meta name="author" content="{{&page.author.name}}">
-    <link rel="author" href="{{&page.author.gplus}}">
+    <link rel="author" href="{{&site.author.profile}}">
     {{/page.author}}
 
     <!-- Le RSS -->
@@ -28,11 +27,11 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-  <!-- All in One SEO -->
-  <meta name="description" content="{{&page.seo.desc}}" />
-  <meta name="keywords" content="{{&page.seo.keywords}}" />
-  <!-- <link rel="canonical" href="{{&website}}/" /> -->
-  <!-- /all in one seo pack -->
+    <!-- SEO -->
+    <meta name="description" content="{{&page.desc}}" />
+    {{#page.keywords}}<meta name="keywords" content="{{&page.keywords}}" />{{/page.keywords}}
+    {{#page.canonical}}<link rel="canonical" href="{{&website}}/" />{{/page.canonical}}
+    <!-- /seo -->
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="/favicon.ico">
@@ -78,6 +77,10 @@
                 </a>
                 <ul class="dropdown-menu">
                   {{#user}}
+                  {{#isAdmin}}
+                  <li><a tabindex="-1" href="/admin/">Admin Panel</a></li>
+                  <li class="divider"></li>
+                  {{/isAdmin}}
                   <li><a tabindex="-1" href="#">Profile</a></li>
                   <li><a tabindex="-1" href="#">Settings</a></li>
                   <li class="divider"></li>
@@ -139,7 +142,7 @@
         <hr>
 
         <footer>
-        <p{{&copyright}}</p>
+        <p>{{&site.copyright}}</p>
         </footer>
 
     </div>

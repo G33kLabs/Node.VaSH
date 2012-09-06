@@ -279,13 +279,17 @@ module.exports = Backbone.Model.extend({
 		self.set('statusCode', datas.statusCode || 200) ;
 
 		// -> Merge datas
-		//console.log(self.get('req').user)
-		datas.userid = (self.get('req').user||{}).provider+'_'+(self.get('req').user||{}).id; 
 		var view = tools.extend({}, {
-			user: self.get('req').user
-		}, {
+			user: self.get('req').user,
+			userid: (self.get('req').user||{}).provider+'_'+(self.get('req').user||{}).id,
 			site: self.get('website').toJSON()
 		}, datas) ;
+
+		// -> Is user an admin ?
+		if ( _.isArray(view.site.admins) ) {
+			view.isAdmin = (view.site.admins.indexOf(view.userid)<0) ? false : true;
+		}
+		
 /*
 		console.log("--------------------------------------------------------")
 		console.log(_.clone(self.get('website').toJSON()))

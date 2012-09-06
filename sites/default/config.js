@@ -1,10 +1,9 @@
 module.exports =  {
-	public: '/public/',
     website: 'http://www.js2node.com',
     local: 'http://local.js2node.com:10000',
     aliases: ['local.js2node.com', 'www.js2node.com', 'localhost'],
     title: "JS> Node",
-    page_title_sufix: " | G33K",
+    title_sufix: " | G33K",
     desc: "A developer blog about js, node.js and other modern tools",
     language: 'en-EN',
     brand: "JS> Node",
@@ -49,8 +48,7 @@ module.exports =  {
             },
             opts: {
                 perms: {scope: 'email'}
-            },
-            domain: 'local.js2node.com'
+            }
         },
         twitter: {
             infos: {
@@ -59,12 +57,14 @@ module.exports =  {
             } 
         }
     },
+    admins: ['twitter_244561106', 'facebook_582526084'],
     author: 'delarueguillaume@gmail.com',
     authors: {
         'delarueguillaume@gmail.com': {
             pseudo: 'G33K',
             name: 'Guillaume DE LA RUE',
             avatar: 'https://profiles.google.com/s2/photos/profile/115555146160120072472',
+            profile: 'https://plus.google.com/115555146160120072472/posts',
             city: 'Paris / France',
             social: [
                 {

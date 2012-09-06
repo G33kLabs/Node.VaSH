@@ -150,6 +150,16 @@ module.exports = Backbone.Model.extend({
 	    		})
 
 	    	}, function() {
+
+	    		var orderedWidgets = [] ;
+	    		_.each(self.get('widgets'), function(data) {
+	    			var widget = _.find(self.widgets, function(val) {
+	    				return val.id == data;
+	    			})
+	    			if ( widget ) orderedWidgets.push(widget) ;
+	    		})
+	    		self.widgets = orderedWidgets ;
+	    		
 	    		callback() ;
 	    	});
 	    })

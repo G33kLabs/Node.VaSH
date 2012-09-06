@@ -243,15 +243,10 @@ module.exports = Backbone.Model.extend({
 							})
 						}
 					], function(err, res) {
-						console.log("error:::"+err)
-
-
 						if ( err ) self.get('req').url = err.replace(new RegExp(fileServer.root), '') ;
-
 						fileServer.serve(self.get('req'), self.get('res'), function(err) {
 							if ( err ) self.error('[!] API Static error : '+self.getPath()+' :: '+err.message)
 						});
-
 					})
 
 				} else {
@@ -358,6 +353,7 @@ module.exports = Backbone.Model.extend({
 		}, page);
 
 		// -> Log error
+		console.log(page) ;
 		tools.error('[!] Error in page :: '+json(page));
 
 		// -> Display through layout

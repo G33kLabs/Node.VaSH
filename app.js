@@ -27,7 +27,7 @@ var config = {
     },
     server: {
         host: 'localhost',
-        port: 8080
+        port: 10000
     },
     session: {
         cookname: 'express.sid',

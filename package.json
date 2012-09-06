@@ -33,7 +33,7 @@
       , "hiredis": "x.x.x"
       , "redis": "x.x.x"
       , "express": "x.x.x"
-      , "connect": "1.x.x"
+      , "connect": "x.x.x"
       , "connect-redis": "1.x.x"
       , "socket.io": "x.x.x"
       , "mustache": "x.x.x"

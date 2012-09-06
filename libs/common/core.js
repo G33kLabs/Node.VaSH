@@ -246,6 +246,6 @@ b,c){var d;d=b&&b.hasOwnProperty("constructor")?b.constructor:function(){a.apply
 
 
 /////////////////////////////////////////////////////////////////////////
-require(["/js/app.js"], function() {
+require(["/assets/js/app.js"], function() {
 	console.log('[>] App is Loaded !')
 });

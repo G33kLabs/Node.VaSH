@@ -1,0 +1,24 @@
+/*========================================================== WIDGETS BLOG ROLL ====*/
+.widget-blogroll .content {
+	position: relative;
+	display: block;
+	z-index: 1;
+	margin-top: -40px;
+	padding: 50px 10px 20px;
+	border-radius: 6px;
+	background: #322a25;
+	color: #777;
+	text-shadow: 1px 1px 1px #444;
+	text-align: center;
+}
+
+.widget-blogroll hr {
+	opacity: 0.1;
+	width: 60%;
+	margin: 7px auto;
+}
+
+.widget-blogroll a {
+	display: block;
+	position: relative;
+}

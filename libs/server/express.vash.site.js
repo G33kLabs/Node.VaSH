@@ -50,7 +50,7 @@ module.exports = Backbone.Model.extend({
 	reloadConfig: function(callback) {
 		var self = this;
 		try {
-			tools.extend(self.attributes, require(root_path+'/'+self.get('configFile'))) ;
+			self.attributes = tools.extend({}, self.attributes, require(root_path+'/'+self.get('configFile'))) ;
 			_.each(self.attributes.menus, function(v,k) {
 	            if ( v.active ) v.active = 'active' ;
 	            if ( v.name ) v.id = tools.permalink(v.name||'') ;
@@ -59,7 +59,8 @@ module.exports = Backbone.Model.extend({
 	        })	
 	        self.set('page', {
 				title: self.get('title'),
-				desc: self.get('desc')
+				desc: self.get('desc'),
+				full: false
 			})	
 	        callback() ;		
 		} catch(e) {
@@ -136,7 +137,7 @@ module.exports = Backbone.Model.extend({
 		all = self.getOrdered(filters) ;
 
 		// -> If want only a unique post
-		//console.log(self.attributes) ;
+		console.log(self.attributes) ;
 		if ( filters.permalink ) {
 			var post = _.find(all, function(post){ return tools.permalink(post.title) == filters.permalink; });
 			posts.push(post) ;

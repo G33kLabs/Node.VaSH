@@ -42,8 +42,8 @@ module.exports =  {
             social: [
                 {
                     provider: 'Twitter',
-                    pseudo: '@html5place',
-                    profile: 'https://twitter.com/html5place',
+                    pseudo: '@G33kLabs',
+                    profile: 'https://twitter.com/G33kLabs',
                     classname: 'color_fluoblue'
                 },
                 {

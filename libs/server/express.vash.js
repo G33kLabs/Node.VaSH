@@ -16,7 +16,7 @@ var VaSH = function(options) {
 		passports_path: 'passports/',
 		skin: 'default',
 		alias: {
-			'default': ['localhost', '127.0.0.1', 'local.js2node.com']
+			'default': ['localhost', '127.0.0.1', 'local.js2node.com', 'www.js2node.com']
 		},
 		debug: false,
 		cache: 5*60*1000

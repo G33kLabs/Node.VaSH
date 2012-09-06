@@ -300,15 +300,22 @@ module.exports = Backbone.Model.extend({
 				'ETag': etag
 			} ; 
 
+		// -> Set debug output
+		var outDebug = {
+			userid: view.userid,
+			pageId: etag,
+			url: self.getBaseUrl()+self.get('req').url
+		} ;
+
 		// -> Check if etag changed
 		if(req.headers['if-none-match'] === headers.ETag && self.set('statusCode') == 200 && ! options.debug ) {
 			res.statusCode = 304;
 			res.end();
-			tools.debug('[>] Return 304 : '+JSON.stringify(view)) ;
+			tools.debug('[>] Return 304 : '+JSON.stringify(outDebug)) ;
 			return;
 		}
 		else {
-			tools.warning('[>] Generate HTML : '+JSON.stringify(view)) ;
+			tools.warning('[>] Generate HTML : '+JSON.stringify(outDebug)) ;
 		}
 
 		// -> Build output
@@ -395,7 +402,7 @@ module.exports = Backbone.Model.extend({
 
 	// -> Return full bse url
 	getBaseUrl: function() {
-		return ( this.get('req').connection.encrypted ? 'https' : 'http' ) + '://'+this.get('req').headers.hostname ;
+		return ( this.get('req').connection.encrypted ? 'https' : 'http' ) + '://'+this.get('req').headers.host ;
 	},
 
 	// -> Return url path

@@ -64,8 +64,29 @@ module.exports =  {
         'delarueguillaume@gmail.com': {
             pseudo: 'G33K',
             name: 'Guillaume DE LA RUE',
+            avatar: 'https://profiles.google.com/s2/photos/profile/115555146160120072472',
             city: 'Paris / France',
-            gplus: 'https://plus.google.com/115555146160120072472/posts'
+            social: [
+                {
+                    provider: 'Twitter',
+                    pseudo: '@html5place',
+                    profile: 'https://twitter.com/html5place',
+                    classname: 'color_fluoblue'
+                },
+                {
+                    provider: 'Github',
+                    pseudo: '@G33kLabs',
+                    profile: 'https://github.com/G33kLabs',
+                    classname: 'color_greenlight'
+                },
+                {
+                    provider: 'Google+',
+                    id: '115555146160120072472',
+                    pseudo: '@G33k',
+                    profile: 'https://plus.google.com/115555146160120072472/',
+                    classname: 'color_yellow'
+                }
+            ]
         }
     },
     copyright: ">&copy; G33K Labs | 2012"

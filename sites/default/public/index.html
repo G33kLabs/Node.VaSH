@@ -114,15 +114,15 @@
             <div class="span4">
                 <ul class="sidebar" id="widget-sidebar">
                     <li class="widget widget-about">
-                      <div class="avatar" style="background: url(https://profiles.google.com/s2/photos/profile/115555146160120072472) no-repeat center center"></div>
+                      <div class="avatar" style="background: url({{&site.author.avatar}}) no-repeat center center"></div>
                       <div class="content">
                           <!--<h3>About Me</h3>-->
                           <a href="/contact/"><span class="color_white"><b>{{&site.author.name}}</b></span></a>
                           <span class="el-row"><small>{{&site.author.city}}</small></span>
                           <hr />
-                          <a href="#dropdowns"><span class="color_fluoblue"><b>Twitter :</b></span> @html5place</a>
-                          <a href="#dropdowns"><span class="color_yellow"><b>GitHub :</b></span> @G33kLabs</a>
-
+                          {{#site.author.social}}
+                          <a href="{{&profile}}" title="View my profile on {{&provider}}"><span class="{{classname}}"><b>{{&provider}} :</b></span> {{&pseudo}}</a>
+                          {{/site.author.social}}
                       </div>
                     </li>
                     {{#site.widgets}}

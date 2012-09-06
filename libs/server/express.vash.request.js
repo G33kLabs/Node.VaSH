@@ -144,18 +144,15 @@ module.exports = Backbone.Model.extend({
 				// -> Set first as active
 				_.first(providers).active = true ;
 
-				// -> Build page vars
-				var page = {
-					name: self.get('website').get('title')+' > '+"Login",
-					content: VaSH.Mustache.to_html(self.get('website').templates['login.html']||'', {
-						providers: providers
-					}),
-					full: true
-				}
-
 				// -> Display
 				self.sendWithLayout({
-					page: page
+					page: {
+						name: self.get('website').get('title')+' > '+"Login",
+						content: VaSH.Mustache.to_html(self.get('website').templates['login.html']||'', {
+							providers: providers
+						}),
+						full: true
+					}
 				})
 
 			},
@@ -271,15 +268,15 @@ module.exports = Backbone.Model.extend({
 		//console.log(self.get('req').user)
 		datas.userid = (self.get('req').user||{}).id; 
 		var view = tools.extend({}, {
-			user: _.clone(self.get('req').user)
-		}, _.clone(self.get('website').toJSON()), _.clone(datas)) ;
-
+			user: self.get('req').user
+		}, self.get('website').toJSON(), datas) ;
+/*
 		console.log("--------------------------------------------------------")
 		console.log(_.clone(self.get('website').toJSON()))
 		console.log(_.clone(datas))
 		console.log(_.clone(view))
 		console.log("--------------------------------------------------------")
-
+*/
 		// -> Build Etag
 		var now = Date.now() ;
 		var options = self.get('main').options; 

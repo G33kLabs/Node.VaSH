@@ -57,13 +57,6 @@ module.exports = Backbone.Model.extend({
 	            if ( ! v.url ) v.url = '/'+v.id+'/'; 
 	            self.attributes.menus[k] = v ;
 	        })	
-	        /*
-	        self.set('page', {
-				title: self.get('title'),
-				desc: self.get('desc'),
-				full: false
-			})	
-			*/
 	        callback() ;		
 		} catch(e) {
 			callback(e) ;
@@ -139,7 +132,7 @@ module.exports = Backbone.Model.extend({
 		all = self.getOrdered(filters) ;
 
 		// -> If want only a unique post
-		console.log(self.attributes) ;
+		//console.log(self.attributes) ;
 		if ( filters.permalink ) {
 			var post = _.find(all, function(post){ return tools.permalink(post.title) == filters.permalink; });
 			posts.push(post) ;

@@ -304,10 +304,11 @@ module.exports = Backbone.Model.extend({
 		var html = VaSH.Mustache.to_html(self.get('website').templates['index.html'], view) ;
 
 		// -> Add extra informations to headers
-		_.extend(headers, {
-			'Content-Length': html.length,
-			'Cache-Control': 'public, max-age=' + (options.cache / 1000)
-		})
+		headers['Content-Length'] = html.length ;
+
+		// -> If user is not logged, set cache control on page, else only ETag cache check
+		if ( ! view.user ) 
+			headers['Cache-Control'] = 'public, max-age=' + (options.cache / 1000) ;
 
 		// -> Write headers
 		res.writeHead(self.get('statusCode')||200, headers) ;

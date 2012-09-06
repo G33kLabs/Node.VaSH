@@ -89,5 +89,5 @@ module.exports =  {
             ]
         }
     },
-    copyright: ">&copy; G33K Labs | 2012"
+    copyright: "&copy; G33K Labs | 2012"
 }

@@ -12,6 +12,7 @@ module.exports = Backbone.Model.extend({
 			'auth': /^\/auth\/([a-zA-Z0-9.\-]+)(\/[a-zA-Z0-9.\-]+|)/,
 			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3|txt)$/i,
 			'feed::read': /^\/feed/,
+			'sitemap::read': /^\/sitemap\.xml(\.gz|)/,
 			'contact::read': /^\/contact/,
 			'post::thumb': /^\/([0-9a-f]+)\/thumb/,
 			'post::read': /^\/([a-zA-Z0-9.\-]+)\/([a-zA-Z0-9.\-]+)/,
@@ -188,6 +189,13 @@ module.exports = Backbone.Model.extend({
 					else self.sendXML(feed) ;
 				})
 			},
+			'sitemap::read': function(opts) {
+				return self.get('website').sitemap(function(err, feed) {
+					if ( err ) self.error('Feed error...') ;
+					else if ( opts[2]=='.gz' ) self.sendGzip(feed) ;
+					else self.sendXML(feed) ;
+				})
+			},
 			'list::cat': function(opts) {
 
 				// -> If cat is in match result
@@ -343,6 +351,21 @@ module.exports = Backbone.Model.extend({
 		self.get('res').writeHead(self.get('statusCode'), self.get('headers'))
 		self.get('res').end(content) ;
 	},
+
+	/////////////////////////////////////////////////////////////////////// SEND GZIP
+	// -> Assume no cache in headers
+	sendGzip: function(content) {
+		var self = this; 
+
+	    // Set the appropriate HTTP headers to help old and new browsers equally to how to handle the output
+	    self.get('res').header('Content-Type: application/x-gzip');
+	    self.get('res').header('Content-Encoding: gzip');
+	    self.get('res').header('Content-Disposition: attachment; filename="sitemap.xml.gz"');
+	    zlib.gzip(new Buffer(content, 'utf8'), function(error, data) {
+	        self.get('res').end(data);
+	    });
+
+	},	
 
 	/////////////////////////////////////////////////////////////////////// RESPONDS ERROR
 	// -> Return error page

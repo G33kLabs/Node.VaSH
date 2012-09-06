@@ -1,7 +1,8 @@
 var fs = require('fs'),
 	marked = require('marked'),
 	toMarkdown = require('to-markdown').toMarkdown,
-	jsHighlight = require("highlight").Highlight; ;
+	jsHighlight = require("highlight").Highlight,
+	zlib = require('zlib');
 
 marked.setOptions({
 	gfm: true,
@@ -215,6 +216,65 @@ module.exports = Backbone.Model.extend({
 
 		// -> COmpile template
 		callback(null, out)
+	},
+
+	sitemap: function(callback) {
+
+		var self = this, urls = [], paths = [] ;
+
+		var priorities = {
+			'hourly': 1,
+			'daily': 0.8,
+			'weekly': 0.5,
+			'monthly': 0.1
+		}
+
+		var addSitemap = function(url, freq, priority) {
+			if ( paths.indexOf(url) < 0 ) {
+				freq = freq || 'monthly' ;
+				priority = priority || priorities[freq] || 'monthly' ;
+				paths.push(url) 
+				urls.push({
+					url: self.getBaseUrl()+url,
+					freq: freq,
+					priority: priority
+				})
+			}
+		}
+
+		// -> Add homepage
+		addSitemap('/', 'hourly', 1) ;
+
+		// -> Add menus
+		_.each(self.get('menus'), function(menu, key) {
+			addSitemap(menu.url, 'daily') ;
+		})
+
+		// -> Add posts and tags
+		_.each(self.posts, function(post) {
+			var _post = (new VaSH.Models.post(post, self)).getLink() ;
+			addSitemap(_post, 'weekly') ;
+			if ( post.tags ) {
+				_.each(post.tags, function(tag) {
+					addSitemap('/'+tools.permalink(tag), 'daily') ;
+				})
+			}
+		}) ;
+
+		// -> Build XML
+		var xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+	    for (var i in urls) {
+	        xml += '<url>';
+	        xml += '<loc>'+ urls[i].url + '</loc>';
+	        xml += '<changefreq>'+ urls[i].freq +'</changefreq>';
+	        xml += '<priority>'+ urls[i].priority +'</priority>';
+	        xml += '</url>';
+	        i++;
+	    }
+	    xml += '</urlset>';
+
+		// -> COmpile template
+		callback(null, xml);
 	},
 
 	getBaseUrl: function() {

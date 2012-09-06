@@ -41,6 +41,8 @@ var config = {
     env: tools.getServerIp().length > 1 ? 'prod' : 'dev'
 }
 
+console.log(tools.getServerIp())
+
 ///////////////////////////////////////////////////////////// MASTER CLUSTER /////////////
 if (cluster.isMaster) {
 

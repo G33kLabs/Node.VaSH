@@ -271,14 +271,14 @@ module.exports = Backbone.Model.extend({
 		//console.log(self.get('req').user)
 		datas.userid = (self.get('req').user||{}).id; 
 		var view = tools.extend({}, {
-			user: self.get('req').user
-		}, self.get('website').toJSON(), datas) ;
+			user: _.clone(self.get('req').user)
+		}, self.get('website').toJSON(), _.clone(datas)) ;
 
 		// -> Build Etag
 		var now = Date.now() ;
 		var options = self.get('main').options; 
 		var cacheTimer = Math.floor((now - now%options.cache)/1000);
-		var pageId = self.getSiteAlias()+'::'+JSON.stringify(datas)+'::'+cacheTimer ;
+		var pageId = self.getSiteAlias()+'::'+JSON.stringify(view)+'::'+cacheTimer ;
 		var etag = tools.md5(pageId)
 		var req = self.get('req') ;
 		var res = self.get('res') ;

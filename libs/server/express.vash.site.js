@@ -63,6 +63,9 @@ module.exports = Backbone.Model.extend({
 	            self.attributes.menus[k] = v ;
 	        })	
 
+	        // -> Set author
+	        self.set('author', self.get('authors')[self.get('author')]) ;
+
 	        // -> Return
 	        callback() ;
 

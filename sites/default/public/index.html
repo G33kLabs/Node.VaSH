@@ -61,12 +61,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">{{brand}}</a>    
+          <a class="brand" href="/">{{site.brand}}</a>    
           <div class="nav-collapse">
             <ul class="nav">
-              {{#menus}}
+              {{#site.menus}}
               <li class="{{active}} menu-{{id}}"><a href="{{&url}}">{{#icon}}<i class="icon-{{icon}}"></i> {{/icon}}{{&name}}</a></li>
-              {{/menus}}
+              {{/site.menus}}
             </ul>
             <ul class="nav pull-right">
               <li class="dropdown">
@@ -117,17 +117,17 @@
                       <div class="avatar" style="background: url(https://profiles.google.com/s2/photos/profile/115555146160120072472) no-repeat center center"></div>
                       <div class="content">
                           <!--<h3>About Me</h3>-->
-                          <a href="/contact/"><span class="color_white"><b>{{&page.author.name}}</b></span></a>
-                          <span class="el-row"><small>{{&page.author.city}}</small></span>
+                          <a href="/contact/"><span class="color_white"><b>{{&site.author.name}}</b></span></a>
+                          <span class="el-row"><small>{{&site.author.city}}</small></span>
                           <hr />
                           <a href="#dropdowns"><span class="color_fluoblue"><b>Twitter :</b></span> @html5place</a>
                           <a href="#dropdowns"><span class="color_yellow"><b>GitHub :</b></span> @G33kLabs</a>
 
                       </div>
                     </li>
-                    {{#widgets}}
+                    {{#site.widgets}}
                       <li class="widget"><a href="#dropdowns"><i class="icon-chevron-right"></i> {{&name}}</a></li>
-                    {{/widgets}}
+                    {{/site.widgets}}
 
                 </ul>
             </div>

@@ -272,10 +272,12 @@ module.exports = Backbone.Model.extend({
 
 		// -> Merge datas
 		//console.log(self.get('req').user)
-		datas.userid = (self.get('req').user||{}).id; 
+		datas.userid = (self.get('req').user||{}).provider+'_'+(self.get('req').user||{}).id; 
 		var view = tools.extend({}, {
 			user: self.get('req').user
-		}, self.get('website').toJSON(), datas) ;
+		}, {
+			site: self.get('website').toJSON()
+		}, datas) ;
 /*
 		console.log("--------------------------------------------------------")
 		console.log(_.clone(self.get('website').toJSON()))

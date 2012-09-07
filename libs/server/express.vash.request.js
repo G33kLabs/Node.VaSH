@@ -345,7 +345,7 @@ module.exports = Backbone.Model.extend({
 
 		// -> Add nofollow and _blank target to external links links
 		var reg = new RegExp('(<a\s*(?!.*\brel=)[^>]*)(href="https?://)((?!(?:(?:www\.)?'+self.getHostname()+'))[^"]+)"((?!.*\brel=)[^>]*)(?:[^>]*)>',"gi");
-		html = html.replace(reg, '$1$2$3"$4 rel="nofollow" target="_blank">') ;
+		html = html.replace(reg, '$1$2$3"$4 target="_blank">') ;
 
 		/*
 		function dont_follow_links( $html ) {

@@ -41,6 +41,9 @@
 		// ------------------------------------------- SERVER METHODS -------------
 		// -> On page render
 		onServerRender: function() {
+			_.each(this.get('urls'), function(blog) {
+				blog.urlText = blog.url.replace(/(http:|https:|\/)/g, '') ;
+			})
 			return VaSH.Mustache.to_html(this.get('templates')['widget.'+this.id+'.html'], {
 				site: this.attributes,
 				urls: this.get('urls')

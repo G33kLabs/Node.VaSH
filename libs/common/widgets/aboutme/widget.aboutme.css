@@ -63,6 +63,9 @@
 	color: #fff;
 }
 
+.widget-aboutme span.author-row {
+	font-size: 16px;
+}
 
 .widget-aboutme hr {
 	opacity: 0.1;

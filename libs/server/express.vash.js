@@ -283,8 +283,10 @@ VaSH.prototype.monitor_debug = function() {
             cluster.worker.destroy() ; 
         })
         monitor.on("changed", function (f, curr, prev) {
-            tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
-            cluster.worker.destroy() ;  
+            if ( ! /\.min\.css/.test(f) && ! /\.min\.js/.test(f) ) {
+            	tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
+            	cluster.worker.destroy() ;  
+        	}
         })
         monitor.on("removed", function (f, stat) {
             tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');

@@ -42,6 +42,11 @@ module.exports = Backbone.Model.extend({
 				self.reloadWidgets(callback)
 			},
 
+			// -> Load assets
+			function(callback) {
+				self.reloadAssets(callback)
+			},
+
 			// -> Load posts
 			function(callback) {
 				self.reloadPosts(callback)
@@ -117,6 +122,10 @@ module.exports = Backbone.Model.extend({
 	    		widgetFilename = widgetPath+'/'+data+'/widget.'+data+'.js' ;
 	    		widgetTemplate = widgetPath+'/'+data+'/widget.'+data+'.html' ;
 
+	    		// -> Add to assets
+	    		self.get('assets').js.push(widgetFilename.split(root_path)[1])
+	    		self.get('assets').css.push(widgetFilename.replace(/\.js$/, '.css').split(root_path)[1]) ;
+
 	    		// -> Load files
 	    		async.parallel({
 	    			register: function(callback) {
@@ -159,7 +168,7 @@ module.exports = Backbone.Model.extend({
 	    			if ( widget ) orderedWidgets.push(widget) ;
 	    		})
 	    		self.widgets = orderedWidgets ;
-	    		
+
 	    		callback() ;
 	    	});
 	    })
@@ -194,6 +203,81 @@ module.exports = Backbone.Model.extend({
 	    		callback(null, self.posts) ;
 	    	});
 	    })		
+	},
+
+	reloadAssets: function(callback) {
+		var self = this ;
+
+		async.parallel({
+			css: function(callback) {
+				var out = [] ;
+				async.forEachSeries(self.get('assets').css, function(file, callback) {
+
+					file = file.replace(/^\/common/, '/libs/common') ;
+					file = file.replace(/^\/assets/, '/'+self.get('public_path')+'/public/assets') ;
+
+					//console.log(root_path+file) ;
+
+					fs.readFile(root_path+file, 'utf8', function(err, datas) {
+						if ( ! err && datas ) out.push("/*** "+file+" ***/\n"+datas) ;
+						else tools.error('[!] Error while minifying this file :: '+file+' | '+err)
+						callback(); 
+					}) ;
+					
+				}, function() {
+					callback(out.length==0, out.join("\n"))
+				})				
+			},
+			js: function(callback) {
+				var out = [] ;
+				async.forEachSeries(self.get('assets').js, function(file, callback) {
+
+					file = file.replace(/^\/common/, '/libs/common') ;
+					file = file.replace(/^\/assets/, '/'+self.get('public_path')+'/public/assets') ;
+
+					//console.log(root_path+file) ;
+
+					fs.readFile(root_path+file, 'utf8', function(err, datas) {
+						if ( ! err && datas ) out.push("/*** "+file+" ***/;\n"+datas) ;
+						else tools.error('[!] Error while minifying this file :: '+file+' | '+err)
+						callback(); 
+					}) ;
+
+				}, function() {
+					callback(out.length==0, out.join("\n"))
+				})				
+			}
+		}, function(err, res) {
+			//console.log(err, res)
+
+			async.parallel({
+				css: function(callback) {
+					if ( res.css ) {
+						var cssMinify = root_path+'/'+self.get('public_path')+'/public/assets/css/app.min.css' ;
+						//console.log(res.css)
+						tools.log('[>] Write CSS minified to : '+cssMinify.split(root_path)[1]) ;
+						fs.writeFile(cssMinify, res.css, 'utf8', function(err) {
+							callback(err, true) ;
+						})
+					}
+					else callback() ;
+				},
+				js: function(callback) {
+					if ( res.js ) {
+						var jsMinify = root_path+'/'+self.get('public_path')+'/public/assets/js/app.min.js' ;
+						tools.log('[>] Write JS minified to : '+jsMinify.split(root_path)[1]) ;
+						fs.writeFile(jsMinify, res.js, 'utf8', function(err) {
+							callback(err, true) ;
+						})
+					}
+					else callback() ;
+				}
+			}, function(err, res) {
+				callback() ;
+			})
+
+		})
+
 	},
 
 	getOrdered: function(filters) {

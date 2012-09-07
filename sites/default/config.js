@@ -8,8 +8,8 @@ module.exports =  {
     language: 'en-EN',
     brand: "JS> Node",
     assets: {
-        css: ['app.css'],
-        js: ['app.js']
+        css: ['/common/css/bootstrap.css', '/common/css/highlight.monokai.css','/assets/css/app.css'],
+        js: ['/common/js/jquery.min.js', '/common/js/date.min.js', '/common/js/mustache.min.js', '/common/js/underscore.min.js', '/common/js/backbone.min.js', '/common/js/bootstrap.js', '/assets/js/app.js']
     },
     menus: ['Home', 'Node.js', 'jQuery', 'Redis.io', 'Contact'],
     widgets: ['aboutme', 'mostviewed', 'blogroll', 'archives'],

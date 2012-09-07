@@ -14,6 +14,7 @@
 				//this.liveReload() ;
 				this.initSocketIO() ;
 				this.headerAnime() ;
+
 				//this.info('success', 'Welcome to '+this.dom.nav.find('a.brand').text()+' !') ;
 				return this; 
 			},
@@ -101,7 +102,7 @@
 				require(["/socket.io/socket.io.js"], function() {
 					var socket = io.connect();
 					socket.on('news', function (data) {
-						console.log(data);
+						console.log('[>] Socket.io message : '+JSON.stringify(data));
 					});					
 				})
 			},
@@ -120,6 +121,12 @@
 		// -> Init application UI
 		console.log('[>] Document is ready !')
 		var app = new ApplicationUI() ;
+
+		// -> Init GA Tracking
+		if ( _.isObject($.gaTracker) && _.isFunction($.gaTracker.init) ) {
+			var gaCode = $('#js-env').data('googleanalytics') ;
+			if ( gaCode ) $.gaTracker.init(gaCode) ;
+		}
 
 	}); 
 

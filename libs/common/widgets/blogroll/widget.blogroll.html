@@ -1,4 +1,12 @@
-<div class="title">My Prefered Blogs</div>
+<div class="content noise">
+<h4>My Prefered Blogs</h4>
+<div class="links">
 {{#urls}}
-<a href="{{&url}}" title="{{title}}">{{&name}}</a>
+<a href="{{&url}}" title="{{title}}">
+	<div class="preview drop-shadow" style="background-image: url(http://www.robothumb.com/src/?url={{&url}});"></div>
+	<span class="name">{{&name}}</span>
+	<span class="url color_greenlight">{{&url}}</span>
+</a>
 {{/urls}}
+</div>
+</div>

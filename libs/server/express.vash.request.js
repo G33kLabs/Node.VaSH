@@ -343,6 +343,25 @@ module.exports = Backbone.Model.extend({
 		// -> Build output
 		var html = VaSH.Mustache.to_html(self.get('website').templates['index.html'], view) ;
 
+		// -> Add nofollow and _blank target to external links links
+		var reg = new RegExp('(<a\s*(?!.*\brel=)[^>]*)(href="https?://)((?!(?:(?:www\.)?'+self.getHostname()+'))[^"]+)"((?!.*\brel=)[^>]*)(?:[^>]*)>',"gi");
+		html = html.replace(reg, '$1$2$3"$4 rel="nofollow" target="_blank">') ;
+
+		/*
+		function dont_follow_links( $html ) {
+		 // follow these websites only!
+		 $follow_list = array(
+		  'google.com',
+		  'mypage.com',
+		  'otherpage.com',
+		 );
+		 return preg_replace(
+		  '%(<a\s*(?!.*\brel=)[^>]*)(href="https?://)((?!(?:(?:www\.)?'.implode('|(?:www\.)?', $follow_list).'))[^"]+)"((?!.*\brel=)[^>]*)(?:[^>]*)>%',
+		  '$1$2$3"$4 rel="nofollow">',
+		  $html);
+		}
+*/
+
 		// -> Add extra informations to headers
 		headers['Content-Length'] = html.length ;
 

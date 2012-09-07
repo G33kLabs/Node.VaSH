@@ -16,7 +16,22 @@
 					title: 'Visit my official Blog !'
 				},
 				{
-					name: 'My CV',
+					name: 'Korben.info',
+					url: 'http://www.korben.info/',
+					title: 'Visit Korben website !'
+				},
+				{
+					name: 'DailyJS : Fresh news !',
+					url: 'http://www.dailyjs.com/',
+					title: 'Good and fresh news from js community !'
+				},
+				{
+					name: 'Paul Irish',
+					url: 'http://paulirish.com/',
+					title: 'A really interesting man, Developper at Google !'
+				},				
+				{
+					name: 'My Online CV',
 					url: 'http://www.delarueguillaume.com/',
 					title: 'Visit my Online CV !'
 				}

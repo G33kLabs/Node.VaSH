@@ -3,8 +3,7 @@
 	position: relative;
 	display: block;
 	z-index: 1;
-	margin-top: -40px;
-	padding: 50px 10px 20px;
+	padding: 0px 0px 0px;
 	border-radius: 6px;
 	background: #322a25;
 	color: #777;
@@ -18,7 +17,59 @@
 	margin: 7px auto;
 }
 
-.widget-blogroll a {
+.widget-blogroll h4 {
+	background: #f86100;
+	border-radius: 6px 6px 0 0;
+	border: 2px dashed rgba(255, 255, 255, 0.8);
+	-moz-box-shadow: 0 0 0 4px #f86100, 2px 1px 4px 4px rgba(10,10,0,.5);
+	-webkit-box-shadow: 0 0 0 4px #f86100, 2px 1px 4px 4px rgba(10,10,0,.5);
+	box-shadow: 0 0 0 4px #f86100, 2px 1px 6px 4px rgba(10,10,0,.5);
+	color: #fff;
+	line-height: 36px;
+}
+
+.widget-blogroll .links {
+	position: relative;
+	display: block;
+	padding: 5px 10px 10px;
+}
+
+.widget-blogroll .links a {
+	display: block;
+	position: relative;
+	text-align: left;
+	height: 80px;
+	margin: 0 0 0px;
+	padding: 0 0 0 120px;
+	color: #fff;
+	text-decoration: none;
+}
+
+.widget-blogroll .links a:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.widget-blogroll .links a .preview {
+	position: absolute;
+	display: block;
+	width: 90px;
+	height: 60px;
+	top: 10px;
+	left: 10px;
+	background: transparent no-repeat center center;
+	background-size: 100% 100%;
+	box-shadow: 0 0 0 2px #ccc, 2px 1px 6px 4px rgba(10,10,0,.5);
+}
+
+.widget-blogroll .links span.name {
+	position: relative;
+	display: block;
+	font-weight: bold;
+	padding: 15px 0 4px;
+}
+
+.widget-blogroll .links span.url {
+	font-size: 13px;
 	display: block;
 	position: relative;
 }

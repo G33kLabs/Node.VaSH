@@ -386,7 +386,7 @@ a[rel="tag"]:hover:before {
 #widget-sidebar li.widget {
 	position: relative;
 	display: block;
-	margin: 0 auto 10px;
+	margin: 0 auto 40px;
 }
 
 

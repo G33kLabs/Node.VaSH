@@ -15,7 +15,7 @@ var fs = require('fs'),
     numCPUs = Math.max(2, require('os').cpus().length) ;
 
 // -- Load Globals
-//GLOBAL.jQuery = require('jQuery') ;
+GLOBAL.jQuery = require('jQuery') ;
 GLOBAL.tools = require(root_path+'/libs/server/tools.kit') ;
 require('datejs');
 

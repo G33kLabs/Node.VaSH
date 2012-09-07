@@ -12,6 +12,7 @@ var fs = require('fs'),
     cluster = require('cluster'),
     colors = require('colors'),
     http = require('http'),
+    mkdirp = require('mkdirp'),
     numCPUs = Math.max(2, require('os').cpus().length) ;
 
 // -- Load Globals
@@ -47,6 +48,19 @@ var config = {
 if ( tools.getServerIp().indexOf('192.168.1.30') < 0 ) {
     config.env = 'prod'
 }
+
+///////////////////////////////////////////////////////////////////////// LOG TO FILE
+var logToFile = require('logtofile'),
+    logPath = path.normalize(__dirname+'/logs/') ;
+
+tools.log('[>] Output logs to : '+logPath)
+mkdirp(logPath, function(err, success) {
+    GLOBAL.logger = logToFile.create({
+        directory: logPath,
+        fileName: config.server.host+'_'+config.server.port+'.log'
+    });
+}); 
+
 
 // -- Splash Screen
 //////////////////////////////////////////////////////// WELCOME MESSAGE ///////////// 

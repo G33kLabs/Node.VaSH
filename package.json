@@ -47,6 +47,8 @@
       , "passport": "x.x.x"
       , "passport-oauth": "x.x.x"
       , "openid": "x.x.x"
+      , "logtofile": "x.x.x"
+      , "mkdirp": "x.x.x"
     }
   , "main": "app.js"
   , "engines": { "node": ">= 0.8.0" }

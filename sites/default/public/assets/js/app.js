@@ -13,11 +13,15 @@
 				this.bindPostClick() ;
 				//this.liveReload() ;
 				this.initSocketIO() ;
+				this.initWidgets() ;
+
 				this.headerAnime() ;
 
 				//this.info('success', 'Welcome to '+this.dom.nav.find('a.brand').text()+' !') ;
 				return this; 
 			},
+
+			//============================================================= HELPERS
 			parse_url: function(url) {
 			    var a = document.createElement('a');
 			    a.href = url;
@@ -31,6 +35,8 @@
 				self.currentTab = $.trim(this.dom.nav.find('ul.nav li.active').text()).toLowerCase() ;
 				return self.currentTab;
 			},
+
+			//============================================================= BINDINGS
 			bindNav: function() {
 				var self = this, navLinks ;
 				navLinks = this.dom.nav.find('ul.nav li'); 
@@ -106,6 +112,18 @@
 					});					
 				})
 			},
+
+			//============================================================= INIT WIDGETS
+			initWidgets: function() {
+				_.each(widgets, function(widget) {
+					widget = new widget() ;
+					if (  _.isFunction(widget.onClientRender) ) {
+						widget.onClientRender() ;
+					}
+				})
+			},
+
+			//============================================================= HEADER ANIMATION
 			headerAnime: function() {
 				var inner = $('header .inner'), pos, seq = [[50, 40], [50, 50], [50, 60],[60, 30],[60, 40], [60, 50], [60, 60],[50, 30]] ;
 				self.headerAnimeLoop = setInterval(function() {

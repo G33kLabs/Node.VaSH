@@ -53,11 +53,11 @@ exports.log = function(obj, color) {
     }
 
     // -- Ouput it
-    if ( typeof log != 'function' || typeof bootstrap == 'undefined' ||  bootstrap.env == 'local' ) {
+    if ( typeof logger != 'object' ) {
         exports.sys.puts(exports.colors[color](log_ddate+' '+exports.trim(obj), true)) ; 
     }
     else {
-        log.write(exports.colors[color](log_ddate+' '+exports.trim(obj), true)+"\n");
+        logger.write(exports.colors[color](log_ddate+' '+exports.trim(obj), true)+"\n");
     }
 }
 exports.debug = function(obj) { exports.log(obj, 'lgray') ; }
@@ -231,15 +231,22 @@ exports.createFullPath = function(fullPath, callback) {
         working = exports.path.join(working, parts[i]);
         pathList.push(working);
     }
-    
+
+    console.log('---------------------------------------')
+    console.log(pathList)
+    console.log('---------------------------------------')
+
     var recursePathList = function recursePathList(paths) {
         if(0 === paths.length) { callback(null); return ; }
         var working = paths.shift();
         try {
-            exports.path.exists(working, function(exists) {
+            console.log('--> '+working)
+            fs.exists(working, function(exists) {
                 if(!exists) {
                     try {
-                        require('fs').mkdir(working, 0755, function() {
+                        fs.mkdir(working, 0755, function(err, success) {
+                            if ( err ) console.log(err)
+                            console.log(success)
                             recursePathList(paths);
                         });
                     } catch(e) {

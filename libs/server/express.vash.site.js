@@ -93,10 +93,10 @@ module.exports = Backbone.Model.extend({
 
 	reloadTemplates: function(callback) {
 		var self = this ;
-		fs.readdir(self.get('public_path')+'/public', function(err, datas) {
+		fs.readdir(self.get('public_path')+'/templates', function(err, datas) {
 	    	async.forEachSeries(datas, function(data, callback) {
 	    		if ( ! /\.html$/.test(data) ) return callback() ;
-	    		fs.readFile(self.get('public_path')+'/public/'+data, 'utf8', function(err, tpl) {
+	    		fs.readFile(self.get('public_path')+'/templates/'+data, 'utf8', function(err, tpl) {
 	    			self.templates[data] = tpl ;
 	    			callback() ;
 	    		})		    		

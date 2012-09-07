@@ -51,13 +51,14 @@ if ( tools.getServerIp().indexOf('192.168.1.30') < 0 ) {
 
 ///////////////////////////////////////////////////////////////////////// LOG TO FILE
 var logToFile = require('logtofile'),
-    logPath = path.normalize(__dirname+'/logs/') ;
+    logPath = path.normalize(__dirname+'/logs/'),
+    logFile = config.server.host+'_'+config.server.port+'.log' ;
 
-tools.log('[>] Output logs to : '+logPath)
+tools.log('[>] Output logs to : '+logPath+logFile)
 mkdirp(logPath, function(err, success) {
     GLOBAL.logger = logToFile.create({
         directory: logPath,
-        fileName: config.server.host+'_'+config.server.port+'.log'
+        fileName: logFile
     });
 }); 
 

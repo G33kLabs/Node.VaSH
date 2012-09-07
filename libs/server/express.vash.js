@@ -283,7 +283,7 @@ VaSH.prototype.monitor_debug = function() {
             cluster.worker.destroy() ; 
         })
         monitor.on("changed", function (f, curr, prev) {
-            if ( ! /\.min\.css/.test(f) && ! /\.min\.js/.test(f) ) {
+            if ( ! /\.min\.css/.test(f) && ! /\.min\.js/.test(f) && ! /\/logs/.test(f) ) {
             	tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
             	cluster.worker.destroy() ;  
         	}

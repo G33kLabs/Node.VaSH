@@ -4,3 +4,6 @@ node_modules/
 
 node.vash.sublime-project
 node.vash.sublime-workspace
+sites/default/public/assets/css/app.min.css
+
+sites/default/public/assets/js/app.min.js

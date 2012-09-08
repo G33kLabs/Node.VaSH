@@ -48,6 +48,7 @@
       , "passport-oauth": "x.x.x"
       , "openid": "x.x.x"
       , "logtofile": "x.x.x"
+      , "pkginfo": "x.x.x"
       , "mkdirp": "x.x.x"
     }
   , "main": "app.js"

@@ -28,6 +28,12 @@ module.exports =  {
                 consumerKey: 'rSW4OeSUcn33NeaID6Lw',
                 consumerSecret: 'PuaP4Gh4esCLtlACJVLfdpMh3zA6UUVrSeR9saRmk18'
             } 
+        },
+        github: {
+            infos: {
+                clientID: 'bff9226f55a4f13ae031',
+                clientSecret: 'b0b701d3e4e058ce1a14aaad90c0ecf410809f60'
+            }
         }
     },
     admins: ['twitter_244561106', 'facebook_582526084'],

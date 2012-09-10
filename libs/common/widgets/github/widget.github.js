@@ -211,10 +211,9 @@
 				// -> Load lazyload
 				if ( widgets.lazyload && _.isFunction(widgets.lazyload.refresh) ) {
 					setTimeout(function() { 
-						///console.log('REFRESH LAZYLOADS')
 						widget.find('.issues [data-background]').removeClass('lazyloaded')
 						widgets.lazyload.refresh() 
-					}, 1000);
+					}, 300);
 				}
 			}) ;
 		},

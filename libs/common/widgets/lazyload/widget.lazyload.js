@@ -10,9 +10,6 @@
 
 		// ------------------------------------------- CLIENT METHODS -------------
 		refresh: function() {
-			var els = $('[data-background]:not(.lazyloaded)') ;
-			//console.log('--> REFRESH', _.clone(els))
-			if ( ! els.length ) return false;
 			$('[data-background]').not('.lazyloaded').addClass('lazyloaded').lazyload({
 				effect : "fadeIn",
 				skip_invisible : false

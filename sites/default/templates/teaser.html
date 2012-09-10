@@ -5,7 +5,7 @@
 		<div class="metas">Par <b>{{&post.author.pseudo}}</b>, {{&post.displayDate}}</div>
 		<p><em class="desc"><b>{{&post.desc}}</b></em></p>
 		{{#post.big_thumb}}
-		<div class="big_thumb drop-shadow" style="background-image: url({{&post.big_thumb}});"></div>
+		<div class="big_thumb drop-shadow" data-background="{{&post.big_thumb}}"></div>
 		{{/post.big_thumb}}
 		<div class="teaser">{{&post.teaser}}</div>
 		<div class="readmore"><a href="{{&post.permalink}}" title="View full article : {{&post.title}}" class="permalink">&raquo; Read more...</a></div>

@@ -11,7 +11,7 @@
 		// ------------------------------------------- CLIENT METHODS -------------
 		refresh: function() {
 			var els = $('[data-background]:not(.lazyloaded)') ;
-			console.log('--> REFRESH', _.clone(els))
+			//console.log('--> REFRESH', _.clone(els))
 			if ( ! els.length ) return false;
 			$('[data-background]:not(.lazyloaded)').lazyload({
 				effect : "fadeIn"

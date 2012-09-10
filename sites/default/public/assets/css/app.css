@@ -26,16 +26,27 @@
 }
 
 .jumbotron.inner {
-	content: '';
 	display: block;
 	position: absolute;
 	top: 0;
+	left: 0;
 	right: 0;
 	bottom: 0;
-	left: 0;
 	background: url(../img/space-invaders.png) repeat 50px 30px;
 	background-size: 50px 30px;
 	opacity: .1;
+	-webkit-animation: spaceMove 6000ms infinite step-end;
+}
+
+/* Move Keyframes */
+@-webkit-keyframes spaceMove {
+    0%, 100% {background-position: 50px 40px;}
+    14% {background-position: 50px 50px;}
+    28% {background-position: 60px 30px;}
+    42% {background-position: 60px 40px;}
+    57% {background-position: 60px 50px;}
+    71% {background-position: 60px 60px;}
+    85% {background-position: 50px 30px;}
 }
 
 /*========================================================== LOGIN PROVIDERS PAGE ====*/
@@ -575,6 +586,10 @@ a.color_fluoblue:hover,a.color_yellow:hover,a.color_red:hover,a.color_greenlight
 color:#f86100;
 }
 
+.color_orange {
+	color:#f86100;
+}
+
 .color_fluoblue
 a,.color_yellow
 a,.color_greenlight
@@ -615,7 +630,7 @@ color:#000;
 
 /*======================================================== DROP SHADOWS **/
 .drop-shadow {
-    background:#fff;
+    /*background:#fff;*/
     -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
        -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
             box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;

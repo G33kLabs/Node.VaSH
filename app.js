@@ -13,7 +13,7 @@ var fs = require('fs'),
     colors = require('colors'),
     http = require('http'),
     mkdirp = require('mkdirp'),
-    numCPUs = Math.max(2, require('os').cpus().length) ;
+    numCPUs = require('os').cpus().length ;
 
 // -- Load Globals
 GLOBAL.jQuery = require('jquery') ;
@@ -44,10 +44,12 @@ var config = {
 }
 
 // -- Detect Prod Env // You can customize this test
-// console.log(tools.getServerIp())
-if ( tools.getServerIp().indexOf('192.168.1.30') < 0 ) {
+if ( (/^\/var\/www/).test(root_path) ) {
     config.env = 'prod'
 }
+
+// -- Set number of CPUs instances
+numCPUs = (config.env == 'dev') ? 1 : Math.max(2, numCPUs) ;
 
 ///////////////////////////////////////////////////////////////////////// LOG TO FILE
 var logToFile = require('logtofile'),

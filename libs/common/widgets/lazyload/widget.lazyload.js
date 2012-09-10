@@ -13,7 +13,7 @@
 			var els = $('[data-background]:not(.lazyloaded)') ;
 			//console.log('--> REFRESH', _.clone(els))
 			if ( ! els.length ) return false;
-			$('[data-background]:not(.lazyloaded)').lazyload({
+			$('[data-background]').not('.lazyloaded').lazyload({
 				effect : "fadeIn"
 			}).one('appear', function() {
 				$(this).removeAttr('data-background').addClass('lazyloaded') ;

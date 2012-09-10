@@ -262,8 +262,6 @@ module.exports = Backbone.Model.extend({
 				}
 			},
 			'admin': function(opts) {
-
-
 				new VaSH.Controllers.admin(self.attributes, self) ;
 			},
 		}
@@ -291,11 +289,16 @@ module.exports = Backbone.Model.extend({
 		self.set('statusCode', datas.statusCode || 200) ;
 
 		// -> Merge datas
-		var view = tools.extend({}, {
+		var view = tools.extend(true, {}, {
 			user: self.get('req').user,
 			site: self.get('website').toJSON(),
 			widgets: self.get('website').widgets
 		}, datas) ;
+
+		// -> Force merge menus
+		if ( datas.site && datas.site.menus ) {
+			view.site.menus = datas.site.menus ;
+		}
 
 		//console.log(self.get('website').widgets)
 

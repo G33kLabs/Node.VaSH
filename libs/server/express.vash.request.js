@@ -134,10 +134,6 @@ module.exports = Backbone.Model.extend({
 					self.error('No auth mechanism for :: '+opts.provider+' !') ;
 				}
 
-				//passport.authenticate('facebook', {scope: 'email' })
-
-				//tools.log(self.getPath()+('::')+json(opts))
-				//self.get('next')() ;
 			},
 			'auth::login': function(opts) {
 
@@ -267,20 +263,23 @@ module.exports = Backbone.Model.extend({
 			},
 			'admin': function(opts) {
 
-				self.sendWithLayout({
-					page: {
-						full: true,
-						title: 'VaSH Admin',
-						name: 'VaSH Admin &raquo '+tools.ucfirst(self.getSiteAlias()),
-						desc: 'DashBoard Panel',
-						content: 'yep'
-					}
-				})
+
+				new VaSH.Controllers.admin(self.attributes, self) ;
 			},
 		}
 
 		// -> Return methods
 		return apiMethod;
+	},
+
+	/////////////////////////////////////////////////////////////////////// USER
+	getUserId: function() {
+		var userid = [] ;
+		if ( (this.get('req').user||{}).provider ) 
+			userid.push((this.get('req').user||{}).provider); 
+		if ( (this.get('req').user||{}).id ) 
+			userid.push((this.get('req').user||{}).id); 
+		if ( userid.length ) return userid.join('_') ;
 	},
 
 	/////////////////////////////////////////////////////////////////////// SEND CONTENT

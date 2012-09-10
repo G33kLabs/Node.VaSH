@@ -49,6 +49,11 @@ VaSH.Models = {
 	post: require('./models/model.post').shared
 }
 
+// -- Define Controllers
+VaSH.Controllers = {
+	admin: require('./controllers/controller.admin').shared
+}
+
 // -- Load blogs config
 VaSH.prototype.load = function() {
 	var self = this ;

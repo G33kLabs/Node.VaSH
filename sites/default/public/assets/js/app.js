@@ -115,7 +115,7 @@
 
 			//============================================================= INIT WIDGETS
 			initWidgets: function() {
-				if ( $('#widget-sidebar').length == 0 ) return false;
+				//if ( $('#widget-sidebar').length == 0 ) return false;
 				_.each(widgets, function(widget, widgetId) {
 					widgets[widgetId] = widget = new widget() ;
 					if ( $('#widget-sidebar').length == 0 && ! widget.daemon ) return true;

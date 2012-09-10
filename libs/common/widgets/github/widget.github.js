@@ -103,7 +103,7 @@
 							else milestones[milestone_name].open_issues++
 						}
 
-						console.log(milestone_name, item)
+						//console.log(milestone_name, item)
 
 						milestones[milestone_name].due_date = humanized_time_span(milestones[milestone_name].due_on) ;
 						milestones[milestone_name].total_issues = milestones[milestone_name].open_issues + milestones[milestone_name].closed_issues ;

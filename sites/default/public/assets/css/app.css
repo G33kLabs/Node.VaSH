@@ -400,6 +400,10 @@ a[rel="tag"]:hover:before {
 	margin: 0 auto 40px;
 }
 
+li.widget.widget-silent {
+	display: none;
+}
+
 
 /******************************************************* COLORS **************/
 .pink {

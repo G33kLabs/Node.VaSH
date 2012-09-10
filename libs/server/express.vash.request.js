@@ -10,6 +10,7 @@ module.exports = Backbone.Model.extend({
 			'auth::login': /^\/auth\/login$/,
 			'auth::logout': /^\/logout/,
 			'auth': /^\/auth\/([a-zA-Z0-9.\-]+)(\/[a-zA-Z0-9.\-]+|)/,
+			'admin': /^\/admin\/([a-zA-Z0-9.\-]+|)(\/[a-zA-Z0-9.\-]+|)/,
 			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3|txt)$/i,
 			'feed::read': /^\/feed/,
 			'sitemap::read': /^\/sitemap\.xml(\.gz|)/,
@@ -263,7 +264,19 @@ module.exports = Backbone.Model.extend({
 				} else {
 					self.error('File server is not defined !') ;
 				}
-			}
+			},
+			'admin': function(opts) {
+
+				self.sendWithLayout({
+					page: {
+						full: true,
+						title: 'VaSH Admin',
+						name: 'VaSH Admin &raquo '+tools.ucfirst(self.getSiteAlias()),
+						desc: 'DashBoard Panel',
+						content: 'yep'
+					}
+				})
+			},
 		}
 
 		// -> Return methods

@@ -1,4 +1,5 @@
 var fs = require('fs'),
+	noop = function() {},
 	marked = require('marked'),
 	toMarkdown = require('to-markdown').toMarkdown,
 	jsHighlight = require("highlight").Highlight,
@@ -66,6 +67,7 @@ module.exports = Backbone.Model.extend({
 
 	reloadConfig: function(callback) {
 		var self = this;
+		callback = callback || noop;
 		try {
 
 			// -> Get config file
@@ -97,6 +99,7 @@ module.exports = Backbone.Model.extend({
 
 	reloadTemplates: function(callback) {
 		var self = this ;
+		callback = callback || noop;
 		fs.readdir(self.get('public_path')+'/templates', function(err, datas) {
 	    	async.forEachSeries(datas, function(data, callback) {
 	    		if ( ! /\.html$/.test(data) ) return callback() ;
@@ -115,6 +118,7 @@ module.exports = Backbone.Model.extend({
 			widgetPath = root_path+'/libs/common/widgets',
 			widgetFilename ;
 
+		callback = callback || noop;
 		self.widgets = [] ;
 		fs.readdir(widgetPath, function(err, datas) {
 	    	async.forEachSeries(datas, function(data, callback) {
@@ -188,6 +192,7 @@ module.exports = Backbone.Model.extend({
 	reloadPosts: function(callback) {
 		var self = this;
 		var post_path = self.get('public_path')+'/posts' ;
+		callback = callback || noop;
 	    tools.walk(post_path, function(err, datas) {
 	    	async.forEachSeries(datas, function(post, callback) {
 	    		if ( ! /\.js$/.test(post.path) ) return callback() ;
@@ -217,7 +222,7 @@ module.exports = Backbone.Model.extend({
 
 	reloadAssets: function(callback) {
 		var self = this ;
-
+		callback = callback || noop;
 		async.parallel({
 			css: function(callback) {
 				var out = [] ;

@@ -6,6 +6,9 @@ var fs = require('fs'),
     zlib = require('zlib'),
     minifyHTML = require('html-minifier').minify ;
 
+// -- Shared instance
+var vash ;
+
 // -- VaSH Class
 var VaSH = function(options) {
 	
@@ -290,7 +293,28 @@ VaSH.prototype.monitor_debug = function() {
         monitor.on("changed", function (f, curr, prev) {
             if ( ! /\.min\.css/.test(f) && ! /\.min\.js/.test(f) && ! /\/logs/.test(f) ) {
             	tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
-            	cluster.worker.destroy() ;  
+
+            	// -> Reload only templates
+            	if ( /templates\//.test(f) ) {
+            		tools.log('[>] Reload templates...')
+            		_.each(vash.sites, function(site, name) {
+            			site.reloadTemplates()  ;
+            		}) ;
+            	}
+
+            	// -> Reload only assets
+            	else if ( /libs\/common\//.test(f) || /public\//.test(f) ) {
+            		tools.log('[>] Reload assets...')
+            		_.each(vash.sites, function(site, name) {
+            			site.reloadAssets()  ;
+            		}) ;
+            	}
+
+            	// -> Reload all server in other cases
+            	else {
+            		cluster.worker.destroy() ;  
+            	}
+
         	}
         })
         monitor.on("removed", function (f, stat) {
@@ -302,7 +326,6 @@ VaSH.prototype.monitor_debug = function() {
 
 // Init VaSH instance
 GLOBAL.VaSH = VaSH; 
-var vash ;
 
 // Export class
 module.exports = function(options) {

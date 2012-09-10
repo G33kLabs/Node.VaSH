@@ -64,8 +64,6 @@
 					var link = this.getAttribute('href'), match ;
 					if ( /\#/.test(link) ) {
 						console.log('Hash Tag Click !!')
-						e.stopPropagation(); 
-						e.preventDefault() ;
 
 						// -> If link is login provider choice
 						if ( match = (link.split('#')[1]).match(/\/auth\/(.*)/) ) {
@@ -80,6 +78,9 @@
 							})
 
 							el.addClass('active').siblings().removeClass('active');
+
+							e.stopPropagation(); 
+							e.preventDefault() ;
 						}
 					}
 

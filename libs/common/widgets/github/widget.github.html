@@ -1,0 +1,34 @@
+<!-- Rendered on server side -->
+<div class="content noise">
+	<h4>{{title}}</h4>
+	<div class="issues">
+		<div class="loading"><span>Loading...</span></div>
+	</div>
+</div>
+
+<!-- I want to render it only on client side -->
+<div class="mu-template" id="issueTemplate" style="display: none">
+	[[#milestones]]
+		<div class="milestone">
+			<div class="milestone-group">
+				<h3 class="milestone-title">[[title]]</h3>
+				<div class="due_on"> &raquo; Due [[due_date]]</div>
+				<div class="progress">
+					<div class="bar bar-[[progressClass]]" style="width: [[progressWidth]]%;"><span>[[progress]]%</span></div>
+				</div>
+
+				<div class="milestone-more"><span>View [[total_issues]] issues</span></div>
+			</div>
+			[[#issues]]
+			<div class="issueTemplate state-[[state]]" title="View issue '[[title]]' on github">
+				<div class="avatar drop-shadow" data-background="[[user.avatar_url]]"></div> 
+				<div class="issue">
+					<div class="title"><span class="[[#closed_at]]color_greenlight[[/closed_at]][[^closed_at]]color_fluoblue[[/closed_at]]">#[[number]]</span> <span class="repo">[[repositary]] &raquo; </span><br><a href="[[html_url]]" title="View issue on github" target="_blank">[[title]]</a></div>
+					<div class="since">[[since]]</div>
+				</div> 
+			</div>
+			[[/issues]]
+			<div class="issues-more"><span>View more</span></div>
+		</div>
+	[[/milestones]]
+</div>

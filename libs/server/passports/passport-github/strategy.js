@@ -50,7 +50,7 @@ function Strategy(options, verify) {
   options.scopeSeparator = options.scopeSeparator || ',';
   
   OAuth2Strategy.call(this, options, verify);
-  this.name = 'github';
+  this.name = options.name || 'github';
 }
 
 /**
@@ -82,6 +82,11 @@ Strategy.prototype.userProfile = function(accessToken, done) {
     try {
       var json = JSON.parse(body);
       
+      console.log('-----------------------') ;
+      console.log('GitHub') ;
+      console.log(body) ;
+      console.log('-----------------------') ;
+
       var profile = { provider: 'github' };
       profile.id = json.id;
       profile.displayName = json.name;

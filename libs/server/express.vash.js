@@ -145,11 +145,10 @@ VaSH.prototype.load = function() {
 				var providers = siteConfig.get('providers') ;
 
 				_.each(providers, function(datas, provider) {
-					//console.log(provider, datas)
 
 					tools.warning('[>] Register passport module => '+provider+'::'+site)
 					var strategy = self.strategies['passport-'+provider] ;
-					self.options.passport.use(new strategy(_.extend({
+					var _strategy = new strategy(_.extend({
 							name: provider+'::'+site,
 							callbackURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback"
 						}, datas.infos),
@@ -158,7 +157,8 @@ VaSH.prototype.load = function() {
 				                return done(null, profile);
 				            });
 						}
-					))
+					) ;
+					self.options.passport.use(_strategy)
 
 				}) ;
 

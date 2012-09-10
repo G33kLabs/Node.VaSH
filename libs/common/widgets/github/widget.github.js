@@ -211,7 +211,7 @@
 				// -> Load lazyload
 				if ( widgets.lazyload && _.isFunction(widgets.lazyload.refresh) ) {
 					setTimeout(function() { 
-						console.log('REFRESH LAZYLOADS')
+						///console.log('REFRESH LAZYLOADS')
 						widgets.lazyload.refresh() 
 					}, 1000);
 				}

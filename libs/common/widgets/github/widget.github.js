@@ -102,9 +102,7 @@
 							if ( item.state == 'closed' ) milestones[milestone_name].closed_issues++;
 							else milestones[milestone_name].open_issues++
 						}
-
-						//console.log(milestone_name, item)
-
+					
 						milestones[milestone_name].due_date = humanized_time_span(milestones[milestone_name].due_on) ;
 						milestones[milestone_name].total_issues = milestones[milestone_name].open_issues + milestones[milestone_name].closed_issues ;
 						milestones[milestone_name].progress = Math.floor(milestones[milestone_name].closed_issues * 100 / milestones[milestone_name].total_issues) ;

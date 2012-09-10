@@ -2,17 +2,33 @@ module.exports =  {
     website: 'http://www.js2node.com',
     local: 'http://local.js2node.com:10000',
     aliases: ['local.js2node.com', 'www.js2node.com', 'localhost'],
+    brand: "JS> Node",
     title: "JS> Node",
     title_sufix: " | G33K",
     desc: "A developer blog about js, node.js and other modern tools",
     language: 'en-EN',
-    brand: "JS> Node",
     assets: {
-        css: ['/common/css/bootstrap.css', '/common/css/highlight.monokai.css','/assets/css/app.css'],
-        js: ['/common/js/jquery.min.js', '/common/js/async.min.js', '/common/js/date.min.js', '/common/js/mustache.min.js', '/common/js/underscore.min.js', '/common/js/backbone.min.js', '/common/js/bootstrap.js', '/common/js/jquery.gatracker.js', '/assets/js/app.js']
+        css: [
+            '/common/css/bootstrap.css', 
+            '/common/css/highlight.monokai.css',
+            '/assets/css/app.css'
+        ],
+        js: [
+            '/common/js/jquery.min.js', 
+            '/common/js/async.min.js', 
+            '/common/js/vash.toolkit.js', 
+            '/common/js/date.min.js', 
+            '/common/js/mustache.min.js', 
+            '/common/js/underscore.min.js', 
+            '/common/js/backbone.min.js', 
+            '/common/js/bootstrap.js', 
+            '/common/js/jquery.lazyload.min.js', 
+            '/common/js/humanized_time_span.js', 
+            '/assets/js/app.js'
+        ]
     },
     menus: ['Home', 'Node.js', 'jQuery', 'Redis.io', 'Snippets', 'Contact'],
-    widgets: ['aboutme', 'mostviewed', 'github', 'blogroll', 'archives'],
+    widgets: ['aboutme', 'mostviewed', 'github', 'blogroll', 'archives', 'lazyload', 'analytics'],
     providers: {
         facebook: {
             infos: {
@@ -68,5 +84,6 @@ module.exports =  {
             ]
         }
     },
+    googleAnalytics: 'UA-12891268-5',
     copyright: "&copy; G33K Labs | 2012"
 }

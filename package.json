@@ -50,6 +50,9 @@
       , "logtofile": "x.x.x"
       , "pkginfo": "x.x.x"
       , "mkdirp": "x.x.x"
+      , "html-minifier": "x.x.x"
+      , "uglify-js": "x.x.x"
+      , "uglifycss": "x.x.x"
     }
   , "main": "app.js"
   , "engines": { "node": ">= 0.8.0" }

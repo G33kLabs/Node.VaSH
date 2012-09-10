@@ -2,7 +2,11 @@ var fs = require('fs'),
 	marked = require('marked'),
 	toMarkdown = require('to-markdown').toMarkdown,
 	jsHighlight = require("highlight").Highlight,
-	zlib = require('zlib');
+	zlib = require('zlib'),
+	htmlPacker = require('html-minifier').minify,
+	jsParser = require("uglify-js").parser,
+	jsPacker = require("uglify-js").uglify,
+	cssPacker = require('uglifycss') ;
 
 marked.setOptions({
 	gfm: true,
@@ -121,18 +125,24 @@ module.exports = Backbone.Model.extend({
 	    		// -> Get files to load
 	    		widgetFilename = widgetPath+'/'+data+'/widget.'+data+'.js' ;
 	    		widgetTemplate = widgetPath+'/'+data+'/widget.'+data+'.html' ;
-
-	    		// -> Add to assets
-	    		self.get('assets').js.push(widgetFilename.split(root_path)[1])
-	    		self.get('assets').css.push(widgetFilename.replace(/\.js$/, '.css').split(root_path)[1]) ;
+	    		widgetStyle = widgetPath+'/'+data+'/widget.'+data+'.css' ;
 
 	    		// -> Load files
 	    		async.parallel({
+	    			css: function(callback) {
+	    				fs.exists(widgetStyle, function(exists) {
+			    			if ( exists ) {
+	    						self.get('assets').css.push(widgetStyle.split(root_path)[1]) ;
+			    			}
+			    			callback(null, true) ;
+			    		}); 
+	    			},
 	    			register: function(callback) {
 			    		fs.exists(widgetFilename, function(exists) {
 			    			var widget ;
 			    			if ( exists ) {
 			    				tools.log('Register widget :: '+'widget.'+data+'.js') ;
+			    				self.get('assets').js.push(widgetFilename.split(root_path)[1]) ;
 			    				widget = new (require(widgetFilename).widget)(_.extend({}, self.attributes, {templates: self.templates})) ;
 			    				
 			    			}
@@ -225,7 +235,12 @@ module.exports = Backbone.Model.extend({
 					}) ;
 					
 				}, function() {
-					callback(out.length==0, out.join("\n"))
+					if ( out.length ) {
+						callback(null,  self.packCSS(out.join("\n")) )
+					}
+					else {
+						callback(true) ;
+					}
 				})				
 			},
 			js: function(callback) {
@@ -244,7 +259,12 @@ module.exports = Backbone.Model.extend({
 					}) ;
 
 				}, function() {
-					callback(out.length==0, out.join("\n"))
+					if ( out.length ) {
+						callback(null,  self.packJS(out.join("\n")) )
+					}
+					else {
+						callback(true) ;
+					}
 				})				
 			}
 		}, function(err, res) {
@@ -278,6 +298,44 @@ module.exports = Backbone.Model.extend({
 
 		})
 
+	},
+
+	// Pack CSS content 
+	packCSS: function(content) {
+		//if ( this.compileError ) return false;
+		return cssPacker.processString(content) ;
+	},
+
+	// Pack HTML content 
+	packHTML: function(content) {
+		//if ( this.compileError ) return false;
+		var htmlPacker = require('html-minifier').minify ;
+		//console.log(htmlPacker(content, { removeComments: true, collapseWhitespace: true, removeEmptyAttributes: true })) ;
+		return htmlPacker(content, { removeComments: true, collapseWhitespace: true, removeEmptyAttributes: true }) ;
+	},
+
+	// Pack JS content
+	packJS: function(content, itemPath) {
+
+		try {
+			var ast = jsParser.parse(content); // parse code and get the initial AST
+			ast = jsPacker.ast_mangle(ast); // get a new AST with mangled names
+			ast = jsPacker.ast_squeeze(ast); // get an AST with compression optimizations
+		} catch(e) { 
+
+			// -- Scope error
+			tools.error('-------------------------') ;
+			tools.error(content.split("\n").slice(e.line-10, e.line-1).join("\n")) ;
+			tools.warning(" /******** "+e.line+" >> "+e.message+" ********/") ;
+			tools.warning((content.split("\n").slice(e.line-1, e.line).join("\n"))) ;
+			tools.warning(" /***********************************************************/") ;
+			tools.error(content.split("\n").slice(e.line, e.line+10).join("\n")) ;
+			this.compileError = true ;
+			require('child_process').exec('say -v Alex -r 200 "What the fuck baby ? "') ;
+			process.exit() ;
+			
+		} 
+		return jsPacker.gen_code(ast); // compressed code here
 	},
 
 	getOrdered: function(filters) {

@@ -15,7 +15,7 @@
 				this.initSocketIO() ;
 				this.initWidgets() ;
 
-				this.headerAnime() ;
+				//this.headerAnime() ;
 
 				//this.info('success', 'Welcome to '+this.dom.nav.find('a.brand').text()+' !') ;
 				return this; 
@@ -115,8 +115,10 @@
 
 			//============================================================= INIT WIDGETS
 			initWidgets: function() {
-				_.each(widgets, function(widget) {
-					widget = new widget() ;
+				if ( $('#widget-sidebar').length == 0 ) return false;
+				_.each(widgets, function(widget, widgetId) {
+					widgets[widgetId] = widget = new widget() ;
+					if ( $('#widget-sidebar').length == 0 && ! widget.daemon ) return true;
 					if (  _.isFunction(widget.onClientRender) ) {
 						widget.onClientRender() ;
 					}
@@ -124,6 +126,7 @@
 			},
 
 			//============================================================= HEADER ANIMATION
+			/*
 			headerAnime: function() {
 				var inner = $('header .inner'), pos, seq = [[50, 40], [50, 50], [50, 60],[60, 30],[60, 40], [60, 50], [60, 60],[50, 30]] ;
 				self.headerAnimeLoop = setInterval(function() {
@@ -133,18 +136,13 @@
 					})
 				}, 1000) ;
 			}
+			*/
 		})
 
 
 		// -> Init application UI
 		console.log('[>] Document is ready !')
 		var app = new ApplicationUI() ;
-
-		// -> Init GA Tracking
-		if ( _.isObject($.gaTracker) && _.isFunction($.gaTracker.init) ) {
-			var gaCode = $('#js-env').data('googleanalytics') ;
-			if ( gaCode ) $.gaTracker.init(gaCode) ;
-		}
 
 	}); 
 

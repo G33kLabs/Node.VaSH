@@ -38,31 +38,6 @@
 			]
 		},
 
-		// ------------------------------------------- CLIENT METHODS -------------
-		onClientRender: function() {
-
-			// -> Preload pictures
-			var widgets = $('.widget-'+this.id).find('.preview') ;
-			async.forEachSeries(widgets, function(widget, callback) {
-				var el = $(widget) ;
-				$('<img />')
-				    .attr('src', el.data('background'))
-				    .load(function(){
-				    	el.css({backgroundImage: 'url('+el.data('background')+')', opacity: 1})
-				    	setTimeout(function() {
-				    		callback() ;
-				    	}, 300)
-				    })
-				    .error(function() {
-				    	el.css({opacity: 1})
-				    	callback() ;
-				    });
-			}, function() {
-				console.log('Complete') ;
-			}) ;
-
-		},
-
 		// ------------------------------------------- SERVER METHODS -------------
 		// -> On page render
 		onServerRender: function() {

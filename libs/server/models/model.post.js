@@ -43,10 +43,10 @@
 			return this.siteObj.get('authors')[this.get('author')] 
 		},
 		teaser: function() {
-			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl_teaser, {post: this.toJSON()}));
+			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl_teaser||'', {post: this.toJSON()}));
 		},
 		html: function() {
-			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl, {post: this.toJSON()}));
+			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', {post: this.toJSON()}));
 		},
 		toJSON: function() {
 			return _.extend({}, this.attributes, {

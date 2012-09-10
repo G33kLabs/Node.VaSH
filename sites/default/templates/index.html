@@ -105,6 +105,14 @@
             <div class="span12">
                 {{&page.content}}
             </div>
+
+            <div class="widget-daemons">
+              {{#widgets}}
+                {{#silent}}
+                  <li class="widget widget-{{id}} {{#silent}}widget-silent{{/silent}}">{{&onServerRender}}</li>
+                {{/silent}}
+              {{/widgets}}
+            </div>
             {{/page.full}}
 
             {{^page.full}}
@@ -115,7 +123,7 @@
             <div class="span4">
                 <ul class="sidebar" id="widget-sidebar">
                     {{#widgets}}
-                      <li class="widget widget-{{id}}">{{&onServerRender}}</li>
+                      <li class="widget widget-{{id}} {{#silent}}widget-silent{{/silent}}">{{&onServerRender}}</li>
                     {{/widgets}}
                 </ul>
             </div>
@@ -134,7 +142,7 @@
 
     <!-- Le javascript
     ================================================== -->
-    <script data-main="/assets/js/app.min.js" src="/common/require.js" id="js-env" data-googleanalytics="UA-12891268-5"></script>
+    <script data-main="/assets/js/app.min.js" src="/common/require.js" id="js-env" data-googleanalytics="{{site.googleAnalytics}}"></script>
 
   </body>
 </html>

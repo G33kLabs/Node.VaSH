@@ -68,43 +68,97 @@ exports.warning = function(obj) { exports.log(obj, 'brown') ; }
 /*******************************************************************
  * Objects operations
  *******************************************************************/
-exports.extend = function(obj) {
-  var parentRE = /#{\s*?_\s*?}/,
-      slice = Array.prototype.slice,
-      hasOwnProperty = Object.prototype.hasOwnProperty;
-
-  _.each(slice.call(arguments, 1), function(source) {
-    for (var prop in source) {
-      if (hasOwnProperty.call(source, prop)) {
-        if (_.isUndefined(obj[prop])) {
-          obj[prop] = source[prop];
+exports.extend = function() {
+    var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {},
+    i = 1,
+    length = arguments.length,
+    deep = false,
+    toString = Object.prototype.toString,
+    hasOwn = Object.prototype.hasOwnProperty,
+    push = Array.prototype.push,
+    slice = Array.prototype.slice,
+    trim = String.prototype.trim,
+    indexOf = Array.prototype.indexOf,
+    class2type = {
+      "[object Boolean]": "boolean",
+      "[object Number]": "number",
+      "[object String]": "string",
+      "[object Function]": "function",
+      "[object Array]": "array",
+      "[object Date]": "date",
+      "[object RegExp]": "regexp",
+      "[object Object]": "object"
+    },
+    jQuery = {
+      isFunction: function (obj) {
+        return jQuery.type(obj) === "function"
+      },
+      isArray: Array.isArray ||
+      function (obj) {
+        return jQuery.type(obj) === "array"
+      },
+      isWindow: function (obj) {
+        return obj != null && obj == obj.window
+      },
+      isNumeric: function (obj) {
+        return !isNaN(parseFloat(obj)) && isFinite(obj)
+      },
+      type: function (obj) {
+        return obj == null ? String(obj) : class2type[toString.call(obj)] || "object"
+      },
+      isPlainObject: function (obj) {
+        if (!obj || jQuery.type(obj) !== "object" || obj.nodeType) {
+          return false
         }
-        else if (_.isString(source[prop]) && parentRE.test(source[prop])) {
-          if (_.isString(obj[prop])) {
-            obj[prop] = source[prop].replace(parentRE, obj[prop]);
+        try {
+          if (obj.constructor && !hasOwn.call(obj, "constructor") && !hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
+            return false
           }
+        } catch (e) {
+          return false
         }
-        else if (_.isArray(obj[prop]) || _.isArray(source[prop])){
-          if (!_.isArray(obj[prop]) || !_.isArray(source[prop])){
-            throw 'Error: Trying to combine an array with a non-array (' + prop + ')';
+        var key;
+        for (key in obj) {}
+        return key === undefined || hasOwn.call(obj, key)
+      }
+    };
+  if (typeof target === "boolean") {
+    deep = target;
+    target = arguments[1] || {};
+    i = 2;
+  }
+  if (typeof target !== "object" && !jQuery.isFunction(target)) {
+    target = {}
+  }
+  if (length === i) {
+    target = this;
+    --i;
+  }
+  for (i; i < length; i++) {
+    if ((options = arguments[i]) != null) {
+      for (name in options) {
+        src = target[name];
+        copy = options[name];
+        if (target === copy) {
+          continue
+        }
+        if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)))) {
+          if (copyIsArray) {
+            copyIsArray = false;
+            clone = src && jQuery.isArray(src) ? src : []
           } else {
-            obj[prop] = _.reject(exports.extend(obj[prop], source[prop]), function (item) { return _.isNull(item);});
+            clone = src && jQuery.isPlainObject(src) ? src : {};
           }
-        }
-        else if (_.isObject(obj[prop]) || _.isObject(source[prop])){
-          if (!_.isObject(obj[prop]) || !_.isObject(source[prop])){
-            throw 'Error: Trying to combine an object with a non-object (' + prop + ')';
-          } else {
-            obj[prop] = exports.extend(obj[prop], source[prop]);
-          }
-        } else {
-          obj[prop] = source[prop];
+          // WARNING: RECURSION
+          target[name] = exports.extend(deep, clone, copy);
+        } else if (copy !== undefined) {
+          target[name] = copy;
         }
       }
     }
-  });
-  return obj;
-};
+  }
+  return target;
+}
 
 
 /*******************************************************************

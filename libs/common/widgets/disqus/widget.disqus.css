@@ -1,0 +1,98 @@
+/*========================================================== WIDGETS BLOG ROLL ====*/
+.widget-disqus .content {
+	position: relative;
+	display: block;
+	z-index: 1;
+	padding: 0px 0px 0px;
+	border-radius: 6px;
+	background: #322a25;
+	color: #777;
+	text-shadow: 1px 1px 1px #444;
+	text-align: center;
+}
+
+.widget-disqus h4 {
+	background: #40c8f4;
+	border-radius: 6px 6px 0 0;
+	border: 2px dashed rgba(255, 255, 255, 0.8);
+	-moz-box-shadow: 0 0 0 4px #40c8f4, 2px 1px 4px 4px rgba(10,10,0,.5);
+	-webkit-box-shadow: 0 0 0 4px #40c8f4, 2px 1px 4px 4px rgba(10,10,0,.5);
+	box-shadow: 0 0 0 4px #40c8f4, 2px 1px 6px 4px rgba(10,10,0,.5);
+	color: #fff;
+	line-height: 36px;
+}
+
+.widget-disqus ul.dsq-widget-list {
+	position: relative;
+	display: block;
+	padding: 5px 10px 5px !important;
+}
+
+.widget-disqus li.dsq-widget-item {
+	position: relative;
+	display: block;
+	text-align: left;
+	min-height: 50px;
+	margin: 0 0 10px;
+	font-size: 13px;
+	line-height: 16px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.widget-disqus .dsq-widget-item:hover{
+	background: rgba(255, 255, 255, 0.4);
+}
+
+.widget-disqus li.dsq-widget-item .dsq-widget-avatar {
+	position: absolute;
+	display: block;
+	width: 45px;
+	height: 40px;
+	top: 5px;
+	left: 4px;	
+	background-size: 100% 100%;
+	-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.widget-disqus li.dsq-widget-item .dsq-widget-user {
+	position: relative;
+	display: block;
+	padding: 2px 10px 2px 58px;
+	color: #fff;
+}
+
+.widget-disqus li.dsq-widget-item .dsq-widget-comment {
+	position: relative;
+	display: block;
+	padding: 2px 10px 2px 58px;
+	color: #fff;
+	font-size: 12px;
+}
+
+.widget-disqus li.dsq-widget-item .dsq-widget-meta {
+	position: relative;
+	display: block;
+	padding: 0px 10px 2px 58px;
+	color: #fff;
+	font-size: 11px;
+}
+
+.widget-disqus li.dsq-widget-item .dsq-widget-meta a {
+	color: #ccc;
+	font-size: 11px;
+}
+
+/*
+
+<ul class="dsq-widget-list">	 
+	<li class="dsq-widget-item">	 
+		<a href="http://disqus.com/G33kLabs/"><img class="dsq-widget-avatar" src="http://mediacdn.disqus.com/uploads/users/3194/1929/avatar92.jpg?1347320885"></a>	 
+		<a class="dsq-widget-user" href="http://disqus.com/G33kLabs/">G33kLabs</a>	 
+		<span class="dsq-widget-comment"><p>Another test...</p></span>	 
+		<p class="dsq-widget-meta"><a href="http://local.js2node.com:10000/redis-io/install-redis-io-2-4-17-on-mac-osx-as-service">Install Redis.io 2.4.17 on Mac OSX as service</a>&nbsp;·&nbsp;<a href="http://local.js2node.com:10000/redis-io/install-redis-io-2-4-17-on-mac-osx-as-service#comment-646273999">52 minutes ago</a></p>	 
+		</li>	 
+*/

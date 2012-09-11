@@ -1,0 +1,16 @@
+{
+  "author": "@xonecas <seancaetanomartin@gmail.com> (xonecas.com)",
+  "name": "disqus-client",
+  "description": "A node.js DISQUS API client",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xonecas/disqus-node.git"
+  },
+  "main": "lib/disqus-node.js",
+  "engines": {
+    "node": ">=0.4.10"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -24,11 +24,13 @@ module.exports =  {
             '/common/js/bootstrap.js', 
             '/common/js/jquery.lazyload.min.js', 
             '/common/js/humanized_time_span.js', 
+            '/common/js/jquery.watch.js',
+            '/common/js/jquery.oembed.min.js',
             '/assets/js/app.js'
         ]
     },
     menus: ['Home', 'Node.js', 'jQuery', 'Redis.io', 'Snippets', 'Contact'],
-    widgets: ['aboutme', 'mostviewed', 'github', 'blogroll', 'archives', 'lazyload', 'analytics'],
+    widgets: ['aboutme', 'mostviewed', 'github', 'disqus', 'blogroll', 'archives', 'lazyload', 'analytics'],
     providers: {
         facebook: {
             infos: {

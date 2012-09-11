@@ -1,7 +1,6 @@
 var fs = require('fs'),
 	noop = function() {},
-	marked = require('marked'),
-	toMarkdown = require('to-markdown').toMarkdown,
+	marked = require(root_path+'/libs/common/js/markdown/'),
 	jsHighlight = require("highlight").Highlight,
 	zlib = require('zlib'),
 	htmlPacker = require('html-minifier').minify,
@@ -202,6 +201,7 @@ module.exports = Backbone.Model.extend({
 	    			if ( /\.md$/.test(_post.content) ) {
 	    				//console.log(root_path+'/'+post_path+'/'+_post.content)
 	    				fs.readFile(root_path+'/'+post_path+'/'+_post.content, 'utf8', function(err, content) {
+	    					self.posts[_post.id].raw = content ;
 	    					if ( ! err ) self.posts[_post.id].content =  marked(content); 
 	    					callback() ;
 	    				})
@@ -347,7 +347,7 @@ module.exports = Backbone.Model.extend({
 		filters = _.extend({}, {by: 'created', desc: true}, filters);
 		var sortedPosts = _.clone(this.posts) ;
 		sortedPosts = _.filter(sortedPosts, function(post){ 
-			if ( post.disabled ) return false;
+			if ( post.disabled && ! filters.all ) return false;
 			if ( ! filters.cat ) return true;
 			if ( ! _.isArray(post.tags) ) return false;
 			for ( var i = 0 ; i < post.tags.length ; i++ ) {
@@ -368,8 +368,12 @@ module.exports = Backbone.Model.extend({
 
 		// -> If want only a unique post
 		//console.log(self.attributes) ;
-		if ( filters.permalink ) {
-			var post = _.find(all, function(post){ return tools.permalink(post.title) == filters.permalink; });
+		if ( filters.permalink || filters.id ) {
+			var post = _.find(all, function(post){ 
+				if ( filters.permalink ) return tools.permalink(post.title) == filters.permalink; 
+				else if ( filters.id ) return tools.permalink(post.id) == filters.id; 
+				else return false;
+			});
 			posts.push(post) ;
 			post = new VaSH.Models.post(post, self) ; 
 			page.title = post.getTitle() + ' | ' + self.get('title') ;
@@ -389,9 +393,10 @@ module.exports = Backbone.Model.extend({
 
 		// -> Build html
 		if ( posts.length ) {
-			_.each(posts, function(post) {
+			_.each(posts, function(post, key) {
 				post = new VaSH.Models.post(post, self) ;
 				page.content += filters.permalink?post.html():post.teaser() ;
+				posts[key] = post.toJSON() ;
 			})
 		} else {
 			page.errorCode = 404 ;
@@ -400,7 +405,8 @@ module.exports = Backbone.Model.extend({
 
 		// -> Return results
 		callback(null, {
-			page: _.clone(page)
+			page: _.clone(page),
+			posts: posts
 		})
 	},
 
@@ -507,7 +513,8 @@ module.exports = Backbone.Model.extend({
 		var exclude_keys = ['configFile', 'alias', 'static_extension', 'public', 'cache', 'passport'] ;
 		var out = {} ;
 		_.each(this.attributes, function(item, key) {
-			if ( exclude_keys.indexOf(key) < 0 ) out[key] = item ;
+			if ( key == 'js_addon' ) out[key] = item.join('|')
+			else if ( exclude_keys.indexOf(key) < 0 ) out[key] = item ;
 		})
 		return out
 	}

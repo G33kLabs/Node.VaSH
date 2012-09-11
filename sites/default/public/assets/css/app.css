@@ -355,6 +355,23 @@ a[rel="tag"]:hover:before {
 	margin-bottom: 20px;
 }
 
+.post .comments {
+	margin-top: 20px;
+}
+
+.post .embed {
+	position: relative;
+	display: block;
+	padding: 10px 0;
+}
+
+.post .embed iframe {
+	position: relative;
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+}
+
 /** POST RESPONSIVE STYLES **/
 @media (max-width: 480px) {
 	.post .content {

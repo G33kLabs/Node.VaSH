@@ -15,6 +15,10 @@
 				this.initSocketIO() ;
 				this.initWidgets() ;
 
+				this.loadJSAddons() ;
+
+				this.loadEmbed() ;
+
 				//this.headerAnime() ;
 
 				//this.info('success', 'Welcome to '+this.dom.nav.find('a.brand').text()+' !') ;
@@ -125,6 +129,26 @@
 					}
 				})
 			},
+
+			//============================================================= LOAD JS ADDONS
+			loadJSAddons: function() {
+				var addons = _.filter(($('#require-loader').data('addon')||'').split('|'), function(url) {
+					return url != '' ;
+				}) ;
+				if ( ! addons.length ) return false;
+
+				async.forEachSeries(addons, function(addon, callback) {
+					require([addon], function() {
+						callback(null) ;	
+					})
+				}); 
+				
+			},
+
+			//============================================================= LOAD EMBED CODES
+			loadEmbed: function() {
+				$('.oembed').oembed();
+			}
 
 			//============================================================= HEADER ANIMATION
 			/*

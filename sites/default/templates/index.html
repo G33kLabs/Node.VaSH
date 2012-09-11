@@ -7,6 +7,7 @@
 
     <!-- Le styles -->
     <link href="/assets/css/app.min.css" rel="stylesheet">
+    {{#site.css_addon}}<link href="{{&.}}" rel="stylesheet">{{/site.css_addon}}
 
     <!-- Le author -->
     {{#page.author}}
@@ -142,7 +143,8 @@
 
     <!-- Le javascript
     ================================================== -->
-    <script data-main="/assets/js/app.min.js" src="/common/require.js" id="js-env" data-googleanalytics="{{site.googleAnalytics}}"></script>
+    <script data-main="/assets/js/app.min.js" src="/common/require.js" data-addon="{{#site.js_addon}}{{&.}}|{{/site.js_addon}}" id="require-loader"></script>
+    
 
   </body>
 </html>

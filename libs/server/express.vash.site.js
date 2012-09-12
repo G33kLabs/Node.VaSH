@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	noop = function() {},
-	marked = require(root_path+'/libs/common/js/markdown/'),
+	marked = require(root_path+'/libs/common/vendors/markdown/'),
 	jsHighlight = require("highlight").Highlight,
 	zlib = require('zlib'),
 	htmlPacker = require('html-minifier').minify,
@@ -337,7 +337,7 @@ module.exports = Backbone.Model.extend({
 			tools.error(content.split("\n").slice(e.line, e.line+10).join("\n")) ;
 			this.compileError = true ;
 			require('child_process').exec('say -v Alex -r 200 "What the fuck baby ? "') ;
-			process.exit() ;
+			//process.exit() ;
 			
 		} 
 		return jsPacker.gen_code(ast); // compressed code here

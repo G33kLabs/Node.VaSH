@@ -9,23 +9,22 @@ module.exports =  {
     language: 'en-EN',
     assets: {
         css: [
-            '/common/css/bootstrap.css', 
+            '/common/vendors/bootstrap/bootstrap.css', 
             '/common/css/highlight.monokai.css',
             '/assets/css/app.css'
         ],
         js: [
-            '/common/js/jquery.min.js', 
-            '/common/js/async.min.js', 
+            '/common/vendors/jquery.min.js', 
+            '/common/vendors/async.min.js', 
+            '/common/vendors/date.min.js', 
+            '/common/vendors/mustache.min.js', 
+            '/common/vendors/underscore.min.js', 
+            '/common/vendors/backbone.min.js', 
+            '/common/vendors/bootstrap/bootstrap.js', 
+            '/common/vendors/jquery.lazyload.min.js', 
+            '/common/vendors/humanized_time_span.js', 
+            '/common/vendors/jquery.oembed.min.js',
             '/common/js/vash.toolkit.js', 
-            '/common/js/date.min.js', 
-            '/common/js/mustache.min.js', 
-            '/common/js/underscore.min.js', 
-            '/common/js/backbone.min.js', 
-            '/common/js/bootstrap.js', 
-            '/common/js/jquery.lazyload.min.js', 
-            '/common/js/humanized_time_span.js', 
-            '/common/js/jquery.watch.js',
-            '/common/js/jquery.oembed.min.js',
             '/assets/js/app.js'
         ]
     },

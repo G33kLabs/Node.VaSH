@@ -15,7 +15,7 @@
 		// -> Start Admin Interface
 		var AdminUI = new (Backbone.Model.extend({
 			loadContent: function(url, part) {
-				var startLoading = (new Date()).getTime() ;
+				var self = this, startLoading = (new Date()).getTime() ;
 
 				// -> Add loading layout
 				$('#admin-panel').append('<div class="overlay overlay-white"></div>') ;
@@ -26,10 +26,26 @@
 					setTimeout(function() {
 						$('#admin-panel').html($(data).find(part)) ;
 						setTimeout(function() {
-							$('.admin-articles-edit textarea').tabby().trigger('keyup') ;
+							self.initEditPanel() ;
 						}, 200) ;
 					}, Math.max(0, 600-((new Date()).getTime()-startLoading) )) ;
 				}) ;
+			},
+			initEditPanel: function() {
+				$('.admin-articles-edit textarea').tabby().trigger('keyup') ;
+				
+				//"http://shell.loopj.com/tokeninput/tvshows.php"
+				var prePopulateTags = ($('.admin-articles-edit input#input-tags').val()||'').split(',') ;
+
+				$('.admin-articles-edit input#input-tags').tokenInput("/admin/articles/tags/", {
+	                theme: "mac",
+	                prePopulate: _.map(prePopulateTags, function(tag) {
+	                	return {
+	                		id: tag,
+	                		name: tag
+	                	}
+	                }) 
+	            });
 			}
 		}))() ;
 
@@ -63,6 +79,12 @@
 			else if ( href == '#admin-articles' ) {
 				AdminUI.loadContent('/admin/articles/', '.admin-articles') ;
 			}
+			else if ( href == '#admin-dashboard' ) {
+				AdminUI.loadContent('/admin/dashboard/', '.admin-dashboard') ;
+			}
+			else if ( href == '#admin-settings' ) {
+				AdminUI.loadContent('/admin/settings/', '.admin-settings') ;
+			}
 
 			//e.stopPropagation(); 
 			//e.preventDefault() ;
@@ -70,7 +92,6 @@
 		}) ;
 
 		// -> Load first page
-		console.log('href:', window.location.pathname)
 		if ( /^\/admin\/$/.test(window.location.pathname) ) {
 			$('a[href="#admin-articles"]').click() ;
 		}

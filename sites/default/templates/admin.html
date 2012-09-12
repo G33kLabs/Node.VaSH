@@ -6,12 +6,12 @@
 
 	{{^empty}}
 	<div class="admin-tab admin-dashboard">
-
+		<h3>DashBoard</h3>
 
 	</div>
 
 	<div class="admin-tab admin-settings">
-
+		<h3>Settings</h3>
 
 	</div>
 
@@ -68,7 +68,9 @@
 
 			<label>Tags</label>
 			<div class="row-fluid">
-				<input type="text" class="span10" id="input-tags">
+				<div class="span10">
+					<input type="text" id="input-tags" value="{{edit.tags}}">
+				</div>
 			</div>
 
 			<label>Public Date</label>

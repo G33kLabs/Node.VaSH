@@ -20,7 +20,17 @@
 	background-position: 50% 60px;
 }
 
+#admin-panel .admin-tab {
+	min-height: 200px;
+}
+
 /*================================================================ EDIT FORM */
+.admin-articles-edit textarea {
+	position: relative;
+	display: block;
+	height: 300px;
+}
+
 .admin-articles-edit .content_preview {
 	height: 300px;
 	position: relative;
@@ -53,8 +63,50 @@
 	padding: 10px 0;
 }
 
-.admin-articles-edit iframe {
+.admin-articles-edit .embed iframe {
 	position: relative;
 	display: block;
 	margin: 0 auto;
+}
+
+.admin-articles-edit ul.token-input-list-mac {
+	position: relative;
+	display: block;
+	border: 1px solid #ccc;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin-bottom: 10px;
+}
+
+.admin-articles-edit li.token-input-token-mac {
+	font-size: 9pt;
+	line-height: 12pt;
+	overflow: hidden;
+	height: 16px;
+	margin: 3px 4px;
+	padding: 0 10px;
+	background: none;
+	background-color: #DEE7F8;
+	color: black;
+	cursor: default;
+	border: 1px solid #A4BDEC;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	float: left;
+}
+.admin-articles-edit li.token-input-input-token-mac {
+	margin-left: 5px;
+}
+
+.admin-articles-edit li.token-input-input-token-mac input {
+	border: 0;
+	width: 100px;
+	padding: 3px;
+	background-color: transparent;
+	margin: 0;
+	line-height: 13px;
+	height: auto;
+	font-size: 12px;
 }

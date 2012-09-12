@@ -91,7 +91,7 @@
 				}) ;
 			},
 			bindPostClick: function() {
-				$('.post.list .content').live('click', function(e) {
+				$('.post.list .content').live('mousedown touchstart', function(e) {
 					var permalink = $(this).find('a.permalink').attr('href') ;
 					if ( permalink ) window.top.location.href = permalink; 
 					return false;

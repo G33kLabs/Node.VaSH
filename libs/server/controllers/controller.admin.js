@@ -52,13 +52,56 @@
 							return (new VaSH.Models.post(post, self.instance.get('website'))).toJSON() ; 
 						}); 
 					}
+					else if ( /^\/admin\/dashboard\/$/.test(req_path) ) {
+						 
+					}
+					else if ( /^\/admin\/settings\/$/.test(req_path) ) {
+						 
+					}
+					else if ( /^\/admin\/articles\/tags\/$/.test(req_path) ) {
+						var query = self.instance.get('req').query.q || '' ;
+						var tags = [] ;
+
+						// -> Format query
+						if ( query.toLowerCase() == query ) query = tools.ucfirst(query) ;
+
+						// -> Get tags
+						_.each(self.instance.get('website').posts, function(post) {
+							_.each(post.tags, function(tag) {
+								if ( tags.indexOf(tag) >= 0 ) return;
+								if ( ! (new RegExp(query, 'i')).test(tag) ) return;
+								tags.push(tag) ;
+							})
+						}) ;
+
+						// -> If no tags, add query as a tag
+						tags = tags.sort().slice(0, 10) ;
+						if ( ! tags.length || tags.indexOf(query) < 0 ) {
+							tags.push(query); 
+						}
+
+						// -> Map response
+						tags = _.map(tags, function(tag) {
+							return {
+								name: tag,
+								id: tag
+							}
+						}) ;
+
+						// -> Store it for json output
+						view.json = tags ;
+					}
 					else if ( /^\/admin\/articles\/edit\/$/.test(req_path) ) {
 						console.log(self.instance.get('req').query.id)
 						filters.id = self.instance.get('req').query.id ;
 						self.instance.get('website').list(filters, function(err, datas) {
-							console.log(datas.posts)
 							if ( datas.posts && datas.posts[0] ) {
 								view.edit = datas.posts[0] ;
+								if ( view.edit.tags.length ) 
+									view.edit.tags = _.map(view.edit.tags, function(tag) { return tag.name}).join(',')
+								else {
+									view.edit.tags = '' ;
+								}
 							}
 							callback(null, view) ;
 						}); 
@@ -69,7 +112,7 @@
 					}
 
 					// -> Logs
-					console.log(req_url, req_path) ;
+					//console.log(req_url, req_path) ;
 					
 					// -> Callback for general cases
 					callback(null, view) ;
@@ -78,14 +121,24 @@
 				// -> Set Admins menus and add assets addons for admin purposes only
 				function(view, callback) {
 					view.site.menus = self.getMenus() ;
-					view.site.css_addon = ['/common/css/admin.css'] ;
-					view.site.js_addon = ['/common/js/markdown/markdown.js', '/common/js/jquery.textarea.js', '/common/js/admin.js', 'http://yandex.st/highlightjs/7.2/highlight.min.js'] ;
+					view.site.css_addon = [
+						'/common/css/admin.css',
+						'/common/vendors/tokeninput/token-input.css',
+						'/common/vendors/tokeninput/token-input-mac.css'
+					] ;
+					view.site.js_addon = [
+						'/common/vendors/markdown/markdown.js', 
+						'/common/vendors/jquery.textarea.js', 
+						'http://yandex.st/highlightjs/7.2/highlight.min.js',
+						'/common/vendors/tokeninput/jquery.tokeninput.js',
+						'/common/js/admin.js'
+					] ;
 					callback(null, view) ;
 				},
 
 				// -> Build template
 				function(view, callback) {
-					console.log("--------------", view)
+					//console.log("--------------", view)
 
 					// -> Create page output
 					view.page = {
@@ -93,7 +146,7 @@
 						title: 'VaSH Admin',
 						name: 'VaSH Admin &raquo '+tools.ucfirst(instance.getSiteAlias()),
 						desc: 'DashBoard Panel',
-						content: VaSH.Mustache.to_html(instance.get('website').templates['admin.html'], view)
+						content: VaSH.Mustache.to_html(instance.get('website').templates['admin.html']||'', view)
 					};			
 
 					// -> Return page
@@ -101,8 +154,10 @@
 
 				}
 			], function(err, res) {
-				if ( ! err ) instance.sendWithLayout(res); 
-				else instance.error()
+				if ( err )  instance.error()
+				else if (res.plainText) instance.get('res').end(res.plainText)
+				else if (res.json) instance.get('res').json(res.json)
+				else instance.sendWithLayout(res); 
 			}) ;
 
 			return this;

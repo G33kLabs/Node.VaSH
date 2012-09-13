@@ -28,7 +28,7 @@ ul.token-input-list-mac {
     font-size: 12px;
     font-family: Verdana;
     min-height: 1px;
-    z-index: 999;
+    z-index: 1;
     margin: 0;
     padding: 3px;
     background: transparent;

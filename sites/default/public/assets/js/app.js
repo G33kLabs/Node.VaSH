@@ -167,7 +167,7 @@
 
 		// -> Init application UI
 		console.log('[>] Document is ready !')
-		var app = new ApplicationUI() ;
+		window.app = new ApplicationUI() ;
 
 	}); 
 

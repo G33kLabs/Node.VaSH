@@ -84,7 +84,7 @@ module.exports = Backbone.Model.extend({
 		if ( self.get('api') ) {
 			var apiMethod = self.api()[self.get('api')] ;
 			if ( _.isFunction(apiMethod) ) {
-				tools.log(' [>] Server route '+self.getPath()+' :: '+self.get('api')+' => '+match[1]) ;
+				tools.debug(' [>] Server route '+self.getPath()+' :: '+self.get('api')+' => '+match[1]) ;
 				apiMethod({	match: match }); 
 			}
 			else {
@@ -196,7 +196,7 @@ module.exports = Backbone.Model.extend({
 			'list::cat': function(opts) {
 
 				// -> If cat is in match result
-				if ( opts && opts.match ) {
+				if ( opts && opts.match) {
 					opts.cat = opts.match[1] ;
 					delete opts.match;
 				}
@@ -206,8 +206,10 @@ module.exports = Backbone.Model.extend({
 					page: self.get('req').query.page||1,
 					cat: null,
 					by: 'created',
-					desc: true
+					desc: true,
+					isAdmin: self.isAdmin()
 				}, opts) ;
+				console.log(opts,filters)
 
 				// -> Some logs
 				tools.warning('List::cat::'+json(filters))
@@ -224,7 +226,7 @@ module.exports = Backbone.Model.extend({
 			},
 			'post::read': function(opts) {
 				apiMethod['list::cat']({
-					cat: opts.match[1],
+					//cat: opts.match[1],
 					permalink: opts.match[2] 
 				}) ;
 			},
@@ -280,6 +282,14 @@ module.exports = Backbone.Model.extend({
 		if ( userid.length ) return userid.join('_') ;
 	},
 
+	isAdmin: function() {
+		var website = this.get('website').toJSON() ;
+		if ( _.isArray(website.admins) ) {
+			return (website.admins.indexOf(this.getUserId())<0) ? false : true;
+		}
+		return false;
+	},
+
 	/////////////////////////////////////////////////////////////////////// SEND CONTENT
 	// -> Send content without wrap it
 	sendWithLayout: function(datas) {
@@ -303,17 +313,10 @@ module.exports = Backbone.Model.extend({
 		//console.log(self.get('website').widgets)
 
 		// -> Build a user id
-		var userid = [] ;
-		if ( (self.get('req').user||{}).provider ) 
-			userid.push((self.get('req').user||{}).provider); 
-		if ( (self.get('req').user||{}).id ) 
-			userid.push((self.get('req').user||{}).id); 
-		if ( userid.length ) view.userid = userid.join('_') ;
+		var userid = self.getUserId() ;
 
 		// -> Is user an admin ?
-		if ( _.isArray(view.site.admins) ) {
-			view.isAdmin = (view.site.admins.indexOf(view.userid)<0) ? false : true;
-		}
+		view.isAdmin = self.isAdmin() ;
 
 /*
 		console.log("--------------------------------------------------------")
@@ -353,6 +356,14 @@ module.exports = Backbone.Model.extend({
 		}
 		else {
 			tools.warning('[>] Generate HTML : '+JSON.stringify(outDebug)) ;
+		}
+
+		// -> Check that template is ready
+		if ( ! self.get('website').templates['index.html'] ) {
+			res.statusCode = 304;
+			res.end("Index.html is not yet loaded...");
+			tools.debug('[>] Return 304 : '+JSON.stringify(outDebug)) ;
+			return;
 		}
 
 		// -> Build output
@@ -431,6 +442,12 @@ module.exports = Backbone.Model.extend({
 		// -> Parse and protect param
 		page = page || {} ;
 		if ( typeof page == 'string' ) page = {content: page} ;
+
+		// -> Output json
+		console.log(page)
+		if ( page.json ) {
+			return self.get('res').json(page.json)
+		}
 
 		// -> No Config found for website ?
 		if ( ! self.get('website') ) {

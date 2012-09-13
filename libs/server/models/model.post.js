@@ -8,6 +8,7 @@
 
 	exports.shared = Backbone.Model.extend({
 		initialize: function(opts, instance) {
+			if ( ! instance ) return this ;
 			this.siteObj = instance; 
 			this.tpl = instance.templates['post.html'] 
 			this.tpl_teaser = instance.templates['teaser.html'] 
@@ -37,7 +38,7 @@
 			return this.get('desc')
 		},
 		getLink: function() {
-			return '/'+tools.permalink(this.getCategory()||'')+'/'+tools.permalink(this.get('title')||'')
+			return '/'+tools.permalink(this.getCategory()||'general')+'/'+tools.permalink(this.get('title')||'')
 		},
 		getAuthor: function() {
 			return this.siteObj.get('authors')[this.get('author')] 
@@ -47,6 +48,9 @@
 		},
 		html: function() {
 			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', {post: this.toJSON()}));
+		},
+		getModel: function() {
+			return 'id created title desc raw content tags thumb author disabled'.split(' ');
 		},
 		toJSON: function() {
 			return _.extend({}, this.attributes, {
@@ -61,8 +65,12 @@
 				}),
 				big_thumb: this.get('thumb') ? '/'+this.get('id')+'/thumb' : null,
 				author: this.getAuthor(),
+				author_email: this.get('author'),
+				disabled: (this.get('disabled') == 'yes') ? 'yes' : 'no',
+				isDisabled: (this.get('disabled') == 'yes') ? true : false,
 				comments: 0,
-				displayDate: new Date(this.get('created')).toString("dd MMM yyyy HH:mm"),
+				createdDate: new Date(this.get('created')).toString("dd MMM yyyy HH:mm"),
+				updatedDate: this.get('updated') ? new Date(this.get('updated')).toString("dd MMM yyyy HH:mm") : null,
 				cat: this.getCategory()
 			})
 		},
@@ -75,6 +83,8 @@
 				tags: this.get('tags'),
 				cat: this.getCategory(),
 				author: this.getAuthor(),
+				disabled: this.get('disabled') == 'yes' ? 'yes' : 'no',
+				isDisabled: this.get('disabled') == 'yes' ? true : false,
 				comments: 0,
 				pubDate: tools.GetRFC822Date(new Date(this.get('created')))
 			}

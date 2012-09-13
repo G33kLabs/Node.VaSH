@@ -22,19 +22,100 @@
 
 #admin-panel .admin-tab {
 	min-height: 200px;
+	position: relative;
+	display: block;
+}
+
+#admin-panel .admin-tab #action_buttons {
+	position: absolute;
+	display: block;
+	top: 0;
+	right: 0;
 }
 
 /*================================================================ EDIT FORM */
-.admin-articles-edit textarea {
+.admin-articles-edit #input-thumbnail {
+	min-height: 30px;
 	position: relative;
 	display: block;
-	height: 300px;
+	border: 3px dashed #ccc;
+	border-radius: 5px;
+	margin: 0 0 10px;
+	max-width: 650px;
+}
+
+.admin-articles-edit p.drag-message,
+.admin-articles-edit p.drop-message,
+.admin-articles-edit p.upload {
+	position: absolute;
+	display: block;
+	text-align: center;
+	line-height: 30px;
+	margin: 0;
+	padding: 0;
+	opacity: 0.7;
+	-webkit-transition: all 200ms ease-in-out;
+	width: 100%;
+}
+
+.admin-articles-edit p.upload img {
+	padding: 3px;
+	background: #ccc;
+	border-radius: 3px;
+	box-sizing: border-box;
+}
+
+.admin-articles-edit p.drop-message { opacity: 0; }
+.admin-articles-edit p.upload { opacity: 0; }
+
+.admin-articles-edit #input-thumbnail:hover p.drag-message { opacity: 1; }
+
+.admin-articles-edit #input-thumbnail.dragover { border-color: #FF8F47; }
+.admin-articles-edit #input-thumbnail.dragover p.drag-message { opacity: 0; }
+.admin-articles-edit #input-thumbnail.dragover p.drop-message { opacity: 1; }
+
+.admin-articles-edit #input-thumbnail.uploading { border-color: transparent; }
+.admin-articles-edit #input-thumbnail.uploading p.upload { opacity: 1; display: block;}
+.admin-articles-edit #input-thumbnail.uploading p.drag-message { opacity: 0; }
+.admin-articles-edit #input-thumbnail.uploading p.drop-message { opacity: 0; }
+
+.admin-articles-edit p.upload {
+	position: relative;
+	display: block;
+	max-width: 650px; 
+	display: none;
+	background: transparent no-repeat left center;
+	width: 100%;
+	background-size: 100% 100%;
+	line-height: 18px;
+}
+
+.admin-articles-edit textarea,
+.admin-articles-edit .content_preview {
+	position: relative;
+	display: block;
+	height: 400px;
+	width: 100%;
+}
+
+@media (max-width: 1000px) {
+	.admin-articles-edit .span6,
+	.admin-articles-edit .span12 {
+		width: 98%;
+		display: block;
+		margin-left: 0;
+	}
+}
+
+.admin-articles-edit label {
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: bold;
+	color: #555;
+	margin-top: 10px;
 }
 
 .admin-articles-edit .content_preview {
-	height: 300px;
-	position: relative;
-	display: block;
 	overflow: scroll;
 	background-color: white;
 	border: 1px solid #CCC;
@@ -55,6 +136,14 @@
 	font-size: 24px;
 	line-height: 40px;
 	min-height: 40px;
+	width: 100%;
+}
+
+.admin-articles-edit #input-desc {
+	font-size: 16px;
+	line-height: 24px;
+	min-height: 40px;
+	width: 100%;
 }
 
 .admin-articles-edit .embed {
@@ -69,6 +158,7 @@
 	margin: 0 auto;
 }
 
+/*=========================================================== INPUT TAGS */
 .admin-articles-edit ul.token-input-list-mac {
 	position: relative;
 	display: block;

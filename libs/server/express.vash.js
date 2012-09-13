@@ -93,7 +93,8 @@ VaSH.prototype.load = function() {
 
 				var opts = _.extend({
 					public_path: self.options.sites_path+site,
-					configFile: self.options.sites_path+site+'/config.js'
+					configFile: self.options.sites_path+site+'/config.js',
+					name: site
 				}, self.options) ;
 
 				fs.exists(opts.configFile, function(exists) {
@@ -300,6 +301,15 @@ VaSH.prototype.monitor_debug = function() {
             		_.each(vash.sites, function(site, name) {
             			site.reloadTemplates()  ;
             		}) ;
+            	}
+
+            	else if ( /posts\//.test(f) ) {
+            		/*
+            		tools.log('[>] Reload posts...')
+            		_.each(vash.sites, function(site, name) {
+            			site.reloadPosts()  ;
+            		}) ;
+*/
             	}
 
             	// -> Reload only assets

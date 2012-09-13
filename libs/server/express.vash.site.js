@@ -196,19 +196,22 @@ module.exports = Backbone.Model.extend({
 	    	async.forEachSeries(datas, function(post, callback) {
 	    		if ( ! /\.js$/.test(post.path) ) return callback() ;
 	    		try {
-	    			var _post = require(root_path+'/'+post.path) ;
-	    			self.posts[_post.id] = _post ;
-	    			if ( /\.md$/.test(_post.content) ) {
-	    				//console.log(root_path+'/'+post_path+'/'+_post.content)
-	    				fs.readFile(root_path+'/'+post_path+'/'+_post.content, 'utf8', function(err, content) {
-	    					self.posts[_post.id].raw = content ;
-	    					if ( ! err ) self.posts[_post.id].content =  marked(content); 
-	    					callback() ;
-	    				})
-	    			} 
-	    			else {
-	    				callback() ;
-	    			}
+	    			var postId = post.path.replace(/\.js/, '').split('/').pop() ;
+	    			self.getPost(postId, function(err, datas) {
+	    				self.posts[datas.id] = datas ;
+						if ( /\.md$/.test(datas.content) ) {
+		    				fs.readFile(root_path+'/'+post_path+'/'+datas.content, 'utf8', function(err, content) {
+		    					self.posts[datas.id].raw = content ;
+		    					if ( ! err ) self.posts[datas.id].content =  marked(content); 
+		    					callback() ;
+		    				})
+		    			} 
+		    			else {
+		    				callback() ;
+		    			}
+
+	    			}) ;
+	    			
 	    		} catch(e) {
 	    			tools.error(e) ;
 	    			callback(e) ;
@@ -218,6 +221,104 @@ module.exports = Backbone.Model.extend({
 	    		callback(null, self.posts) ;
 	    	});
 	    })		
+	},
+
+	getPost: function(id, callback) {
+		var self = this;
+		var post_path = self.get('public_path')+'/posts' ;
+		callback = callback || noop;
+		try {
+			fs.readFile(root_path+'/'+post_path+'/'+id+'.js', 'utf8', function(err, datas) {
+				if ( err || ! datas ) return callback('No datas in file !') ;
+				try { eval('datas='+datas.replace(/\n/g, '')) } catch(e) {}
+				if ( datas && datas.raw ) datas.content = marked(datas.raw); 
+				callback(null, datas) ;
+			}) ;			
+		} catch(e) {
+			callback(e) ;
+		}
+	},
+
+	setPost: function(post, callback) {
+		var self = this;
+		var post_path = self.get('public_path')+'/posts' ;
+		callback = callback || noop;
+
+		// -> No id ? Out !
+		if ( ! post || ! post.id ) {
+			return callback('You should provide an id to the post !') ;
+		}
+
+		// -> If thumb sended
+		async.series({
+			thumb: function(callback) {
+				if ( post.thumb && post.thumb.binary ) {
+					tools.log('[>] Store thumb : '+'/'+post_path+'/'+post.thumb.file, 'purple')
+					fs.writeFile(root_path+'/'+post_path+'/'+post.thumb.file, post.thumb.binary, function(err, success) {
+						post.thumb = post.thumb.file ;
+						callback(err, true); 
+					})
+				}
+				else callback() ;
+			},
+			post: function(callback) {
+				tools.log('[>] Store post : '+'/'+post_path+'/'+post.id+'.js', 'purple')
+				post.created = parseInt(post.created) ;
+				post.disabled = post.disabled == 'yes' ? 'yes' : 'no' ;
+				fs.writeFile(root_path+'/'+post_path+'/'+post.id+'.js', JSON.stringify(post, null, 4), 'utf8', function(err, success) {
+					if ( ! err ) {
+						if ( post && post.raw ) post.content = marked(post.raw); 
+						self.posts[post.id] = post ;
+					}
+					callback(err, true); 
+				})
+			}
+		}, function(err, success) {
+			callback(err, success); 
+		}); 
+	},
+
+	delPost: function(post, callback) {
+		var self = this;
+		var post_path = self.get('public_path')+'/posts' ;
+		callback = callback || noop;
+
+		// -> No id ? Out !
+		if ( ! post || ! post.id ) {
+			return callback('You should provide an id to the post !') ;
+		}
+
+		// -> Remove from posts
+		delete self.posts[post.id]  ;
+
+		// -> If thumb sended
+		async.series({
+			delete_thumb: function(callback) {
+				if ( post.thumb ) {
+					var filePath = '/'+post_path+'/'+post.id+'_thumb.jpg' ;
+					tools.log('[>] Delete thumb : '+filePath, 'purple')
+					fs.exists(root_path+'/'+filePath, function(exists) {
+						if ( exists ) fs.unlink(root_path+'/'+filePath, function() {
+							callback(null, true); 
+						})
+						else callback(null, true);
+					}) ;					
+				}
+				else callback() ;
+			},
+			delete_post: function(callback) {
+				var filePath = '/'+post_path+'/'+post.id+'.js' ;
+				tools.log('[>] Delete post : '+filePath, 'purple')
+				fs.exists(root_path+'/'+filePath, function(exists) {
+					if ( exists ) fs.unlink(root_path+'/'+filePath, function() {
+						callback(null, true); 
+					})
+					else callback(null, true);
+				}) ;	
+			}
+		}, function(err, success) {
+			callback(err, success); 
+		}); 
 	},
 
 	reloadAssets: function(callback) {
@@ -347,7 +448,7 @@ module.exports = Backbone.Model.extend({
 		filters = _.extend({}, {by: 'created', desc: true}, filters);
 		var sortedPosts = _.clone(this.posts) ;
 		sortedPosts = _.filter(sortedPosts, function(post){ 
-			if ( post.disabled && ! filters.all ) return false;
+			if ( post.disabled && post.disabled == 'yes' && ! filters.all ) return false;
 			if ( ! filters.cat ) return true;
 			if ( ! _.isArray(post.tags) ) return false;
 			for ( var i = 0 ; i < post.tags.length ; i++ ) {
@@ -394,6 +495,8 @@ module.exports = Backbone.Model.extend({
 		// -> Build html
 		if ( posts.length ) {
 			_.each(posts, function(post, key) {
+				post = post || {} ;
+				post.isAdmin = filters.isAdmin ;
 				post = new VaSH.Models.post(post, self) ;
 				page.content += filters.permalink?post.html():post.teaser() ;
 				posts[key] = post.toJSON() ;

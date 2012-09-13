@@ -22,10 +22,11 @@
 			var txt = tools.teaser(this.get('content'), max).replace(/(<([^>]+)>)/ig," ");
 			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?' <small>[...]</small>':''));
 		},
-		getRSSTeaser: function(max) {
+		getRSSTeaser: function(max, dots) {
 			max = max || 200 ;
+			dots = dots ||  ' [...]' ;
 			var txt = tools.teaser(this.get('content'), max).replace(/(<([^>]+)>)/ig," ").replace(new RegExp("\n", 'g'), '');
-			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?' [...]':''));
+			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?dots:''));
 		},
 		getCategory: function() {
 			var mainTag = 'General' ;

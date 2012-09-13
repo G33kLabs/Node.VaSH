@@ -15,11 +15,6 @@
     <link rel="author" href="{{&site.author.profile}}">
     {{/site.author}}
 
-    <!-- La canonical Url -->
-    {{#page.canonical}}
-    <link rel="canonical" href="{{&site.website}}{{&page.canonical}}"/>
-    {{/page.canonical}}
-
     <!-- Le RSS -->
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/">
 
@@ -34,7 +29,7 @@
     <!-- SEO -->
     <meta name="description" content="{{&page.desc}}{{&page.seo_desc}}" />
     {{#page.keywords}}<meta name="keywords" content="{{&page.keywords}}" />{{/page.keywords}}
-    {{#page.canonical}}<link rel="canonical" href="{{&website}}/" />{{/page.canonical}}
+    {{#page.canonical}}<link rel="canonical" href="{{&site.website}}{{&page.canonical}}"/>{{/page.canonical}}
     <!-- /seo -->
 
     <!-- Le fav and touch icons -->

@@ -491,6 +491,7 @@ module.exports = Backbone.Model.extend({
 			page.desc = self.get('title')+ " > "+post.getDesc()  ;
 			page.author = self.get('authors')[post.get('author')]; 
 			page.canonical = post.getLink() ;
+			page.seo_desc = ( 140 > page.desc.length ? ' : '+post.getRSSTeaser(200-page.desc.length, '...') : '' );
 		}
 
 		// -> Select posts to display

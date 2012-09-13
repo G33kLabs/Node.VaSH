@@ -1,11 +1,9 @@
 {{#post.isAdmin}}
-{{^feed}}
 <div class="alert alert-block alert-info">
 	<button type="button" class="close" data-dismiss="alert">×</button>
 	<h4>Admin quick links</h4>
 	<a href="/admin/#admin-articles-edit-{{post.id}}">Click here to edit this post..</a>
 </div>
-{{/feed}}
 {{/post.isAdmin}}
 
 <div class="post post-{{post.id}}">

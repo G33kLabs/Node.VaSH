@@ -209,14 +209,15 @@ module.exports = Backbone.Model.extend({
 					desc: true,
 					isAdmin: self.isAdmin()
 				}, opts) ;
-				console.log(opts,filters)
+				//console.log(opts,filters)
 
 				// -> Some logs
 				tools.warning('List::cat::'+json(filters))
 
 				// -> Request post list html
 				self.get('website').list(filters, function(err, doc) {
-					if ( err || ! doc || ! doc.page ) self.error() ;
+					console.log(doc) ;
+					if ( err || ! doc || ! doc.page ) self.error("No post found :(") ;
 					else self.sendWithLayout(doc)
 				}) 
 
@@ -225,7 +226,14 @@ module.exports = Backbone.Model.extend({
 				apiMethod['list::cat']() ;
 			},
 			'contact::read': function() {
-
+				self.sendWithLayout({
+					page: {
+						title: 'Contact me',
+						name: 'Contact me',
+						desc: self.get('website').get('title')+" &raquo; Don't hesitate to ask me questions, I'll answer asap -_' ",
+						content: VaSH.Mustache.to_html(self.get('website').templates['contact.html'], self.get('website').toJSON())
+					}
+				})
 			},
 			'post::read': function(opts) {
 				apiMethod['list::cat']({
@@ -430,7 +438,6 @@ module.exports = Backbone.Model.extend({
 		if ( typeof page == 'string' ) page = {content: page} ;
 
 		// -> Output json
-		console.log(page)
 		if ( page.json ) {
 			return self.get('res').json(page.json)
 		}

@@ -62,6 +62,8 @@ module.exports =  {
             avatar: 'https://profiles.google.com/s2/photos/profile/115555146160120072472',
             profile: 'https://plus.google.com/115555146160120072472/posts',
             city: 'Paris / France',
+            job: 'Consultant / Développeur',
+            employer: 'G33kLabs',
             social: [
                 {
                     provider: 'Twitter',

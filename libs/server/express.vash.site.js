@@ -512,7 +512,7 @@ module.exports = Backbone.Model.extend({
 			})
 		} else {
 			page.errorCode = 404 ;
-			page.content = "<div class='error'>Sorry but there is a mistake with this page ! </div>"; 
+			page.content = "<div class='alert alert-block alert-error'><h4>No content found !</h4>Sorry but there is no content linked to your search :( </div>"; 
 		}
 
 		// -> Return results

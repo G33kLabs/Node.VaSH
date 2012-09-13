@@ -1,4 +1,13 @@
 /*========================================================== WIDGETS ABOUT ME ====*/
+.widget-aboutme .seo {
+	position: absolute;
+	display: block;
+	width: 1px;
+	height: 1px;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
 .widget-aboutme .avatar {
 	position: relative;
 	display: block;

@@ -46,8 +46,8 @@
 		teaser: function() {
 			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl_teaser||'', {post: this.toJSON()}));
 		},
-		html: function() {
-			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', {post: this.toJSON()}));
+		html: function(feed) {
+			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', {feed: feed, post: this.toJSON()}));
 		},
 		getModel: function() {
 			return 'id created title desc raw content tags thumb author disabled'.split(' ');
@@ -78,7 +78,7 @@
 			return {
 				title: this.getTitle(),
 				teaser: this.getRSSTeaser(),
-				content: this.html(),
+				content: this.html(true),
 				permalink: this.siteObj.getBaseUrl()+this.getLink(),
 				tags: this.get('tags'),
 				cat: this.getCategory(),

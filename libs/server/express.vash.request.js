@@ -12,7 +12,7 @@ module.exports = Backbone.Model.extend({
 			'auth': /^\/auth\/([a-zA-Z0-9.\-]+)(\/[a-zA-Z0-9.\-]+|)/,
 			'admin': /^\/admin\/([a-zA-Z0-9.\-]+|)(\/[a-zA-Z0-9.\-]+|)/,
 			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3|txt)$/i,
-			'feed::read': /^\/feed/,
+			'feed::read': /^\/(feed|rss)/,
 			'sitemap::read': /^\/sitemap\.xml(\.gz|)/,
 			'contact::read': /^\/contact/,
 			'post::thumb': /^\/([0-9a-f]+)\/thumb/,

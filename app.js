@@ -12,10 +12,10 @@ var fs = require('fs'),
     cluster = require('cluster'),
     colors = require('colors'),
     http = require('http'),
-    mkdirp = require('mkdirp'),
     numCPUs = require('os').cpus().length ;
 
 // -- Load Globals
+GLOBAL.mkdirp = require('mkdirp') ;
 GLOBAL.jQuery = require('jquery') ;
 GLOBAL.tools = require(root_path+'/libs/server/tools.kit') ;
 require('datejs');

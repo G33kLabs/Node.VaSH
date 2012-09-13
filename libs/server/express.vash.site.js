@@ -251,6 +251,11 @@ module.exports = Backbone.Model.extend({
 
 		// -> If thumb sended
 		async.series({
+			createdir: function(callback) {
+				mkdirp(post_path, function(err, success) {
+				    callback(err, success)
+				}); 
+			},
 			thumb: function(callback) {
 				if ( post.thumb && post.thumb.binary ) {
 					tools.log('[>] Store thumb : '+'/'+post_path+'/'+post.thumb.file, 'purple')

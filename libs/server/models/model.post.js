@@ -40,6 +40,9 @@
 		getLink: function() {
 			return '/'+tools.permalink(this.getCategory()||'general')+'/'+tools.permalink(this.get('title')||'')
 		},
+		getThumbnail: function() {
+			return this.get('thumb') ? '/thumb/'+this.get('id')+'_thumb.jpg' : null;
+		},
 		getAuthor: function() {
 			return this.siteObj.get('authors')[this.get('author')] 
 		},
@@ -67,7 +70,7 @@
 						url: '/'+tools.permalink(tag)+'/'
 					}
 				}),
-				big_thumb: this.get('thumb') ? '/'+this.get('id')+'/thumb' : null,
+				big_thumb: this.getThumbnail(),
 				author: this.getAuthor(),
 				author_email: this.get('author'),
 				disabled: (this.get('disabled') == 'yes') ? 'yes' : 'no',

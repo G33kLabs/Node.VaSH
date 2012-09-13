@@ -11,11 +11,11 @@ module.exports = Backbone.Model.extend({
 			'auth::logout': /^\/logout/,
 			'auth': /^\/auth\/([a-zA-Z0-9.\-]+)(\/[a-zA-Z0-9.\-]+|)/,
 			'admin': /^\/admin\/([a-zA-Z0-9.\-]+|)(\/[a-zA-Z0-9.\-]+|)/,
+			'post::thumb': /^\/thumb\/([0-9a-f]+)_thumb.jpg/,
 			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3|txt)$/i,
 			'feed::read': /^\/(feed|rss)/,
 			'sitemap::read': /^\/sitemap\.xml(\.gz|)/,
 			'contact::read': /^\/contact/,
-			'post::thumb': /^\/([0-9a-f]+)\/thumb/,
 			'post::read': /^\/([a-zA-Z0-9.\-]+)\/([a-zA-Z0-9.\-]+)/,
 			'list::home': /^\/$/,
 			'list::cat': /^\/([a-zA-Z0-9.\-]+)(\/|)$/,
@@ -235,29 +235,12 @@ module.exports = Backbone.Model.extend({
 				if ( fileServer ) {
 					//self.get('req').url = '/37610026647c57ca3d59c66d15aa3dc3_thumb.jpg';
 
-					// -> Test if jpg exists
-					var pic_path ;
-					async.series([
-						function(callback) {
-							pic_path = fileServer.root + '/' + opts.match[1] + '_thumb.jpg' ;
-							fs.exists( pic_path , function(exists) {
-								console.log(pic_path, exists)
-								callback(exists?pic_path:null) ;
-							})
-						},
-						function(callback) {
-							pic_path = fileServer.root + '/' + opts.match[1] + '_thumb.png' ;
-							fs.exists( pic_path , function(exists) {
-								console.log(pic_path, exists)
-								callback(exists?pic_path:null) ;
-							})
-						}
-					], function(err, res) {
-						if ( err ) self.get('req').url = err.replace(new RegExp(fileServer.root), '') ;
-						fileServer.serve(self.get('req'), self.get('res'), function(err) {
-							if ( err ) self.error('[!] API Static error : '+self.getPath()+' :: '+err.message)
-						});
-					})
+					//console.log('--->', opts) ;
+
+					self.get('req').url = '/' + opts.match[1] + '_thumb.jpg' ;
+					fileServer.serve(self.get('req'), self.get('res'), function(err) {
+						if ( err ) self.error('[!] API Static error : '+self.getPath()+' :: '+err.message)
+					});
 
 				} else {
 					self.error('File server is not defined !') ;

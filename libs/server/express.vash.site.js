@@ -193,6 +193,10 @@ module.exports = Backbone.Model.extend({
 		var post_path = self.get('public_path')+'/posts' ;
 		callback = callback || noop;
 	    tools.walk(post_path, function(err, datas) {
+	    	if ( ! datas || ! datas.length ) {
+	    		tools.warning('No posts in '+post_path) ;
+	    		return callback();
+	    	}
 	    	async.forEachSeries(datas, function(post, callback) {
 	    		if ( ! /\.js$/.test(post.path) ) return callback() ;
 	    		try {

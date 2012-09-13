@@ -490,6 +490,7 @@ module.exports = Backbone.Model.extend({
 			page.name = post.getTitle() ;
 			page.desc = self.get('title')+ " > "+post.getDesc()  ;
 			page.author = self.get('authors')[post.get('author')]; 
+			page.canonical = post.getLink() ;
 		}
 
 		// -> Select posts to display
@@ -498,6 +499,18 @@ module.exports = Backbone.Model.extend({
 			page.title = self.get('title')+(filters.cat?' - '+filters.cat:'')+(filters.page>1?' - Page '+filters.page:'') ;
 			page.name = self.get('title')+(filters.cat?' > '+tools.ucfirst(filters.cat):'') ;
 			page.desc = self.get('desc') ;
+			if ( filters.cat ) {
+				page.desc = VaSH.Mustache.to_html(self.get('desc_category'), {
+					cat: tools.ucfirst(filters.cat),
+					page_count: (filters.page>1?filters.page:false)
+				});
+				if ( posts.length ) {
+					page.seo_desc = ' : '+(_.map(posts.slice(0, 3), function(post) {
+						return post.title
+					})).join(', ')+'...'
+				}
+				page.canonical = '/'+filters.cat+'/' ;
+			}
 			page.author = self.get('authors')[self.get('author')]; 
 		}
 

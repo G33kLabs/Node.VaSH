@@ -6,6 +6,7 @@ module.exports =  {
     title: "JS> Node",
     title_sufix: " | G33K",
     desc: "A developer blog about js, node.js and other modern tools",
+    desc_category: "Discover all articles about {{cat}}{{#page_count}} - Page{{page_count}}{{/page_count}}",
     language: 'en-EN',
     assets: {
         css: [

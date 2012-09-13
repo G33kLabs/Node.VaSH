@@ -186,7 +186,7 @@
 						var rawModelKeys = (new VaSH.Models.post()).getModel() ;
 						var rawDatas = instance.get('req').body ;
 
-						console.log(rawDatas)
+						//console.log(rawDatas)
 
 						// -> Check if required datas are here
 						if ( ! rawDatas.id ) {

@@ -44,6 +44,8 @@ var config = {
 }
 
 // -- Detect Prod Env // You can customize this test
+
+console.log(root_path, (/^\/var\/www/).test(root_path))
 if ( (/^\/var\/www/).test(root_path) ) {
     config.env = 'prod'
 }

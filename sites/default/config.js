@@ -28,7 +28,7 @@ module.exports =  {
             '/assets/js/app.js'
         ]
     },
-    menus: ['Home', 'Node.js', 'jQuery', 'Redis.io', 'Snippets', 'Contact'],
+    menus: ['Home', 'Nodejs', 'jQuery', 'Redis.io', 'Snippets', 'Contact'],
     widgets: ['aboutme', 'mostviewed', 'github', 'disqus', 'blogroll', 'archives', 'lazyload', 'analytics'],
     providers: {
         facebook: {

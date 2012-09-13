@@ -12,7 +12,7 @@
 
 	<div class="tags">
 		{{#post.tags}}
-		<a href="{{.url}}" rel="tag">{{.name}}</a>
+		<a href="{{&baseUrl}}{{.url}}" rel="tag">{{.name}}</a>
 		{{/post.tags}}
 		<div class="clearfix"></div>
 	</div>
@@ -20,10 +20,10 @@
 	<div class="content full {{#post.big_thumb}}content-big-thumb{{/post.big_thumb}}">
 		{{#post.big_thumb}}
 		{{^feed}}
-		<div class="big_thumb drop-shadow" data-background="{{&post.big_thumb}}"></div>
+		<div class="big_thumb drop-shadow" data-background="{{&baseUrl}}{{&post.big_thumb}}"></div>
 		{{/feed}}
 		{{#feed}}
-		<div class="big_thumb drop-shadow"><img src="{{&post.big_thumb}}" style="width: 90%; padding: 5px; margin: 0 auto;"></div>
+		<div class="big_thumb drop-shadow"><img src="{{&baseUrl}}{{&post.big_thumb}}" style="width: 90%; padding: 5px; margin: 0 auto;"></div>
 		{{/feed}}
 		{{/post.big_thumb}}
 		{{&post.content}}

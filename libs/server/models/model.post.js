@@ -47,7 +47,11 @@
 			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl_teaser||'', {post: this.toJSON()}));
 		},
 		html: function(feed) {
-			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', {feed: feed, post: this.toJSON()}));
+			var baseUrl = ''; 
+			if ( this.siteObj ) {
+				baseUrl = this.siteObj.getBaseUrl() ;
+			}
+			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', {baseUrl: baseUrl,feed: feed, post: this.toJSON()}));
 		},
 		getModel: function() {
 			return 'id created title desc raw content tags thumb author disabled'.split(' ');

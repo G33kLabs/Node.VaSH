@@ -84,7 +84,12 @@
 				teaser: this.getRSSTeaser(),
 				content: this.html(true),
 				permalink: this.siteObj.getBaseUrl()+this.getLink(),
-				tags: this.get('tags'),
+				tags: _.map(this.get('tags'), function(tag) {
+					return {
+						name: tag,
+						url: '/'+tools.permalink(tag)+'/'
+					}
+				}),
 				cat: this.getCategory(),
 				author: this.getAuthor(),
 				disabled: this.get('disabled') == 'yes' ? 'yes' : 'no',

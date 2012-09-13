@@ -4,14 +4,14 @@
 		<img src="{{&site.author.avatar}}" itemprop="image" />
 		Hi ! My name is <span itemprop="name">{{&site.author.name}}</span> (<span itemprop="nickname">{{&site.author.pseudo}}</span>), and I'm the author of this blog : <a href="{{&site.website}}" itemprop="url">{{&site.website}}</a>.
 		I live in 
-		<span itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address"><span itemprop="locality">{{&site.author.city}}</span></span>, and I'm <span itemprop="title">{{&site.author.job}}</span> at <span itemprop="affiliation">{{&site.author.employer}}</span>.
+		<span itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address"><span itemprop="locality">{{&site.author.city}}</span><span itemprop="country">{{&site.author.country}}</span></span>, and I'm <span itemprop="title">{{&site.author.job}}</span> at <span itemprop="affiliation">{{&site.author.employer}}</span>.
 		
 
 	</div>
 	<a href="/contact/" title="More on {{&site.author.name}}">
 		<span class="color_white author-row"><b>{{&site.author.name}}</b></span>
 	</a>
-	<span class="el-row"><small>{{&site.author.city}}</small></span>
+	<span class="el-row"><small>{{&site.author.city}} / {{&site.author.country}}</small></span>
 	<hr />
 
 	{{#site.author.social}}

@@ -62,30 +62,32 @@ module.exports =  {
             name: 'Guillaume DE LA RUE',
             avatar: 'https://profiles.google.com/s2/photos/profile/115555146160120072472',
             profile: 'https://plus.google.com/115555146160120072472/posts',
-            city: 'Paris / France',
+            city: 'Paris',
+            country: 'France',
             job: 'Consultant / Développeur',
             employer: 'G33kLabs',
-            social: [
-                {
+            social: {
+                twitter: {
                     provider: 'Twitter',
+                    id: '244561106',
                     pseudo: '@G33kLabs',
                     profile: 'https://twitter.com/G33kLabs',
                     classname: 'color_fluoblue'
                 },
-                {
+                github: {
                     provider: 'Github',
                     pseudo: '@G33kLabs',
                     profile: 'https://github.com/G33kLabs',
                     classname: 'color_greenlight'
                 },
-                {
+                google: {
                     provider: 'Google+',
                     id: '115555146160120072472',
                     pseudo: '@G33k',
                     profile: 'https://plus.google.com/115555146160120072472/',
                     classname: 'color_yellow'
                 }
-            ]
+            }
         }
     },
     googleAnalytics: 'UA-12891268-5',

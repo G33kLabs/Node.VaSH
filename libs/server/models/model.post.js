@@ -50,11 +50,18 @@
 			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl_teaser||'', {post: this.toJSON()}));
 		},
 		html: function(feed) {
-			var baseUrl = ''; 
+			var opts = {
+				feed: feed,
+				post: this.toJSON()
+			}; 
 			if ( this.siteObj ) {
-				baseUrl = this.siteObj.getBaseUrl() ;
+				opts.baseUrl = this.siteObj.getBaseUrl() ;
 			}
-			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', {baseUrl: baseUrl,feed: feed, post: this.toJSON()}));
+			if ( opts.post.thumb ) {
+				if ( opts.feed ) opts.showFeedThumbnail = true ;
+				else opts.showNormalThumbnail = true ;
+			}
+			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', opts));
 		},
 		getModel: function() {
 			return 'id created title desc raw content tags thumb author disabled'.split(' ');

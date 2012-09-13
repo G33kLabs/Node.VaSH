@@ -18,14 +18,15 @@
 	</div>
 
 	<div class="content full {{#post.big_thumb}}content-big-thumb{{/post.big_thumb}}">
-		{{#post.big_thumb}}
-		{{^feed}}
+
+		{{#showFeedThumbnail}}
 		<div class="big_thumb drop-shadow" data-background="{{&baseUrl}}{{&post.big_thumb}}"></div>
-		{{/feed}}
-		{{#feed}}
-		<div class="big_thumb drop-shadow"><p style="text-align: center;"><img src="{{&baseUrl}}{{&post.big_thumb}}" alt="{{&page.title}"></p></div>
-		{{/feed}}
-		{{/post.big_thumb}}
+		{{/showFeedThumbnail}}
+
+		{{#showNormalThumbnail}}
+		<div class="big_thumb drop-shadow"><p style="text-align: center;"><img src="{{&baseUrl}}{{&post.big_thumb}}" alt="{{&page.title}}"></p></div>
+		{{/showNormalThumbnail}}
+
 		{{&post.content}}
 		<!--<div class="metas">Par <a href="/profile/{{&post.author.pseudo}}">{{&post.author.pseudo}}</a>, {{&post.displayDate}}</div>-->
 		<div class="metas">Par <b>{{&post.author.pseudo}}</b>, {{&post.createdDate}}</div>

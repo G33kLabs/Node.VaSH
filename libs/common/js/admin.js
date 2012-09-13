@@ -382,7 +382,13 @@
 									// -> Check dimensions
 									if ( this.width < imgWidth || this.height < imgHeight ) 
 										return callback('Image must be at least '+imgWidth+'x'+imgHeight+', yours is '+this.width+'x'+this.height) ;
-
+/*
+									var canvas = document.createElement("canvas");
+									  new tools.thumbnailer(canvas, this, 188, 3); //this produces lanczos3
+									  //but feel free to raise it up to 8. Your client will appreciate
+									  //that the program makes full use of his machine.
+									  document.body.appendChild(canvas);
+*/
 									// -> Next
 									callback(null, this) ;
 
@@ -399,8 +405,8 @@
 						
 							//define canvas
 							var canvas = document.createElement('canvas');
-							canvas.width = image.width;
-							canvas.height = image.height;
+							canvas.width = imgWidth;
+							canvas.height = imgHeight;
 							var ctx = canvas.getContext('2d');
 							
 							//default resize variable
@@ -409,9 +415,23 @@
 								//get resized width and height
 								diff = compareWidthHeight(image.width, image.height);
 							}
+
+							var newDimensions = {} ;
+							if ( image.width > imgWidth ) {
+								newDimensions.height = image.height*imgWidth/image.width ;
+								newDimensions.width = imgWidth ;
+								diff[1] = Math.floor(image.height - newDimensions.height) ;
+							}
+							else {
+								newDimensions.height = image.height ;
+								newDimensions.width = image.width ;
+							}
 							
 							//draw canvas image	
-							ctx.drawImage(image, diff[0]/2, diff[1]/2, image.width-diff[0], image.height-diff[1], 0, 0, image.width, image.height);
+							ctx.translate(0, -diff[1])
+							ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, newDimensions.width, newDimensions.height);
+
+							//tx.drawImage(image, diff[0]/2, diff[1]/2, image.width-diff[0], image.height-diff[1], 0, 0, image.width, image.height);
 										
 							//apply effects if any					
 							if(effect == 'grayscale') {
@@ -446,8 +466,7 @@
 
 							container.find('p.upload').html(html) ;
 
-
-							console.log(imageObj)
+							//console.log(imageObj)
 						}
 
 					], function(err) {
@@ -474,4 +493,4 @@
 		AdminUI.load() ;
 
 	}) ;
-})() ;
+})() ;										

@@ -224,6 +224,9 @@ module.exports = Backbone.Model.extend({
 			'list::home': function() {
 				apiMethod['list::cat']() ;
 			},
+			'contact::read': function() {
+
+			},
 			'post::read': function(opts) {
 				apiMethod['list::cat']({
 					//cat: opts.match[1],

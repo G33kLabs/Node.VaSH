@@ -311,6 +311,14 @@ VaSH.prototype.monitor_debug = function() {
             		}) ;
 */
             	}
+            	else if ( /\.git\//.test(f) ) {
+            		/*
+            		tools.log('[>] Reload posts...')
+            		_.each(vash.sites, function(site, name) {
+            			site.reloadPosts()  ;
+            		}) ;
+*/
+            	}
 
             	// -> Reload only assets
             	else if ( /libs\/common\//.test(f) || /public\//.test(f) ) {

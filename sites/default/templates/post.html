@@ -20,11 +20,11 @@
 	<div class="content full {{#post.big_thumb}}content-big-thumb{{/post.big_thumb}}">
 
 		{{#showNormalThumbnail}}
-		<div class="big_thumb drop-shadow" data-background="{{&baseUrl}}{{&post.big_thumb}}"></div>
+		<div class="big_thumb drop-shadow" data-background="{{&post.big_thumb}}"></div>
 		{{/showNormalThumbnail}}
 		
 		{{#showFeedThumbnail}}
-		<div class="big_thumb drop-shadow"><p style="text-align: center;"><img src="{{&baseUrl}}{{&post.big_thumb}}" alt="{{&page.title}}"></p></div>
+		<div class="big_thumb drop-shadow"><p style="text-align: center;"><img src="{{&post.big_thumb}}" alt="{{&page.title}}"></p></div>
 		{{/showFeedThumbnail}}
 
 		<div class="row-fluid">
@@ -63,7 +63,7 @@
 					<div id="facebook" class="item">
 						<div class="fb-like" data-href="{{&post.shortlink}}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
 					</div>
-					
+
 					<div class="clearfix"></div>
 				</div>
 			</div>

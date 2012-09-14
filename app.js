@@ -99,7 +99,7 @@ if (cluster.isMaster) {
     for (var i = 0; i < numCPUs; i++) {
         setTimeout(function() {
             WorkerFork() ;
-        }, i*10000) ;
+        }, i*30000) ;
     }
 
     // On exit, restart worker

@@ -323,6 +323,7 @@ VaSH.prototype.monitor_debug = function() {
             		tools.log('[>] Reload widgets...', 'purple')
             		_.each(vash.sites, function(site, name) {
             			site.reloadWidgets()  ;
+            			site.reloadAssets()  ;
             		}) ;
             	}
 

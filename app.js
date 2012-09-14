@@ -51,21 +51,6 @@ if ( (/^\/var\/www/).test(root_path) || /^\/home\/www/.test(root_path) ) {
 // -- Set number of CPUs instances
 numCPUs = (config.env == 'dev') ? 1 : Math.max(2, numCPUs) ;
 
-///////////////////////////////////////////////////////////////////////// LOG TO FILE
-var logToFile = require('logtofile'),
-    logPath = path.normalize(__dirname+'/logs/'),
-    logFile = config.server.host+'_'+config.server.port+'.log' ;
-
-tools.log('[>] Output logs to : '+logPath+logFile)
-mkdirp(logPath, function(err, success) {
-    GLOBAL.logger = logToFile.create({
-        directory: logPath,
-        fileName: logFile
-    });
-}); 
-
-
-// -- Splash Screen
 //////////////////////////////////////////////////////// WELCOME MESSAGE ///////////// 
 var welcome = [
 '',
@@ -78,6 +63,24 @@ var welcome = [
 ''
 ].join('\n');
 util.puts(welcome.rainbow.bold);
+
+///////////////////////////////////////////////////////////////////////// LOG TO FILE
+var logToFile = require('logtofile'),
+    logPath = path.normalize(__dirname+'/logs/'),
+    logFile = config.server.host+'_'+config.server.port+'.log' ;
+
+
+// -> Write message to console
+tools.log('[>] Output logs to : '+logPath+logFile)
+
+// -> Make logs dir
+mkdirp.sync(logPath); 
+
+// -> At this time, all tools.log calls will be redirected into log files
+GLOBAL.logger = logToFile.create({
+    directory: logPath,
+    fileName: logFile
+});
 
 tools.warning(' [ ] Running environement : '+((config.env=='prod') ? 'PODUCTION' : 'DEVELOPMENT')) ;
 

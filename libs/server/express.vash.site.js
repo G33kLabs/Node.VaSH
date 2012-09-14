@@ -11,7 +11,7 @@ var fs = require('fs'),
 marked.setOptions({
 	gfm: true,
 	pedantic: false,
-	sanitize: true,
+	sanitize: false,
 	// callback for code highlighter
 	highlight: function(code, lang) {
 		return jsHighlight(code);

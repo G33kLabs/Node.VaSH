@@ -294,13 +294,17 @@ VaSH.prototype.monitor_debug = function() {
 		else if ( /templates\//.test(f) ) return false;
 		else if ( /libs\/common\//.test(f) ) return false;
 		else if ( /public\//.test(f) ) return false;
-		else return true;
+
+		// -> Server will reload
+		tools.log(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Kill instance after code changed !', 'purple');
+		setTimeout(function(){cluster.worker.destroy()}, 1000); 
+		return true;
 	}
 
     watch.createMonitor(root_path+'/', function (monitor) {
         monitor.on("created", function (f, stat) {
             tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code added !');
-            if ( shouldReload(f) ) cluster.worker.destroy() ;  
+           	shouldReload(f); 
         })
         monitor.on("changed", function (f, curr, prev) {
             if ( ! /\.min\.css/.test(f) && ! /\.min\.js/.test(f) && ! /\/logs/.test(f) ) {
@@ -331,13 +335,13 @@ VaSH.prototype.monitor_debug = function() {
             	}
 
             	// -> Reload all server in other cases
-            	if ( shouldReload(f) ) cluster.worker.destroy() ;  
+            	shouldReload(f) ;
 
         	}
         })
         monitor.on("removed", function (f, stat) {
             tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code removed !');
-            if ( shouldReload(f) ) cluster.worker.destroy() ;  
+            shouldReload(f); 
         })
     }) ;
 }

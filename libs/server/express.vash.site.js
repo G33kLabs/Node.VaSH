@@ -334,7 +334,7 @@ module.exports = Backbone.Model.extend({
 	reloadAssets: function(callback) {
 		var self = this ;
 		callback = callback || noop;
-		async.parallel({
+		async.series({
 			css: function(callback) {
 				var out = [] ;
 				async.forEachSeries(self.get('assets').css, function(file, callback) {

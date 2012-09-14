@@ -51,19 +51,6 @@ if ( (/^\/var\/www/).test(root_path) || /^\/home\/www/.test(root_path) ) {
 // -- Set number of CPUs instances
 numCPUs = (config.env == 'dev') ? 1 : Math.max(2, numCPUs) ;
 
-//////////////////////////////////////////////////////// WELCOME MESSAGE ///////////// 
-var welcome = [
-'',
-'____    ____  ___           _______. __    __  ',
-'\\   \\  /   / /   \\         /       ||  |  |  | ',
-' \\   \\/   / /  ^  \\       |   (----`|  |__|  | ',
-'  \\      / /  /_\\  \\       \\   \\    |   __   | ',
-'   \\    / /  _____  \\  .----)   |   |  |  |  | ',
-'    \\__/ /__/     \\__\\ |_______/    |__|  |__| ',
-''
-].join('\n');
-util.puts(welcome.rainbow.bold);
-
 ///////////////////////////////////////////////////////////////////////// LOG TO FILE
 var logToFile = require('logtofile'),
     logPath = path.normalize(__dirname+'/logs/'),
@@ -82,6 +69,19 @@ GLOBAL.logger = logToFile.create({
     fileName: logFile
 });
 
+
+//////////////////////////////////////////////////////// WELCOME MESSAGE ///////////// 
+var welcome = [
+'',
+'____    ____  ___           _______. __    __  ',
+'\\   \\  /   / /   \\         /       ||  |  |  | ',
+' \\   \\/   / /  ^  \\       |   (----`|  |__|  | ',
+'  \\      / /  /_\\  \\       \\   \\    |   __   | ',
+'   \\    / /  _____  \\  .----)   |   |  |  |  | ',
+'    \\__/ /__/     \\__\\ |_______/    |__|  |__| ',
+''
+].join('\n');
+tools.log(welcome.rainbow.bold);
 tools.warning(' [ ] Running environement : '+((config.env=='prod') ? 'PODUCTION' : 'DEVELOPMENT')) ;
 
 ///////////////////////////////////////////////////////////// MASTER CLUSTER /////////////
@@ -202,11 +202,20 @@ else {
     ///////////////////////////////////////////////////////////// WEBSOCKET /////////////
     var sio = require('socket.io')
     , RedisStore = sio.RedisStore
-    , io = sio.listen(server);
+    , io = sio.listen(server, {
+        'log level': 2,
+        'logger': {
+            debug: function(msg) { return false; tools.debug('[ ] Socket.IO :: '+msg) },
+            info: function(msg) { tools.log('[>] Socket.IO :: '+msg, 'cyan') },
+            warn: function(msg) { tools.warning('[!] Socket.IO :: '+msg) },
+            error: function(msg) { tools.tools('[!] Socket.IO :: '+msg) }
+        }
+    });
 
     // Set store
     io.set('store', new RedisStore);
-    io.set('log level', 2)
+    
+    // Bind connections
     io.sockets.on('connection', function (socket) {
         socket.emit('news', { hello: 'world' });
     });

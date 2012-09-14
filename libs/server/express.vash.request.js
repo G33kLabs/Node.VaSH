@@ -452,7 +452,7 @@ module.exports = Backbone.Model.extend({
 		}, page);
 
 		// -> Log error
-		tools.error('[!] Error in page :: '+json(page));
+		tools.error('[!] Error in page :: '+this.getIP()+' :: '+json(page));
 
 		// -> Display through layout
 		self.sendWithLayout({

@@ -392,7 +392,7 @@ a[rel="tag"]:hover:before {
 	}
 }
 
-@media (max-width: 720px) {
+@media (min-width: 481px) and (max-width: 767px) {
 	.post .big_thumb {
 		height: 160px;
 	}

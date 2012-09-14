@@ -127,12 +127,15 @@
 					else if ( match = req_path.match(/^\/admin\/articles\/create\/(.*)/) ) {
 						view.page.desc = "Let's go to change the world ! ;)";
 						filters.id = match[1] ;
-						if ( filters.id == 'new' || filters.id == 'draft' ) filters.id = tools.md5(tools.rand(10000000000000)+'') ;
+						if ( filters.id == 'new' || filters.id == 'draft' ) {
+							if ( filters.id == 'draft' ) filters.isDisabled = true ;
+							filters.id = tools.md5(tools.rand(10000000000000)+'') ;
+						}
 						tools.log('[ ] Create a new post : '+filters.id+'...', 'purple'); 
 						view.edit = {
 							id: filters.id,
-							disabled: filters.id=='draft'?'yes':'no',
-							isDisabled: filters.id=='draft'?true:false,
+							disabled: filters.isDisabled?'yes':'no',
+							isDisabled: filters.isDisabled?true:false,
 							created: Date.now(),
 							author_email: self.instance.get('website').get('author_email'),
 							isNew: true

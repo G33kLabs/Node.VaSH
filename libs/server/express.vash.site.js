@@ -386,7 +386,7 @@ module.exports = Backbone.Model.extend({
 		}, function(err, res) {
 			//console.log(err, res)
 
-			async.parallel({
+			async.series({
 				css: function(callback) {
 					if ( res.css ) {
 						var cssMinify = root_path+'/'+self.get('public_path')+'/public/assets/css/app.min.css' ;

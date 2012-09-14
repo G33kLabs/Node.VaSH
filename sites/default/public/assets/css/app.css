@@ -373,7 +373,7 @@ a[rel="tag"]:hover:before {
 }
 
 .post .social_plugins {
-	padding-right: 20px;
+	padding: 0 20px;
 }
 
 .post .social_plugins .item {

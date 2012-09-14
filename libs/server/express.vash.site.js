@@ -86,6 +86,7 @@ module.exports = Backbone.Model.extend({
 	        })	
 
 	        // -> Set author
+	        self.set('author_email', self.get('author')) ;
 	        self.set('author', self.get('authors')[self.get('author')]) ;
 
 	        // -> Return

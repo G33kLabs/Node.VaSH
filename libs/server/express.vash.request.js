@@ -502,6 +502,7 @@ module.exports = Backbone.Model.extend({
 
 	// -> Return user ip
 	getIP: function() {
+		console.log(this.get('req').headers)
 		return this.get('req').connection.remoteAddress ;
 	},
 

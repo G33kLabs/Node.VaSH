@@ -84,7 +84,7 @@ module.exports = Backbone.Model.extend({
 		if ( self.get('api') ) {
 			var apiMethod = self.api()[self.get('api')] ;
 			if ( _.isFunction(apiMethod) ) {
-				tools.debug(' [>] Server route '+self.getPath()+' :: '+self.get('api')+' => '+match[1]) ;
+				tools.debug(' [>] Server route '+' :: '+self.getIP()+' :: '+self.getPath()+' :: '+self.get('api')+(match[1]?' => '+match[1]:'')) ;
 				apiMethod({	match: match }); 
 			}
 			else {
@@ -244,15 +244,10 @@ module.exports = Backbone.Model.extend({
 			'post::thumb': function(opts) {
 				var fileServer = self.get('main').fileServer[self.get('sitealias')+'_posts'] ;
 				if ( fileServer ) {
-					//self.get('req').url = '/37610026647c57ca3d59c66d15aa3dc3_thumb.jpg';
-
-					//console.log('--->', opts) ;
-
 					self.get('req').url = '/' + opts.match[1] + '_thumb.jpg' ;
 					fileServer.serve(self.get('req'), self.get('res'), function(err) {
 						if ( err ) self.error('[!] API Static error : '+self.getPath()+' :: '+err.message)
 					});
-
 				} else {
 					self.error('File server is not defined !') ;
 				}
@@ -503,6 +498,11 @@ module.exports = Backbone.Model.extend({
 		if ( this.get('sitename') ) return this.get('sitename');
 		try { this.set('sitename', this.get('hostname').replace(/[^a-zA-Z_0-9.]+/g, '-'))  } catch(e) {}
 		return this.get('sitename');
+	},
+
+	// -> Return user ip
+	getIP: function() {
+		return this.get('req').headers['X-Forwarded-For'] || this.get('req').connection.remoteAddress ;
 	},
 
 	// -> Get site alias

@@ -15,7 +15,6 @@
 				site: this.toJSON()
 			}
 			json.site.author.social = _.values(json.site.author.social); 
-			console.log(json.site.author)
 			return VaSH.Mustache.to_html(this.get('templates')['widget.'+this.id+'.html'], {site: this.attributes});
 		}
 

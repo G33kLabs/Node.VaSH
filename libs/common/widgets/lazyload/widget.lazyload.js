@@ -12,8 +12,8 @@
 		killLazyLoad: function() {
 
 			// -> Detect mobile devices or if lazyload is not loaded
-			if( ! _.isFunction($.fn.lazyload) || tools.isMobile.any() ) {
-
+			if( ! $.isFunction($.fn.lazyload) || ($.isPlainObject(tools) && tools.isMobile.any()) ) {
+				
 				// -> Replace inline images
 				$('img[original]').each(function() {
 					var el = ($this) ;
@@ -46,7 +46,7 @@
 				$(this).off('appear') ;
 				$(this).removeAttr('data-background')
 			});
-			
+
 		},
 
 		onClientRender: function() {

@@ -286,58 +286,58 @@ VaSH.prototype.getTemplateCompressed = function(compression, layout, callback) {
 
 // -- Restart on server code change
 VaSH.prototype.monitor_debug = function() {
+
+	var shouldReload = function(f) {
+		tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed on '+f+' !');
+		if ( /posts\//.test(f) ) return false;
+		else if ( /\.git\//.test(f) ) return false;
+		else if ( /templates\//.test(f) ) return false;
+		else if ( /libs\/common\//.test(f) ) return false;
+		else if ( /public\//.test(f) ) return false;
+		else return true;
+	}
+
     watch.createMonitor(root_path+'/', function (monitor) {
         monitor.on("created", function (f, stat) {
-            tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
-            cluster.worker.destroy() ; 
+            tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code added !');
+            if ( shouldReload(f) ) cluster.worker.destroy() ;  
         })
         monitor.on("changed", function (f, curr, prev) {
             if ( ! /\.min\.css/.test(f) && ! /\.min\.js/.test(f) && ! /\/logs/.test(f) ) {
-            	tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
+            	//tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
 
             	// -> Reload only templates
             	if ( /templates\//.test(f) ) {
-            		tools.log('[>] Reload templates...')
+            		tools.log('[>] Reload templates...', 'purple')
             		_.each(vash.sites, function(site, name) {
             			site.reloadTemplates()  ;
             		}) ;
             	}
 
-            	else if ( /posts\//.test(f) ) {
-            		/*
-            		tools.log('[>] Reload posts...')
+            	// -> Reload only widgets
+            	else if ( (/libs\/common\/widgets\//.test(f)) ) {
+            		tools.log('[>] Reload widgets...', 'purple')
             		_.each(vash.sites, function(site, name) {
-            			site.reloadPosts()  ;
+            			site.reloadWidgets()  ;
             		}) ;
-*/
-            	}
-            	else if ( /\.git\//.test(f) ) {
-            		/*
-            		tools.log('[>] Reload posts...')
-            		_.each(vash.sites, function(site, name) {
-            			site.reloadPosts()  ;
-            		}) ;
-*/
             	}
 
             	// -> Reload only assets
-            	else if ( /libs\/common\//.test(f) || /public\//.test(f) ) {
-            		tools.log('[>] Reload assets...')
+            	else if ( (/libs\/common\//.test(f)) || /public\//.test(f) ) {
+            		tools.log('[>] Reload assets...', 'purple')
             		_.each(vash.sites, function(site, name) {
             			site.reloadAssets()  ;
             		}) ;
             	}
 
             	// -> Reload all server in other cases
-            	else {
-            		cluster.worker.destroy() ;  
-            	}
+            	if ( shouldReload(f) ) cluster.worker.destroy() ;  
 
         	}
         })
         monitor.on("removed", function (f, stat) {
-            tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code changed !');
-            cluster.worker.destroy() ; 
+            tools.warning(' [*] '+(cluster.isMaster?'M':cluster.worker.id)+' | Code removed !');
+            if ( shouldReload(f) ) cluster.worker.destroy() ;  
         })
     }) ;
 }

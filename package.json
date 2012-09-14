@@ -34,7 +34,7 @@
       , "redis": "x.x.x"
       , "express": "x.x.x"
       , "connect": "x.x.x"
-      , "connect-redis": "1.x.x"
+      , "connect-redis": "x.x.x"
       , "socket.io": "x.x.x"
       , "mustache": "x.x.x"
       , "watch": "x.x.x"

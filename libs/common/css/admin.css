@@ -30,18 +30,27 @@
 	position: absolute;
 	display: block;
 	top: 0;
-	right: 0;
+	right: 20px;
+}
+
+#admin-panel .admin-tab #action_buttons.bottom {
+	position: absolute;
+	display: block;
+	top: auto;
+	bottom: -43px;
+	right: 20px;
 }
 
 /*================================================================ EDIT FORM */
 .admin-articles-edit #input-thumbnail {
-	min-height: 30px;
+	min-height: 45px;
 	position: relative;
 	display: block;
 	border: 3px dashed #ccc;
 	border-radius: 5px;
 	margin: 0 0 10px;
 	max-width: 650px;
+	box-sizing: border-box;
 }
 
 .admin-articles-edit p.drag-message,
@@ -50,7 +59,7 @@
 	position: absolute;
 	display: block;
 	text-align: center;
-	line-height: 30px;
+	line-height: 45px;
 	margin: 0;
 	padding: 0;
 	opacity: 0.7;
@@ -96,6 +105,7 @@
 	display: block;
 	height: 400px;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 @media (max-width: 1000px) {
@@ -137,13 +147,22 @@
 	line-height: 40px;
 	min-height: 40px;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 .admin-articles-edit #input-desc {
 	font-size: 16px;
-	line-height: 24px;
-	min-height: 40px;
+	line-height: 30px;
+	min-height: 30px;
 	width: 100%;
+	box-sizing: border-box;
+}
+
+.admin-articles-edit #input-created {
+	width: 100%;
+	box-sizing: border-box;
+	line-height: 30px;
+	min-height: 30px;
 }
 
 .admin-articles-edit .embed {

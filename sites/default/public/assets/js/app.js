@@ -8,15 +8,28 @@
 				this.dom = {
 					nav: $('#navbar')
 				}
+
+				// -> Bind events
 				this.bindNav() ;
 				this.bindHashClick() ;
 				this.bindPostClick() ;
+
+				// -> Live reload plugin
 				//this.liveReload() ;
+
+				// -> Skip lazyload on mobile devices
+				this.killLazyLoad() ;
+
+				// -> Init websockets communication channel
 				this.initSocketIO() ;
+
+				// -> Init widgets
 				this.initWidgets() ;
 
+				// -> Load js addon files
 				this.loadJSAddons() ;
 
+				// -> Bind embed objects
 				this.loadEmbed() ;
 
 				//this.headerAnime() ;
@@ -148,6 +161,28 @@
 			//============================================================= LOAD EMBED CODES
 			loadEmbed: function() {
 				$('.oembed').oembed();
+			},
+
+			//============================================================= REPLACE ALL IMAGES BEFORE LAZYLOAD
+			killLazyLoad: function() {
+
+				// -> Detect mobile devices or if lazyload is not loaded
+				if( ! _.isFunction($.fn.lazyload) || tools.isMobile.any() ) {
+
+					// -> Replace inline images
+					$('img[original]').each(function() {
+						var el = ($this) ;
+						el.attr("src", el.attr("original")).removeAttr('original');
+					});					
+
+					// -> Replace backgrounds
+					$('[data-background]').each(function() {
+						var el = $(this) ;
+						el.css({"background-image": 'url('+el.data("background")+')'}).removeAttr('data-background');
+					}) ;
+
+				}
+
 			}
 
 			//============================================================= HEADER ANIMATION

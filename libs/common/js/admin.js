@@ -228,6 +228,14 @@
 					return false;
 				}); 
 
+				// -> Add submit bottom to bottom
+				var actionButtons  = $('#action_buttons') ;
+				if ( actionButtons.length == 1 && (/^admin-articles-edit-/.test(tools.getLocationHash()) || /^admin-articles-create-/.test(tools.getLocationHash())) ) {
+					var actionButtons_clone = actionButtons.clone(true) ;
+					actionButtons_clone.addClass('bottom') ;
+					actionButtons_clone.appendTo(actionButtons.parent()) ;
+				}
+
 			},
 
 			// -> Submit updates

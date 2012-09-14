@@ -91,7 +91,7 @@
 						<button class="btn dropdown-toggle btn-large btn-success" data-toggle="dropdown" data-loading-text="<span class='caret'></span>">
 							<span class="caret"></span>
 						</button>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu pull-right">
 							<li><a href="#admin-articles-close-{{edit.id}}">Hide post</a></li>
 							<li><a href="#admin-articles-delete-{{edit.id}}">Delete post</a></li>
 							<li class="divider"></li>
@@ -103,7 +103,7 @@
 						<button class="btn dropdown-toggle btn-large btn-danger" data-toggle="dropdown" data-loading-text="<span class='caret'></span>">
 							<span class="caret"></span>
 						</button>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu pull-right">
 							<li><a href="#admin-articles-open-{{edit.id}}">Reopen post</a></li>
 							<li><a href="#admin-articles-delete-{{edit.id}}">Delete post</a></li>
 							<li class="divider"></li>
@@ -116,16 +116,37 @@
 			</div>
 
 			<div class="row-fluid">
-				<div class="span12">
+				<div class="span6">
 					<label>Title</label>
 					<input type="text" placeholder="Type something…" id="input-title" value="{{&edit.title}}">
-				</div>
-			</div>	
-
-			<div class="row-fluid">
-				<div class="span12">
 					<label>Description</label>
 					<input type="text" placeholder="Type something…" id="input-desc" value="{{&edit.desc}}">
+					<div class="row-fluid">
+						<div class="span12">
+							<label>Public Date</label>
+							<input id="input-created" type="datetime" data-created="{{edit.created}}" value="{{edit.createdDate}}"/>
+						</div>
+						<div class="row-fluid">
+							<div class="span12">
+								<label>Tags</label>
+								<input type="text" id="input-tags" value="{{edit.tags}}">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="row-fluid">
+						<div class="span12">
+							<label>Thumbnail</label>
+							<div id="input-thumbnail" class="{{#edit.big_thumb}}uploading{{/edit.big_thumb}}">
+								<p class="drag-message">Drag'n drop image here or <a href="#admin-show-upload">click here</a> !</p>
+								<p class="drop-message">Drop now !</p>
+								<p class="upload">
+									 {{#edit.big_thumb}}<img src="{{&edit.big_thumb}}" id="input-thumb">{{/edit.big_thumb}}
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>	
 
@@ -149,32 +170,7 @@
 				</div>
 			</div>
 
-			<div class="row-fluid">
-				<div class="span12">
-					<label>Thumbnail</label>
-					<div id="input-thumbnail" class="{{#edit.big_thumb}}uploading{{/edit.big_thumb}}">
-						<p class="drag-message">Drag'n drop image here or <a href="#admin-show-upload">click here</a> !</p>
-						<p class="drop-message">Drop now !</p>
-						<p class="upload">
-							 {{#edit.big_thumb}}<img src="{{&edit.big_thumb}}" id="input-thumb">{{/edit.big_thumb}}
-						</p>
-					</div>
-				</div>
-			</div>	
-
-			<div class="row-fluid">
-				<div class="span12">
-					<label>Tags</label>
-					<input type="text" id="input-tags" value="{{edit.tags}}">
-				</div>
-			</div>
-
-			<div class="row-fluid">
-				<div class="span12">
-					<label>Public Date</label>
-					<input class="span3" id="input-created" type="datetime" data-created="{{edit.created}}" value="{{edit.createdDate}}"/>
-				</div>
-			</div>
+			<hr style="margin-bottom: 29px;" />
 
 		</form>	
 	</div>

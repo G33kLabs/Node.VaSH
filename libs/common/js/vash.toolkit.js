@@ -16,7 +16,7 @@
 
   	// -- Return random from 0 -> N
   	exports.rand = function(max) {
-  		return Math.floor(Math.random()*(max+1)) ;
+  		return Math.floor(Math.random()*(max+1)) ; 
   	}
 
   	// -- Hash navigation
@@ -60,6 +60,25 @@
 		}
 		return diff;
 	}
+
+	// -- Detect mobile devices
+	exports.isMobile = {
+	    Android: function() {
+	        return navigator.userAgent.match(/Android/i) ? true : false;
+	    },
+	    BlackBerry: function() {
+	        return navigator.userAgent.match(/BlackBerry/i) ? true : false;
+	    },
+	    iOS: function() {
+	        return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
+	    },
+	    Windows: function() {
+	        return navigator.userAgent.match(/IEMobile/i) ? true : false;
+	    },
+	    any: function() {
+	        return (exports.isMobile.Android() || exports.isMobile.BlackBerry() || exports.isMobile.iOS() || exports.isMobile.Windows());
+	    }
+	};
 
 	//returns a function that calculates lanczos weight
 	exports.lanczosCreate = function(lobes){

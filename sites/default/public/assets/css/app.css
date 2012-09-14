@@ -372,6 +372,13 @@ a[rel="tag"]:hover:before {
 	max-width: 100%;
 }
 
+/*
+.post a[href^="http://"]{
+	padding-right: 13px;
+	background: url(/assets/img/external.gif) no-repeat center right;
+}
+*/
+
 /** POST RESPONSIVE STYLES **/
 @media (max-width: 480px) {
 	.post .content {

@@ -40,9 +40,9 @@
 						site: {},
 						page: {
 							full: true,
-							title: 'VaSH Admin',
-							name: 'VaSH Admin &raquo '+tools.ucfirst(instance.getSiteAlias()),
-							desc: 'DashBoard Panel'
+							title: 'VaSH Center',
+							name: 'VaSH Center &raquo '+tools.ucfirst(instance.getSiteAlias()),
+							desc: 'Administration DashBoard'
 						}
 					}; 
 					callback(null, view) ;

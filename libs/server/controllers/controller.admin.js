@@ -134,6 +134,7 @@
 							disabled: filters.id=='draft'?'yes':'no',
 							isDisabled: filters.id=='draft'?true:false,
 							created: Date.now(),
+							author_email: self.instance.get('website').get('author_email'),
 							isNew: true
 						}
 						callback(null, view) ;

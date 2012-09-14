@@ -62,6 +62,9 @@
 			if ( this.siteObj ) {
 				opts.baseUrl = this.siteObj.getBaseUrl() ;
 			}
+			if ( this.get('isAdmin') && ! feed ) {
+				opts.showAdminEdit = true ;
+			}
 			if ( opts.post.thumb ) {
 				if ( opts.feed ) opts.showFeedThumbnail = true ;
 				else opts.showNormalThumbnail = true ;

@@ -377,7 +377,7 @@ a[rel="tag"]:hover:before {
 }
 
 .post .social_plugins .item {
-	float: right;
+	float: left;
 	position: relative;
 	display: block;
 }

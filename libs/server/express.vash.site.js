@@ -493,6 +493,7 @@ module.exports = Backbone.Model.extend({
 			page.author = self.get('authors')[post.get('author')]; 
 			page.canonical = post.getLink() ;
 			page.shortlink = post.getShortLink() ;
+			page.image = post.getThumbnail() ;
 			page.seo_desc = ( 140 > page.desc.length ? ' : '+post.getRSSTeaser(200-page.desc.length, '...') : '' );
 		}
 

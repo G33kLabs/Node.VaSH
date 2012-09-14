@@ -28,11 +28,18 @@
     <![endif]-->
 
     <!-- SEO -->
-    <meta name="description" content="{{&page.desc}}{{&page.seo_desc}}" />
+    {{#page.desc}}<meta name="description" content="{{&page.desc}}{{&page.seo_desc}}" />{{/page.desc}}
     {{#page.keywords}}<meta name="keywords" content="{{&page.keywords}}" />{{/page.keywords}}
     {{#page.canonical}}<link rel="canonical" href="{{&site.website}}{{&page.canonical}}"/>{{/page.canonical}}
-    {{#page.shortlink}}<link rel='shortlink' href='{{page.shortlink}}'/>{{/page.shortlink}}
+    {{#page.shortlink}}<link rel='shortlink' href='{{&page.shortlink}}'/>{{/page.shortlink}}
     <!-- /seo -->
+
+    <!-- Facebook SEO -->
+    <meta property="og:title" content="{{&page.name}}" /> 
+    {{#page.image}}<meta property="og:image" content="{{&page.image}}" />{{/page.image}} 
+    {{#page.desc}}<meta property="og:description" content="{{&page.desc}}" />{{/page.desc}}
+    {{#page.canonical}}<meta property="og:url" content="{{&page.canonical}}" />{{/page.canonical}}
+    <!-- / Facebook SEO -->
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="/favicon.ico">

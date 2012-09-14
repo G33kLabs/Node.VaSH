@@ -45,7 +45,7 @@
 			return this.siteObj.getBaseUrl()+'/'+tools.permalink(this.getCategory())+'/'+tools.permalink(this.get('title')||'')
 		},
 		getThumbnail: function() {
-			return this.get('thumb') ? '/thumb/'+this.get('id')+'_thumb.jpg' : null;
+			return this.get('thumb') ? this.siteObj.getBaseUrl()+'/thumb/'+this.get('id')+'_thumb.jpg' : null;
 		},
 		getAuthor: function() {
 			return this.siteObj.get('authors')[this.get('author')] 

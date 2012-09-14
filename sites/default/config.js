@@ -1,4 +1,5 @@
 module.exports =  {
+    site_name: 'JS> Node',
     website: 'http://www.js2node.com',
     local: 'http://local.js2node.com:10000',
     aliases: ['local.js2node.com', 'www.js2node.com', 'localhost'],
@@ -25,6 +26,9 @@ module.exports =  {
             '/common/vendors/jquery.lazyload.min.js', 
             '/common/vendors/humanized_time_span.js', 
             '/common/vendors/jquery.oembed.min.js',
+            '/common/vendors/jquery.social/jquery.fb.js',
+            '/common/vendors/jquery.social/jquery.gplus.js',
+            '/common/vendors/jquery.social/jquery.twitter.js',
             '/common/js/vash.toolkit.js', 
             '/assets/js/app.js'
         ]

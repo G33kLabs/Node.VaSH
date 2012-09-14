@@ -27,8 +27,46 @@
 		<div class="big_thumb drop-shadow"><p style="text-align: center;"><img src="{{&baseUrl}}{{&post.big_thumb}}" alt="{{&page.title}}"></p></div>
 		{{/showFeedThumbnail}}
 
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="social_plugins">
+					<div id="facebook" class="item">
+						<div class="fb-like" data-href="{{&post.shortlink}}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+					</div>
+
+					<div id="googlePlus" class="item">
+						<div class="g-plusone" data-size="medium" data-anootation="bubble"></div>
+					</div>
+
+					<div id="twitter" class="item">
+						<a href="https://twitter.com/share" class="twitter-share-button" data-text="Interesting post on {{site.site_name}} : {{post.title}}" data-url="{{&post.shortlink}}" data-count="horizontal" data-lang="fr"></a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+
 		{{&post.content}}
-		
+
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="social_plugins bottom">
+					<div id="facebook" class="item">
+						<div class="fb-like" data-href="{{&post.shortlink}}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+					</div>
+
+					<div id="googlePlus" class="item">
+						<div class="g-plusone" data-size="medium" data-anootation="bubble"></div>
+					</div>
+
+					<div id="twitter" class="item">
+						<a href="https://twitter.com/share" class="twitter-share-button" data-text="Interesting post on {{site.site_name}} : {{post.title}}" data-url="{{&post.shortlink}}" data-count="horizontal" data-lang="fr"></a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+
 		<!--<div class="metas">Par <a href="/profile/{{&post.author.pseudo}}">{{&post.author.pseudo}}</a>, {{&post.displayDate}}</div>-->
 		<div class="metas">Par <b>{{&post.author.name}}</b>, {{&post.createdDate}}</div>
 

@@ -32,6 +32,9 @@
 				// -> Bind embed objects
 				this.loadEmbed() ;
 
+				// -> Load social plugins
+				this.loadSocialPlugins() ;
+
 				//this.headerAnime() ;
 
 				//this.info('success', 'Welcome to '+this.dom.nav.find('a.brand').text()+' !') ;
@@ -183,6 +186,13 @@
 
 				}
 
+			},
+
+			//============================================================= SOCIAL PLUGINS
+			loadSocialPlugins: function() {
+				if ( $.isFunction($.facebook) ) $.facebook() ;
+				if ( $.isFunction($.gplus) ) $.gplus() ;
+				if ( $.isFunction($.twitter) ) $.twitter() ;
 			}
 
 			//============================================================= HEADER ANIMATION

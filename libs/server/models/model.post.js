@@ -39,7 +39,10 @@
 			return this.get('desc')
 		},
 		getLink: function() {
-			return '/'+tools.permalink(this.getCategory()||'general')+'/'+tools.permalink(this.get('title')||'')
+			return this.siteObj.getBaseUrl()+'/'+tools.permalink(this.getCategory())+'/'+tools.permalink(this.get('title')||'')
+		},
+		getShortLink: function() {
+			return this.siteObj.getBaseUrl()+'/'+tools.permalink(this.getCategory())+'/'+tools.permalink(this.get('title')||'')
 		},
 		getThumbnail: function() {
 			return this.get('thumb') ? '/thumb/'+this.get('id')+'_thumb.jpg' : null;
@@ -53,6 +56,7 @@
 		html: function(feed) {
 			var opts = {
 				feed: feed,
+				site: this.siteObj.toJSON(),
 				post: this.toJSON()
 			}; 
 			if ( this.siteObj ) {
@@ -72,6 +76,7 @@
 				desc: this.getDesc(),
 				teaser: this.getTeaser(),
 				permalink: this.getLink(),
+				shortlink: this.getShortLink(),
 				tags: _.map(this.get('tags'), function(tag) {
 					return {
 						name: tag,

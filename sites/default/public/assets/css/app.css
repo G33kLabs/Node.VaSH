@@ -372,6 +372,21 @@ a[rel="tag"]:hover:before {
 	max-width: 100%;
 }
 
+.post .social_plugins {
+	padding-right: 20px;
+}
+
+.post .social_plugins .item {
+	float: right;
+	position: relative;
+	display: block;
+}
+
+.post .social_plugins.bottom .item {
+	float: left;
+	padding-top: 15px;
+}
+
 /*
 .post a[href^="http://"]{
 	padding-right: 13px;

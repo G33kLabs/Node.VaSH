@@ -502,8 +502,9 @@ module.exports = Backbone.Model.extend({
 
 	// -> Return user ip
 	getIP: function() {
-		console.log(this.get('req').headers)
-		return this.get('req').connection.remoteAddress ;
+		var req = this.get('req') ;
+		if ( ! req || ! req.headers || ! req.connection ) return false;
+		return req.headers['x-forwarded-for'] || req.headers['X-Forwarded-For'] || req.headers['x-real-ip'] || req.connection.remoteAddress ;
 	},
 
 	// -> Get site alias

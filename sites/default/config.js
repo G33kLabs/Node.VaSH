@@ -15,7 +15,7 @@ module.exports =  {
     // - http://local.js2node.com/ 
     // - http://www.js2node.com/ 
     // - http://localhost/
-    aliases: ['localhost'],
+    aliases: ['localhost'],  
 
     // -> Default SEO
     title: "JS> Node",

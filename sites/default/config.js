@@ -1,23 +1,21 @@
 module.exports =  {
 
-    // -> Site name 
+    // -> Site name, Brand & copyright in footer
     site_name: 'JS> Node',
-
-    // -> Brand name & copyright in footer
     brand: "JS> Node",
     copyright: "&copy; G33K Labs | 2012",
 
-    // -> Production env base url
+    // -> Production env base url (used for rss feed and permanent links)
     website: 'http://www.js2node.com',
 
-    // -> Development env base url
+    // -> Development env base url (used when dev flag is enabled in app config)
     local: 'http://local.js2node.com:10000',
 
     // -> Alias responding to this config, will answer to 
     // - http://local.js2node.com/ 
     // - http://www.js2node.com/ 
     // - http://localhost/
-    aliases: ['local.js2node.com', 'www.js2node.com', 'localhost'],
+    aliases: ['localhost'],
 
     // -> Default SEO
     title: "JS> Node",
@@ -32,41 +30,41 @@ module.exports =  {
     // -> Widget loaded
     widgets: ['aboutme', 'mostviewed', 'github', 'disqus', 'blogroll', 'archives', 'lazyload', {
         id: 'analytics',
-        code: 'UA-12891268-5'
+        code: 'type yours'
     }],
 
     // -> Assets loaded and packed
-    assets: {
-        css: [
-            '/common/vendors/bootstrap/bootstrap.css', 
-            '/common/vendors/markdown/highlight.monokai.css',
-            '/assets/css/app.css'
-        ],
-        js: [
-            '/common/vendors/jquery.min.js', 
-            '/common/vendors/async.min.js', 
-            '/common/vendors/date.min.js', 
-            '/common/vendors/mustache.min.js', 
-            '/common/vendors/underscore.min.js', 
-            '/common/vendors/backbone.min.js', 
-            '/common/vendors/bootstrap/bootstrap.js', 
-            '/common/vendors/jquery.lazyload.min.js', 
-            '/common/vendors/humanized_time_span.js', 
-            '/common/vendors/jquery.oembed.min.js',
-            '/common/vendors/jquery.social/jquery.fb.js',
-            '/common/vendors/jquery.social/jquery.gplus.js',
-            '/common/vendors/jquery.social/jquery.twitter.js',
-            '/common/vendors/VaSH.toolkit.js/vash.toolkit.js', 
-            '/assets/js/app.js'
-        ]
-    },
+assets: {
+    css: [
+        '/common/vendors/bootstrap/bootstrap.css', 
+        '/common/vendors/markdown/highlight.monokai.css',
+        '/assets/css/app.css'
+    ],
+    js: [
+        '/common/vendors/jquery.min.js', 
+        '/common/vendors/async.min.js', 
+        '/common/vendors/date.min.js', 
+        '/common/vendors/mustache.min.js', 
+        '/common/vendors/underscore.min.js', 
+        '/common/vendors/backbone.min.js', 
+        '/common/vendors/bootstrap/bootstrap.js', 
+        '/common/vendors/jquery.lazyload.min.js', 
+        '/common/vendors/humanized_time_span.js', 
+        '/common/vendors/jquery.oembed.min.js',
+        '/common/vendors/jquery.social/jquery.fb.js',
+        '/common/vendors/jquery.social/jquery.gplus.js',
+        '/common/vendors/jquery.social/jquery.twitter.js',
+        '/common/vendors/VaSH.toolkit.js/vash.toolkit.js', 
+        '/assets/js/app.js'
+    ]
+},
     
     // -> Single Sign On allowed providers
     providers: {
         facebook: {
             infos: {
-                clientID: '237318836391590',
-                clientSecret: '68756c699154a542735bff3ac8b2edc9'
+                clientID: 'type yours',
+                clientSecret: 'type yours'
             },
             opts: {
                 perms: {scope: 'email'}
@@ -74,21 +72,21 @@ module.exports =  {
         },
         twitter: {
             infos: {
-                consumerKey: 'rSW4OeSUcn33NeaID6Lw',
-                consumerSecret: 'PuaP4Gh4esCLtlACJVLfdpMh3zA6UUVrSeR9saRmk18'
+                consumerKey: 'type yours',
+                consumerSecret: 'type yours'
             } 
         },
         github: {
             infos: {
-                clientID: 'bff9226f55a4f13ae031',
-                clientSecret: 'b0b701d3e4e058ce1a14aaad90c0ecf410809f60'
+                clientID: 'type yours',
+                clientSecret: 'type yours'
             }
         }
     },
     admins: ['twitter_244561106', 'facebook_582526084'],
-    author: 'delarueguillaume@gmail.com',
+    author: 'email@domain.com',
     authors: {
-        'delarueguillaume@gmail.com': {
+        'email@domain.com': {
             pseudo: 'G33K',
             name: 'Guillaume DE LA RUE',
             avatar: 'https://profiles.google.com/s2/photos/profile/115555146160120072472',

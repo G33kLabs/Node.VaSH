@@ -7,4 +7,5 @@ node.vash.sublime-workspace
 sites/default/public/assets/css/app.min.css
 sites/default/posts/*
 sites/default/public/assets/js/app.min.js
+sites/js2node/*
 npm-debug.log

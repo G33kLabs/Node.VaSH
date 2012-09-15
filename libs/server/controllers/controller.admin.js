@@ -182,10 +182,10 @@
 					var item = view.edit ;
 					if ( instance.get('req').method == 'POST' ) {
 
-						console.log('[>] Update '+item.id)
-						console.log('[>] ----------------------------------')
+						//console.log('[>] Update '+item.id)
+//						console.log('[>] ----------------------------------')
 						//console.log('[>] '+json(instance.get('req').body))
-						console.log('[>] ----------------------------------')
+						//console.log('[>] ----------------------------------')
 
 						var rawModelKeys = (new VaSH.Models.post()).getModel() ;
 						var rawDatas = instance.get('req').body ;
@@ -226,7 +226,7 @@
 								if ( rawOld && rawOld[key] ) datas[key] = rawOld[key] || false ;
 								if ( ! rawOld || ! rawOld[key] || (rawOld[key] != rawDatas[key]) ) {
 									changes.push(key) ;
-									console.log('[*] Key ['+key+'] changed !')
+									//console.log('[*] Key ['+key+'] changed !')
 									if ( key == 'thumb' && (/^data\:image/).test(rawDatas[key]) ) {
 										var regex = /^data:.+\/(.+);base64,(.*)$/;
 										var matches = rawDatas[key].match(regex);

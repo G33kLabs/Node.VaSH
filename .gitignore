@@ -2,11 +2,9 @@
 Icon*
 node_modules/
 logs/*
-
 node.vash.sublime-project
 node.vash.sublime-workspace
 sites/default/public/assets/css/app.min.css
 sites/default/posts/*
 sites/default/public/assets/js/app.min.js
-
 npm-debug.log

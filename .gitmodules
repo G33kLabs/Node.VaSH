@@ -1,0 +1,3 @@
+[submodule "libs/common/vendors/VaSH.toolkit.js"]
+	path = libs/common/vendors/VaSH.toolkit.js
+	url = git@github.com:G33kLabs/VaSH.toolkit.js.git

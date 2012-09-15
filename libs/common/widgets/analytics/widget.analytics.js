@@ -66,7 +66,7 @@
 		// ------------------------------------------- SERVER METHODS -------------
 		// -> On page render
 		onServerRender: function() {
-			return "<div id='ga_code' data-google-analytics='"+this.get('googleAnalytics')+"'></div>" ;
+			return "<div id='ga_code' data-google-analytics='"+this.get('code')+"'></div>" ;
 		}
 
 	}) ;

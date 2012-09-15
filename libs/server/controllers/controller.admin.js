@@ -160,7 +160,7 @@
 				function(view, callback) {
 					view.site.menus = self.getMenus() ;
 					view.site.css_addon = [
-						'/common/css/admin.css',
+						'/assets/css/admin.css',
 						'/common/vendors/tokeninput/token-input.css',
 						'/common/vendors/tokeninput/token-input-mac.css',
 						'/common/vendors/jquery-ui-1.8.23.custom/ui-lightness/jquery-ui-1.8.23.custom.css'
@@ -168,11 +168,11 @@
 					view.site.js_addon = [
 						'/common/vendors/markdown/markdown.js', 
 						'/common/vendors/jquery.textarea.js', 
-						'http://yandex.st/highlightjs/7.2/highlight.min.js',
+						'/common/vendors/markdown/highlight.min.js',
 						'/common/vendors/tokeninput/jquery.tokeninput.js',
 						'/common/vendors/jquery-ui-1.8.23.custom/jquery-ui-1.8.23.custom.min.js',
 						'/common/vendors/jquery-ui-1.8.23.custom/jquery-ui-timepicker-addon.js',
-						'/common/js/admin.js'
+						'/assets/js/admin.js'
 					] ;
 					callback(null, view) ;
 				},

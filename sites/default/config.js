@@ -1,18 +1,45 @@
 module.exports =  {
+
+    // -> Site name 
     site_name: 'JS> Node',
-    website: 'http://www.js2node.com',
-    local: 'http://local.js2node.com:10000',
-    aliases: ['local.js2node.com', 'www.js2node.com', 'localhost'],
+
+    // -> Brand name & copyright in footer
     brand: "JS> Node",
+    copyright: "&copy; G33K Labs | 2012",
+
+    // -> Production env base url
+    website: 'http://www.js2node.com',
+
+    // -> Development env base url
+    local: 'http://local.js2node.com:10000',
+
+    // -> Alias responding to this config, will answer to 
+    // - http://local.js2node.com/ 
+    // - http://www.js2node.com/ 
+    // - http://localhost/
+    aliases: ['local.js2node.com', 'www.js2node.com', 'localhost'],
+
+    // -> Default SEO
     title: "JS> Node",
     title_sufix: " | G33K",
     desc: "A developer blog about js, node.js and other modern tools",
     desc_category: "Discover all articles about {{cat}}{{#page_count}} - Page{{page_count}}{{/page_count}}",
     language: 'en-EN',
+
+    // -> Navbar menus
+    menus: ['Home', 'Nodejs', 'jQuery', 'Redis.io', 'Snippets', 'Contact'],
+
+    // -> Widget loaded
+    widgets: ['aboutme', 'mostviewed', 'github', 'disqus', 'blogroll', 'archives', 'lazyload', {
+        id: 'analytics',
+        code: 'UA-12891268-5'
+    }],
+
+    // -> Assets loaded and packed
     assets: {
         css: [
             '/common/vendors/bootstrap/bootstrap.css', 
-            '/common/css/highlight.monokai.css',
+            '/common/vendors/markdown/highlight.monokai.css',
             '/assets/css/app.css'
         ],
         js: [
@@ -29,12 +56,12 @@ module.exports =  {
             '/common/vendors/jquery.social/jquery.fb.js',
             '/common/vendors/jquery.social/jquery.gplus.js',
             '/common/vendors/jquery.social/jquery.twitter.js',
-            '/common/js/vash.toolkit.js', 
+            '/common/vendors/VaSH.toolkit.js/vash.toolkit.js', 
             '/assets/js/app.js'
         ]
     },
-    menus: ['Home', 'Nodejs', 'jQuery', 'Redis.io', 'Snippets', 'Contact'],
-    widgets: ['aboutme', 'mostviewed', 'github', 'disqus', 'blogroll', 'archives', 'lazyload', 'analytics'],
+    
+    // -> Single Sign On allowed providers
     providers: {
         facebook: {
             infos: {
@@ -93,7 +120,5 @@ module.exports =  {
                 }
             }
         }
-    },
-    googleAnalytics: 'UA-12891268-5',
-    copyright: "&copy; G33K Labs | 2012"
+    }
 }

@@ -85,6 +85,12 @@ module.exports = Backbone.Model.extend({
 	            self.attributes.menus[k] = v ;
 	        })	
 
+	        // -> Map all widgets as objects
+	        _.each(self.attributes.widgets, function(v,k) {
+	        	if ( _.isString(v) ) v = {id: v}
+	        	self.attributes.widgets[k] = v
+	        })
+
 	        // -> Set author
 	        self.set('author_email', self.get('author')) ;
 	        self.set('author', self.get('authors')[self.get('author')]) ;
@@ -123,8 +129,12 @@ module.exports = Backbone.Model.extend({
 		fs.readdir(widgetPath, function(err, datas) {
 	    	async.forEachSeries(datas, function(data, callback) {
 
-	    		// -> If widget is in list => skip
-	    		if ( self.get('widgets').indexOf(data) < 0 ) return callback() ;
+	    		var widget = _.find(self.get('widgets'), function(widget) {
+    				if ( _.isObject(widget) && data == widget.id ) return true;
+    				else return false;
+    			}) ;
+
+	    		if ( ! widget ) return callback() ;
 
 	    		// -> Get files to load
 	    		widgetFilename = widgetPath+'/'+data+'/widget.'+data+'.js' ;
@@ -143,12 +153,10 @@ module.exports = Backbone.Model.extend({
 	    			},
 	    			register: function(callback) {
 			    		fs.exists(widgetFilename, function(exists) {
-			    			var widget ;
 			    			if ( exists ) {
 			    				tools.log('Register widget :: '+'widget.'+data+'.js') ;
 			    				self.get('assets').js.push(widgetFilename.split(root_path)[1]) ;
-			    				widget = new (require(widgetFilename).widget)(_.extend({}, self.attributes, {templates: self.templates})) ;
-			    				
+			    				widget = new (require(widgetFilename).widget)(_.extend({}, self.attributes, {templates: self.templates}, widget)) ;
 			    			}
 			    			callback(null, widget) ;
 			    		}); 	    				
@@ -177,12 +185,12 @@ module.exports = Backbone.Model.extend({
 	    		var orderedWidgets = [] ;
 	    		_.each(self.get('widgets'), function(data) {
 	    			var widget = _.find(self.widgets, function(val) {
-	    				return val.id == data;
+	    				return val.id == data.id;
 	    			})
 	    			if ( widget ) orderedWidgets.push(widget) ;
 	    		})
 	    		self.widgets = orderedWidgets ;
-
+	    		
 	    		callback() ;
 	    	});
 	    })

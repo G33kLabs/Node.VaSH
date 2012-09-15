@@ -291,7 +291,9 @@ module.exports = Backbone.Model.extend({
 		var view = tools.extend(true, {}, {
 			user: self.get('req').user,
 			site: self.get('website').toJSON(),
-			widgets: self.get('website').widgets
+			widgets: _.map(self.get('website').widgets, function(widget) {
+				return widget;
+			}) 
 		}, datas) ;
 
 		// -> Force merge menus

@@ -314,7 +314,8 @@ VaSH.prototype.monitor_debug = function() {
             	if ( /templates\//.test(f) ) {
             		tools.log('[>] Reload templates...', 'purple')
             		_.each(vash.sites, function(site, name) {
-            			site.reloadTemplates()  ;
+            			//site.reloadTemplates()  ;
+            			cluster.worker.destroy()
             		}) ;
             	}
 

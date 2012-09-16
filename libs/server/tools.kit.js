@@ -229,6 +229,11 @@ exports.number_format = function(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
+// -- Check email
+exports.validateEmail = function(email){
+    return /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email);
+}
+
 /*******************************************************************
  * Camelize/Uncamelize a string (border-bottom <-> borderBottom)
  *******************************************************************/

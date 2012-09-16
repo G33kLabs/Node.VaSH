@@ -1,5 +1,6 @@
 var fs = require('fs'),
-	noop = function() {} ;
+	noop = function() {},
+	mailer = require('mailer');
 
 module.exports = Backbone.Model.extend({
 	templates: {},
@@ -226,14 +227,56 @@ module.exports = Backbone.Model.extend({
 				apiMethod['list::cat']() ;
 			},
 			'contact::read': function() {
-				self.sendWithLayout({
-					page: {
-						title: 'Contact me',
-						name: 'Contact me',
-						desc: self.get('website').get('title')+" &raquo; Don't hesitate to ask me questions, I'll answer asap -_' ",
-						content: VaSH.Mustache.to_html(self.get('website').templates['contact.html'], self.get('website').toJSON())
-					}
-				})
+				if ( self.get('req').method == 'POST' ) {
+
+					// Check that body is valid
+					var res = self.get('req').body ;
+					if ( ! res.datas ) return self.error('The posted datas are not correct') ;
+
+					// Check that datas email and body are presents in the output
+					res = tools.base64_decode(res.datas) ;
+					if ( ! res ) return self.error('The posted datas are not correct') ;
+
+					// Data is stringified
+					res = JSON.parse(res); 
+					if ( ! tools.validateEmail(res.email) ) return self.error('Email address is not valid :(') ;
+					if ( ! res.body ) return self.error('The message is not enough :(') ;
+					if ( res.body.length < 10 ) return self.error('The message is not enough :(') ;
+
+					// Send the mail
+					mailer.send({
+						// node_mailer supports authentication,
+						// docs at: https://github.com/marak/node_mailer
+							host:    'localhost',
+							port:    '25',
+							to:      self.get('website').get('author_email'),
+							from:    res.email,
+							subject: "Contact from "+self.get('website').get('title'),
+							body:    res.body
+						},
+
+						// Your response callback
+						function(err, result) {
+							if (err) {
+								tools.error('contact::mail::error' + json(err));
+							}
+							else if ( result ) {
+								tools.log('contact::mail::success' + json(result));
+							}
+						}
+					);		
+
+				}
+				else {
+					self.sendWithLayout({
+						page: {
+							title: 'Contact me',
+							name: 'Contact me',
+							desc: self.get('website').get('title')+" &raquo; Don't hesitate to ask me questions, I'll answer asap -_' ",
+							content: VaSH.Mustache.to_html(self.get('website').templates['contact.html'], self.get('website').toJSON())
+						}
+					})
+				}
 			},
 			'post::read': function(opts) {
 				apiMethod['list::cat']({

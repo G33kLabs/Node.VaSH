@@ -103,12 +103,14 @@
 							else milestones[milestone_name].open_issues++
 						}
 
-						milestones[milestone_name].due_date = humanized_time_span(milestones[milestone_name].due_on) ;
+						milestones[milestone_name].due_humanized_date = humanized_time_span(milestones[milestone_name].due_on) ;
+						milestones[milestone_name].due_date = milestones[milestone_name].due_on.toString("d MMM yyyy") ;
 						milestones[milestone_name].total_issues = milestones[milestone_name].open_issues + milestones[milestone_name].closed_issues ;
 						milestones[milestone_name].progress = Math.floor(milestones[milestone_name].closed_issues * 100 / milestones[milestone_name].total_issues) ;
 						milestones[milestone_name].progressWidth = Math.max(10, milestones[milestone_name].progress)
+						milestones[milestone_name].done = milestones[milestone_name].progress == 100 ? true : false; 
 
-						if ( new Date(milestones[milestone_name].due_on) > new Date() ) {
+						if ( new Date(milestones[milestone_name].due_on) > new Date() || milestones[milestone_name].progress == 100 ) {
 							if ( milestones[milestone_name].progress > 0 ) {
 								milestones[milestone_name].progressClass = 'success' ;
 							}
@@ -128,7 +130,8 @@
 			// -> Sort milestones
 			milestones = _.sortBy(milestones, function(milestone) {
 				//console.log(new Date(milestone.due_on), (new Date()).add(1).years())
-				return milestone.due_on ;
+				//console.log(milestones) ;
+				return (milestone.progress==100?'2':'1')+'_'+milestone.due_on ;
 			});
 
 			// -> Return complete datas

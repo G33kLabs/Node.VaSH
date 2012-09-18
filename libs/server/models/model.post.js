@@ -29,11 +29,11 @@
 			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?dots:''));
 		},
 		getCategory: function() {
-			var mainTag = 'General' ;
+			var mainTag ;
 			if ( _.isArray(this.get('tags')) ) {
 				mainTag = _.first(this.get('tags')) ;
 			}
-			return mainTag ;
+			return mainTag || 'General' ;
 		},
 		getDesc: function() {
 			return this.get('desc')
@@ -102,7 +102,8 @@
 				title: this.getTitle(),
 				teaser: this.getRSSTeaser(),
 				content: this.html(true),
-				permalink: this.siteObj.getBaseUrl()+this.getLink(),
+				permalink: this.getLink(),
+				shortlink: this.getShortLink(),
 				tags: _.map(this.get('tags'), function(tag) {
 					return {
 						name: tag,

@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	noop = function() {},
-	mailer = require('mailer');
+	Email = require('email').Email;
 
 module.exports = Backbone.Model.extend({
 	templates: {},
@@ -244,27 +244,20 @@ module.exports = Backbone.Model.extend({
 					if ( res.body.length < 10 ) return self.error('The message is not enough :(') ;
 
 					// Send the mail
-					mailer.send({
-						// node_mailer supports authentication,
-						// docs at: https://github.com/marak/node_mailer
-							host:    'localhost',
-							port:    '25',
-							to:      self.get('website').get('author_email'),
-							from:    res.email,
-							subject: "Contact from "+self.get('website').get('title'),
-							body:    res.body
-						},
+					var message = new Email({
+						from: res.email,
+						to: self.get('website').get('author_email'),
+						subject: "Contact from "+self.get('website').get('title'),
+						body: res.body
+					}) ;
 
-						// Your response callback
-						function(err, result) {
-							if (err) {
-								tools.error('contact::mail::error' + json(err));
-							}
-							else if ( result ) {
-								tools.log('contact::mail::success' + json(result));
-							}
-						}
-					);		
+					message.send(function(err){
+						if ( err ) tools.error('contact::mail::error' + json(err));
+						else tools.log('contact::mail::success => '+self.get('website').get('author_email'));
+						return self.get('res').json({
+							error: err
+						})
+					})	
 
 				}
 				else {

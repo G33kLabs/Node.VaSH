@@ -51,7 +51,7 @@
       , "html-minifier": "x.x.x"
       , "uglify-js": "x.x.x"
       , "uglifycss": "x.x.x"
-      , "mailer": "x.x.x"
+      , "email": "x.x.x"
     }
   , "main": "app.js"
   , "engines": { "node": ">= 0.8.0" }

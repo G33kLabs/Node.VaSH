@@ -600,7 +600,7 @@ module.exports = Backbone.Model.extend({
 				priority = priority || priorities[freq] || 'monthly' ;
 				paths.push(url) 
 				urls.push({
-					url: self.getBaseUrl()+url,
+					url: (/^http/.test(url)?'':self.getBaseUrl())+url,
 					freq: freq,
 					priority: priority
 				})

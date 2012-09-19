@@ -2,9 +2,7 @@
 var fs = require('fs'),
 	cluster = require('cluster'),
 	watch = require('watch'),
-    static = require('node-static'),
-    zlib = require('zlib'),
-    minifyHTML = require('html-minifier').minify ;
+    static = require('node-static') ;
 
 // -- Shared instance
 var vash ;
@@ -39,13 +37,7 @@ VaSH.Request = require('./express.vash.request') ;
 
 // -- Helpers
 VaSH.Mustache = require('mustache');
-VaSH.minifyHTML = function(html) {
-	return minifyHTML(html, {
-		removeComments: true,
-		removeAttributeQuotes: true,
-		cleanAttributes: true 
-	}) ;
-} ;
+VaSH.Packer = require('./express.vash.packer') ;
 
 // -- Define models
 VaSH.Models = {

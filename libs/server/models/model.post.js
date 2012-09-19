@@ -20,13 +20,13 @@
 		getTeaser: function(max) {
 			max = max || 200 ;
 			var txt = tools.teaser(this.get('content'), max).replace(/(<([^>]+)>)/ig," ");
-			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?' <small>[...]</small>':''));
+			return VaSH.Packer.packHTML(tools.trim(txt)+(txt.length>max?' <small>[...]</small>':''));
 		},
 		getRSSTeaser: function(max, dots) {
 			max = max || 200 ;
 			dots = dots ||  ' [...]' ;
 			var txt = tools.teaser(this.get('content'), max).replace(/(<([^>]+)>)/ig," ").replace(new RegExp("\n", 'g'), '');
-			return VaSH.minifyHTML(tools.trim(txt)+(txt.length>max?dots:''));
+			return VaSH.Packer.packHTML(tools.trim(txt)+(txt.length>max?dots:''));
 		},
 		getCategory: function() {
 			var mainTag ;
@@ -51,7 +51,7 @@
 			return this.siteObj.get('authors')[this.get('author')] 
 		},
 		teaser: function() {
-			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl_teaser||'', {post: this.toJSON()}));
+			return VaSH.Packer.packHTML(VaSH.Mustache.to_html(this.tpl_teaser||'', {post: this.toJSON()}));
 		},
 		html: function(feed) {
 			var opts = {
@@ -69,7 +69,7 @@
 				if ( opts.feed ) opts.showFeedThumbnail = true ;
 				else opts.showNormalThumbnail = true ;
 			}
-			return VaSH.minifyHTML(VaSH.Mustache.to_html(this.tpl||'', opts));
+			return VaSH.Packer.packHTML(VaSH.Mustache.to_html(this.tpl||'', opts));
 		},
 		getModel: function() {
 			return 'id created title desc raw content tags thumb author disabled'.split(' ');

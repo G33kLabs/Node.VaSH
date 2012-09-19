@@ -2,11 +2,7 @@ var fs = require('fs'),
 	noop = function() {},
 	marked = require(root_path+'/libs/common/vendors/markdown/'),
 	jsHighlight = require("highlight").Highlight,
-	zlib = require('zlib'),
-	htmlPacker = require('html-minifier').minify,
-	jsParser = require("uglify-js").parser,
-	jsPacker = require("uglify-js").uglify,
-	cssPacker = require('uglifycss') ;
+	zlib = require('zlib') ;
 
 marked.setOptions({
 	gfm: true,
@@ -360,7 +356,7 @@ module.exports = Backbone.Model.extend({
 					
 				}, function() {
 					if ( out.length ) {
-						callback(null,  self.packCSS(out.join("\n")) )
+						callback(null,  VaSH.Packer.packCSS(out.join("\n")) )
 					}
 					else {
 						callback(true) ;
@@ -384,7 +380,7 @@ module.exports = Backbone.Model.extend({
 
 				}, function() {
 					if ( out.length ) {
-						callback(null,  self.packJS(out.join("\n")) )
+						callback(null,  VaSH.Packer.packJS(out.join("\n")) )
 					}
 					else {
 						callback(true) ;
@@ -422,44 +418,6 @@ module.exports = Backbone.Model.extend({
 
 		})
 
-	},
-
-	// Pack CSS content 
-	packCSS: function(content) {
-		//if ( this.compileError ) return false;
-		return cssPacker.processString(content) ;
-	},
-
-	// Pack HTML content 
-	packHTML: function(content) {
-		//if ( this.compileError ) return false;
-		var htmlPacker = require('html-minifier').minify ;
-		//console.log(htmlPacker(content, { removeComments: true, collapseWhitespace: true, removeEmptyAttributes: true })) ;
-		return htmlPacker(content, { removeComments: true, collapseWhitespace: true, removeEmptyAttributes: true }) ;
-	},
-
-	// Pack JS content
-	packJS: function(content, itemPath) {
-
-		try {
-			var ast = jsParser.parse(content); // parse code and get the initial AST
-			ast = jsPacker.ast_mangle(ast); // get a new AST with mangled names
-			ast = jsPacker.ast_squeeze(ast); // get an AST with compression optimizations
-		} catch(e) { 
-
-			// -- Scope error
-			tools.error('-------------------------') ;
-			tools.error(content.split("\n").slice(e.line-10, e.line-1).join("\n")) ;
-			tools.warning(" /******** "+e.line+" >> "+e.message+" ********/") ;
-			tools.warning((content.split("\n").slice(e.line-1, e.line).join("\n"))) ;
-			tools.warning(" /***********************************************************/") ;
-			tools.error(content.split("\n").slice(e.line, e.line+10).join("\n")) ;
-			this.compileError = true ;
-			require('child_process').exec('say -v Alex -r 200 "What the fuck baby ? "') ;
-			//process.exit() ;
-			
-		} 
-		return jsPacker.gen_code(ast); // compressed code here
 	},
 
 	getOrdered: function(filters) {

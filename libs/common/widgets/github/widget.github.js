@@ -181,6 +181,11 @@
 				var html = $(Mustache.to_html(self.tpl, {milestones: _.values(milestones)})) ;
 				var first_milestone = html.filter('.milestone:first') ;
 
+				// -> Fix link href to disallow template link [[html_url]] to be indexed
+				html.find('a').each(function() {
+					$(this).attr('href', $(this).data('href')) ;
+				}); 
+
 				// -> Hide others milestone
 				html.filter('.milestone').slice(self.get('milestone').displayed).hide() ;
 

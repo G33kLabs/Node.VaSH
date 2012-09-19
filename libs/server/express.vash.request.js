@@ -331,10 +331,11 @@ module.exports = Backbone.Model.extend({
 				return widget;
 			}) 
 		}, datas) ;
-
+/*
 		console.log('-------------------------------------')
 		console.log(self.get('website').get('author').social) ;
 		console.log('-------------------------------------')
+*/
 
 		// -> Force merge menus
 		if ( datas.site && datas.site.menus ) {

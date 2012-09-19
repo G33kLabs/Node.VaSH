@@ -332,6 +332,10 @@ module.exports = Backbone.Model.extend({
 			}) 
 		}, datas) ;
 
+		console.log('-------------------------------------')
+		console.log(self.get('website').get('author').social.twitter.pseudo) ;
+		console.log('-------------------------------------')
+
 		// -> Force merge menus
 		if ( datas.site && datas.site.menus ) {
 			view.site.menus = datas.site.menus ;

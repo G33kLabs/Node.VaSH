@@ -153,7 +153,8 @@ VaSH.prototype.load = function() {
 							name: provider+'::'+site,
 							callbackURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback",
 							returnURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback",
-							profile: true
+							profile: true,
+							audience: siteConfig.getBaseUrl()
 						}, datas.infos),
 						function(accessToken, refreshToken, profile, done) {
 							process.nextTick(function () {

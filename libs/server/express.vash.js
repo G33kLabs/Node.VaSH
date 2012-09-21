@@ -151,7 +151,9 @@ VaSH.prototype.load = function() {
 					var strategy = self.strategies['passport-'+provider] ;
 					var _strategy = new strategy(_.extend({
 							name: provider+'::'+site,
-							callbackURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback"
+							callbackURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback",
+							returnURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback",
+							profile: true
 						}, datas.infos),
 						function(accessToken, refreshToken, profile, done) {
 							process.nextTick(function () {

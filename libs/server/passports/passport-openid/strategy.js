@@ -85,8 +85,11 @@ function Strategy(options, validate) {
   if (options.profile) {
     var ax = new openid.AttributeExchange({
       "http://axschema.org/namePerson/first": "required",
+      "http://axschema.org/namePerson/friendly": "required",
       "http://axschema.org/namePerson/last": "required",
-      "http://axschema.org/contact/email": "required"
+      "http://axschema.org/contact/email": "required",
+      "http://axschema.org/person/gender": "required",
+      "http://openid.net/schema/person/guid": "required"
     });
     extensions.push(ax);
   }
@@ -130,11 +133,12 @@ Strategy.prototype.authenticate = function(req) {
     //       cancel response should be treated as an authentication failure,
     //       rather than an exceptional error.  As such, this condition is
     //       trapped and handled prior to being given to node-openid.
-    
+
     if (req.query['openid.mode'] === 'cancel') { return this.fail(); }
     
     var self = this;
     this._relyingParty.verifyAssertion(req.url, function(err, result) {
+      console.log(err, result, req.query)
       if (err) { return self.error(err); }
       if (!result.authenticated) { return self.error(new Error('OpenID authentication error')); }
       
@@ -148,9 +152,9 @@ Strategy.prototype.authenticate = function(req) {
       
       var arity = self._validate.length;
       if (arity == 3) {
-        self._validate(result.claimedIdentifier, profile, validated);
+        self._validate(result.claimedIdentifier, null, profile, validated);
       } else {
-        self._validate(result.claimedIdentifier, validated);
+        self._validate(result.claimedIdentifier, null, profile, validated);
       }
     });
   } else {
@@ -196,12 +200,12 @@ Strategy.prototype.authenticate = function(req) {
  */
 Strategy.prototype._parseProfileExt = function(params) {
   var profile = {};
-  
+
   console.log('-----------------------') ;
-      console.log('OpenId') ;
-      console.log(params) ;
-      console.log(this.provider)
-      console.log('-----------------------') ;
+  console.log('OpenId') ;
+  console.log(params) ;
+  console.log(this.provider)
+  console.log('-----------------------') ;
 
   // parse simple registration parameters
   profile.provider = this.provider || this.name || 'openid' ;
@@ -216,6 +220,10 @@ Strategy.prototype._parseProfileExt = function(params) {
   }
   if (!profile.emails) {
     profile.emails = [{ value: params['email'] }];
+  }
+
+  if (!profile.username) {
+    profile.username = params['firstname'] ;
   }
   
   return profile;

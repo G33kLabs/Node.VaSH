@@ -60,13 +60,19 @@
 		// -> Executed on client render
 		onClientRender: function() {
 			var code = $('#ga_code').data('google-analytics') ;
+
+			// -> If on admin panel, exit
+			///console.log(this.toJSON())
+			if ( /^\/admin/.test(window.location.pathname) || $('#require-loader').data('isAdmin') ) return false;
+
+			// -> Else run tracking
 			this.installScripts(code) ;
 		},
 
 		// ------------------------------------------- SERVER METHODS -------------
 		// -> On page render
 		onServerRender: function() {
-			return "<div id='ga_code' data-google-analytics='"+this.get('code')+"'></div>" ;
+			return "<div id='ga_code' data-google-analytics='"+this.get('analytics').code+"'></div>" ;
 		}
 
 	}) ;

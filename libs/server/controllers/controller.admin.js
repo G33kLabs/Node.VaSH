@@ -41,7 +41,7 @@
 						page: {
 							full: true,
 							title: 'VaSH Center',
-							name: 'VaSH Center &raquo '+tools.ucfirst(instance.getSiteAlias()),
+							//name: 'VaSH Center &raquo '+tools.ucfirst(instance.getSiteAlias()),
 							desc: 'Administration DashBoard'
 						}
 					}; 
@@ -163,13 +163,15 @@
 						'/assets/css/admin.css',
 						'/common/vendors/tokeninput/token-input.css',
 						'/common/vendors/tokeninput/token-input-mac.css',
+						'/common/vendors/jquery.jqplot/jquery.jqplot.css',
 						'/common/vendors/jquery-ui-1.8.23.custom/ui-lightness/jquery-ui-1.8.23.custom.css'
 					] ;
 					view.site.js_addon = [
-						'/common/vendors/markdown/markdown.js', 
 						'/common/vendors/jquery.textarea.js', 
+						'/common/vendors/markdown/markdown.js', 
 						'/common/vendors/markdown/highlight.min.js',
 						'/common/vendors/tokeninput/jquery.tokeninput.js',
+						'/common/vendors/jquery.jqplot/jquery.jqplot.all.min.js',
 						'/common/vendors/jquery-ui-1.8.23.custom/jquery-ui-1.8.23.custom.min.js',
 						'/common/vendors/jquery-ui-1.8.23.custom/jquery-ui-timepicker-addon.js',
 						'/assets/js/admin.js'

@@ -48,6 +48,30 @@
 		return (number / 1024).toFixed(1);
 	}	
 
+	// -- Return seconds with duration like 00:00:00 or 00:00
+	exports.formatDuration = function(duration) {
+	    duration = (duration||'').split(':') ;
+	    var seconds = 0 ; 
+	    if ( duration.length == 3 ) seconds += parseInt(duration.shift())*3600;
+	    seconds += parseInt(duration.shift())*60;
+	    seconds += parseInt(duration.shift());
+	    return seconds;
+	}	
+
+	// -- Format time
+	exports.formatTime = function(ms) {
+	    var secs = ms/1000 ;
+	    var hr = Math.floor(secs / 3600);
+	    var min = Math.floor((secs - (hr * 3600))/60);
+	    var sec = Math.floor(secs - (hr * 3600) - (min * 60));
+	    
+	    if (hr < 10) hr = "0" + hr;
+	    if (min < 10) min = "0" + min;
+	    if (sec < 10) sec = "0" + sec;
+	    if (hr) hr = "00";
+	    return (hr > 0 ? hr + ':' : '') + min + ':' + sec;
+	}
+
 	// -- Compare sizes
 	exports.compareWidthHeight = function(width, height) {
 		var diff = [];
@@ -61,6 +85,30 @@
 		return diff;
 	}
 
+	// -- Number Format
+	exports.number_format = function(number, decimals, dec_point, thousands_sep) {
+	    number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+	    var n = !isFinite(+number) ? 0 : +number,
+	        prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+	        sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+	        dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+	        s = '',
+	        toFixedFix = function (n, prec) {
+	            var k = Math.pow(10, prec);
+	            return '' + Math.round(n * k) / k;
+	        };
+	    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+	    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+	    if (s[0].length > 3) {
+	        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+	    }
+	    if ((s[1] || '').length < prec) {
+	        s[1] = s[1] || '';
+	        s[1] += new Array(prec - s[1].length + 1).join('0');
+	    }
+	    return s.join(dec);
+	}
+	
 	// -- Check email
 	exports.validateEmail = function(email){
         return /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email);

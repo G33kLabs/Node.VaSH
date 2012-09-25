@@ -38,6 +38,11 @@
 	    return f + str.substr(1);
 	}
 
+	// -- Trim a string
+	exports.trim = function(str) {
+		return (str||'').replace(/^\s+|\s+$/g,"").toString();
+	}
+
 	// -- Return filename extension
 	exports.extension = function(fileName) {
 	    return (fileName.substr(fileName.lastIndexOf('.') + 1)).toLowerCase();
@@ -84,6 +89,13 @@
 		}
 		return diff;
 	}
+
+	// -> Humanize an ID formated as Camel String to an uppercased and spaced string
+	exports.humanizeCamel = function(str) {
+		return (str + "").replace(/[A-Z]/g, function(match) {
+        	return " " + match.toUpperCase();
+   		});
+	} 
 
 	// -- Number Format
 	exports.number_format = function(number, decimals, dec_point, thousands_sep) {

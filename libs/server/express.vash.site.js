@@ -10,7 +10,8 @@ marked.setOptions({
 	sanitize: false,
 	// callback for code highlighter
 	highlight: function(code, lang) {
-		return jsHighlight(code);
+		return code;
+		//return jsHighlight(code, lang);
 	}
 });
 

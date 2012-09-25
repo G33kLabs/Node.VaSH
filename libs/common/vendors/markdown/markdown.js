@@ -130,7 +130,7 @@ block.token = function(src, tokens, top) {
     // embed
     if (cap = block.embed.exec(src)) {
       src = src.substring(cap[0].length);
-      console.log(cap)
+      //console.log(cap)
       tokens.push({
         type: 'embed',
         url: cap[1]
@@ -705,7 +705,7 @@ function tag() {
   var tag = '(?!(?:'
     + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
     + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
-    + '|span|br|wbr|ins|del|img)\\b)\\w+';
+    + '|span|br|wbr|ins|del|img|script)\\b)\\w+';
 
   return tag;
 }

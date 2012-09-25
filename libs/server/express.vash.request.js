@@ -13,7 +13,7 @@ module.exports = Backbone.Model.extend({
 			'auth': /^\/auth\/([a-zA-Z0-9.\-]+)(\/[a-zA-Z0-9.\-]+|)/,
 			'admin': /^\/admin\/([a-zA-Z0-9.\-]+|)(\/[a-zA-Z0-9.\-]+|)/,
 			'post::thumb': /^\/thumb\/([0-9a-f]+)_thumb.jpg/,
-			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3|txt)$/i,
+			'static': /\.(gif|jpg|jpeg|tiff|png|ico|css|js|mp3|txt|woff)$/i,
 			'feed::read': /^\/(feed|rss)/,
 			'sitemap::read': /^\/sitemap\.xml(\.gz|)/,
 			'contact::read': /^\/contact/,
@@ -152,7 +152,9 @@ module.exports = Backbone.Model.extend({
 				// -> Display
 				self.sendWithLayout({
 					page: {
+						title: 'Member area',
 						name: self.get('website').get('title')+' > '+"Login",
+						desc: "Please login to access to your profile :)",
 						content: VaSH.Mustache.to_html(self.get('website').templates['login.html']||'', {
 							providers: providers
 						}),

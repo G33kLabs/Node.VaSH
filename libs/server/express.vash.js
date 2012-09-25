@@ -152,9 +152,7 @@ VaSH.prototype.load = function() {
 					var _strategy = new strategy(_.extend({
 							name: provider+'::'+site,
 							callbackURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback",
-							returnURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback",
-							profile: true,
-							audience: siteConfig.getBaseUrl()
+							returnURL: siteConfig.getBaseUrl()+"/auth/"+provider+"/callback"
 						}, datas.infos),
 						function(accessToken, refreshToken, profile, done) {
 							process.nextTick(function () {

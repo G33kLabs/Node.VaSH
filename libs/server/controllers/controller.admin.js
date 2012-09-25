@@ -61,7 +61,7 @@
 						}); 
 					}
 					else if ( /^\/admin\/dashboard$/.test(req_path) ) {
-						 
+						 view.analytics = self.instance.get('website').get('analytics');
 					}
 					else if ( /^\/admin\/settings$/.test(req_path) ) {
 						 
@@ -169,7 +169,7 @@
 					view.site.js_addon = [
 						'/common/vendors/jquery.textarea.js', 
 						'/common/vendors/markdown/markdown.js', 
-						'/common/vendors/markdown/highlight.min.js',
+						//'/common/vendors/markdown/highlight.min.js',
 						'/common/vendors/tokeninput/jquery.tokeninput.js',
 						'/common/vendors/jquery.jqplot/jquery.jqplot.all.min.js',
 						'/common/vendors/jquery-ui-1.8.23.custom/jquery-ui-1.8.23.custom.min.js',

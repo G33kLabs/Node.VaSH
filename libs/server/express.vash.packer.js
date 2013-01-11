@@ -1,6 +1,6 @@
 /*!
  * vash.packer.js - Javascript node compressor
- * http://github.com/G33kLabs/vash.packer.js
+ * http://github.com/G33kLabs/Node.VaSH.packer
  */
 
 /*global define: false*/

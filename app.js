@@ -52,6 +52,7 @@ if ( (/^\/var\/www/).test(root_path) || /^\/home\/www/.test(root_path) ) {
 numCPUs = (config.env == 'dev') ? 1 : Math.max(2, numCPUs) ;
 
 ///////////////////////////////////////////////////////////////////////// LOG TO FILE
+/*
 var logToFile = require('logtofile'),
     logPath = path.normalize(__dirname+'/logs/'),
     logFile = config.server.host+'_'+config.server.port+'.log' ;
@@ -68,7 +69,7 @@ GLOBAL.logger = logToFile.create({
     directory: logPath,
     fileName: logFile
 });
-
+*/
 
 //////////////////////////////////////////////////////// WELCOME MESSAGE ///////////// 
 var welcome = [

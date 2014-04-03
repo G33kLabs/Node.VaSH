@@ -219,7 +219,6 @@ module.exports = Backbone.Model.extend({
 
 				// -> Request post list html
 				self.get('website').list(filters, function(err, doc) {
-					//console.log(doc) ;
 					if ( err || ! doc || ! doc.page ) self.error("No post found :(") ;
 					else self.sendWithLayout(doc)
 				}) 

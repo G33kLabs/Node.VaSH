@@ -445,7 +445,6 @@ module.exports = Backbone.Model.extend({
 		all = self.getOrdered(filters) ;
 
 		// -> If want only a unique post
-		//console.log(self.attributes) ;
 		if ( filters.permalink || filters.id ) {
 			var post = _.find(all, function(post){ 
 				if ( filters.permalink ) return tools.permalink(post.title) == filters.permalink; 
@@ -498,6 +497,7 @@ module.exports = Backbone.Model.extend({
 			page.errorCode = 404 ;
 			page.content = "<div class='alert alert-block alert-error'><h4>No content found !</h4>Sorry but there is no content linked to your search :( </div>"; 
 		}
+
 
 		// -> Return results
 		callback(null, {

@@ -11,7 +11,8 @@
 			if ( ! instance ) return this ;
 			this.siteObj = instance; 
 			this.tpl = instance.templates['post.html'] 
-			this.tpl_teaser = instance.templates['teaser.html'] 
+			this.tpl_teaser = instance.templates['teaser.html'] ;
+			this.attributes = opts; 		
 			return this;
 		},
 		getTitle: function() {

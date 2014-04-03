@@ -12,6 +12,7 @@ var fs = require('fs'),
     cluster = require('cluster'),
     colors = require('colors'),
     http = require('http'),
+    redis = require('redis'),
     numCPUs = require('os').cpus().length ;
 
 // -- Load Globals
@@ -167,10 +168,17 @@ else {
     app.use(express.methodOverride());
    // app.use(express.csrf());
 
+   // -- Create redis client
+    // var clientRedis = redis.createClient(config.redis.port, config.redis.host);
+
     // -- Express sessions
-    var RedisStore = require('connect-redis')(express),
-        sessionStore = new RedisStore,
-        Session = require('connect').middleware.session.Session ;
+    var sessionStore = new (require('express-sessions'))({
+        storage: 'redis',
+        host: config.redis.host, // optional
+        port: config.redis.port, // optional
+        collection: 'sessions', // optional
+        expire: 86400 // optional
+    });
 
     // -- Configure session
     app.use(express.session({

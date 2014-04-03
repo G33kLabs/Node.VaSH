@@ -34,7 +34,6 @@
       , "redis": "x.x.x"
       , "express": "x.x.x"
       , "connect": "x.x.x"
-      , "connect-redis": "x.x.x"
       , "socket.io": "x.x.x"
       , "mustache": "x.x.x"
       , "watch": "x.x.x"
@@ -49,9 +48,10 @@
       , "pkginfo": "x.x.x"
       , "mkdirp": "x.x.x"
       , "html-minifier": "x.x.x"
-      , "uglify-js": "x.x.x"
+      , "uglify-js": "1.x.x"
       , "uglifycss": "x.x.x"
       , "email": "x.x.x"
+      , "express-sessions": "x.x.x"
     }
   , "main": "app.js"
   , "engines": { "node": ">= 0.8.0" }

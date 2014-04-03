@@ -160,7 +160,7 @@ else {
     express.vash = require('./libs/server/express.vash') ;
 
     // Add session && router support 
-    app.use(express.favicon()); 
+    // app.use(express.favicon()); 
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(express.cookieParser());
     app.use(express.bodyParser());

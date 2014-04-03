@@ -36,8 +36,8 @@ var config = {
         cookname: 'express.sid',
         password: 'N0d3*)s3Ss10n',
         cookoptions: {
-            path: '/', 
-            httpOnly: true, 
+            path: '/',
+            httpOnly: true,
             maxAge: 31*24*3600*1000
         }
     },
@@ -50,7 +50,8 @@ if ( (/^\/var\/www/).test(root_path) || /^\/home\/www/.test(root_path) ) {
 }
 
 // -- Set number of CPUs instances
-numCPUs = (config.env == 'dev') ? 1 : Math.max(2, numCPUs) ;
+// numCPUs = (config.env == 'dev') ? 1 : Math.max(2, numCPUs) ;
+numCPUs = 1;
 
 ///////////////////////////////////////////////////////////////////////// LOG TO FILE
 /*
@@ -63,7 +64,7 @@ var logToFile = require('logtofile'),
 tools.log('[>] Output logs to : '+logPath+logFile)
 
 // -> Make logs dir
-mkdirp.sync(logPath); 
+mkdirp.sync(logPath);
 
 // -> At this time, all tools.log calls will be redirected into log files
 GLOBAL.logger = logToFile.create({
@@ -72,7 +73,7 @@ GLOBAL.logger = logToFile.create({
 });
 */
 
-//////////////////////////////////////////////////////// WELCOME MESSAGE ///////////// 
+//////////////////////////////////////////////////////// WELCOME MESSAGE /////////////
 var welcome = [
 '',
 '____    ____  ___           _______. __    __  ',
@@ -133,11 +134,11 @@ if (cluster.isMaster) {
             }
         }, function() {
             tools.log('[*] Exit as a gentleman !') ;
-            process.exit(0); 
+            process.exit(0);
         })
     });
 
-} 
+}
 
 
 ///////////////////////////////////////////////////////////// WORKER CLUSTER /////////////
@@ -159,8 +160,8 @@ else {
     // Register VaSH as an express middleware plugin
     express.vash = require('./libs/server/express.vash') ;
 
-    // Add session && router support 
-    // app.use(express.favicon()); 
+    // Add session && router support
+    // app.use(express.favicon());
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(express.cookieParser());
     app.use(express.bodyParser());
@@ -182,9 +183,9 @@ else {
 
     // -- Configure session
     app.use(express.session({
-        secret: config.session.password, 
-        key: config.session.cookname, 
-        cookie: config.session.cookoptions, 
+        secret: config.session.password,
+        key: config.session.cookname,
+        cookie: config.session.cookoptions,
         store: sessionStore
     }));
 
@@ -206,7 +207,7 @@ else {
 
     // -- Start Server
     server.listen(config.server.port);
-    tools.debug(' [*] WebServer STARTED : http://'+config.server.host+':'+config.server.port+'/') ;    
+    tools.debug(' [*] WebServer STARTED : http://'+config.server.host+':'+config.server.port+'/') ;
 
     ///////////////////////////////////////////////////////////// WEBSOCKET /////////////
     var sio = require('socket.io')
@@ -223,7 +224,7 @@ else {
 
     // Set store
     io.set('store', new RedisStore);
-    
+
     // Bind connections
     io.sockets.on('connection', function (socket) {
         socket.emit('news', { hello: 'world' });
